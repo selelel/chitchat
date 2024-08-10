@@ -1,0 +1,9 @@
+query TestQuery {
+        testQuery {
+            _id
+            email
+            tags
+            status
+            isPrivate
+        }
+    }
