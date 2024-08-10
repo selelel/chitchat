@@ -1,8 +1,10 @@
+import { Counter } from "@/components/Counter";
+import type { Metadata } from "next";
 
-export default async function Home() {
-  return (
-    <main>
-      <h1>ChitChat</h1>
-    </main>
-  );
+export default function IndexPage() {
+  return <Counter />;
 }
+
+export const metadata: Metadata = {
+  title: "Redux Toolkit",
+};
