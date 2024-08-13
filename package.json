@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.7",
+    "@rtk-query/graphql-request-base-query": "^2.3.1",
     "axios": "^1.7.3",
     "graphql": "^16.9.0",
     "next": "14.2.5",
@@ -21,12 +22,8 @@
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.2",
-    "@graphql-codegen/typescript-resolvers": "^4.2.1",
-    "@graphql-codegen/typescript-rtk-query": "^3.1.1",
     "@playwright/test": "^1.46.0",
-    "@rtk-query/graphql-request-base-query": "^2.3.1",
     "@types/node": "^20",
-    "@types/qs": "^6.9.15",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "async-mutex": "^0.5.0",

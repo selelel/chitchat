@@ -9,7 +9,6 @@ export const metadata: Metadata = {
   description: "ChitChat - Bring together thoughts and connect everyone.",
 };
 
-
 export default function RootLayout({
   children,
 }: Readonly<{
