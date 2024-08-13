@@ -6,19 +6,28 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "npx tslint src/**/*.ts",
     "test": "npx playwright test",
     "generate:graphql": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
+    "@chakra-ui/next-js": "^2.2.0",
+    "@chakra-ui/react": "^2.8.2",
+    "@emotion/react": "^11.13.0",
+    "@emotion/styled": "^11.13.0",
+    "@hookform/resolvers": "^3.9.0",
     "@reduxjs/toolkit": "^2.2.7",
     "@rtk-query/graphql-request-base-query": "^2.3.1",
+    "antd": "^5.20.1",
     "axios": "^1.7.3",
+    "framer-motion": "^11.3.24",
     "graphql": "^16.9.0",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18",
-    "react-redux": "^9.1.2"
+    "react-hook-form": "^7.52.2",
+    "react-redux": "^9.1.2",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.2",
