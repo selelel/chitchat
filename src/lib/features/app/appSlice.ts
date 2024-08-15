@@ -37,8 +37,6 @@ export const ServerStatus = (): AppThunk => async (dispatch, getState) => {
     const state = getState();
     const { status } = selectSeverStatus(state);
 
-    console.log(`Current status: ${status}`); // Debugging log
-
     if (status === 'DOWN') {
       console.log("The server is down!");
       await dispatch(isServerOnline());
