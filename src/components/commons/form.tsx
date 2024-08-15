@@ -1,10 +1,10 @@
 'use client';
+
 import { dm_serif_display, poppins } from '@/layouts/fonts';
 import { Button, ButtonProps, Input, InputProps } from 'antd';
 import { PasswordProps } from 'antd/es/input/Password';
-import { DetailedHTMLProps, InputHTMLAttributes, JSX, ReactNode, RefAttributes } from 'react';
+import { ReactNode } from 'react';
 import { FieldValues, Path, UseFormRegister } from 'react-hook-form';
-import { string } from 'yup';
 
 type RegisterFunction<T extends FieldValues> = UseFormRegister<T>;
 
@@ -35,14 +35,6 @@ export default function Form({children, submit, ...props} : FormProps) {
   )
 }
 
-interface test extends InputProps{
-    register: any;
-    name: string
-  }
-
-interface test2 extends PasswordProps{
-    register: any;
-  }
 Form.Input = <T extends FieldValues>({ register, ...props }: InputFormProps<T>) => {
     const registerP = register(props.name)
     return <label {...registerP}><Input className={`p-2 py-3 my-1 ${poppins.className} ${props.className}`}{...props}/></label>

@@ -10,7 +10,7 @@ const getHeaders = () => {
   };
 };
 
-const client = new GraphQLClient(HOST.GRAFBASE);
+const client = new GraphQLClient(HOST.GRAPHQL_URI);
 const graphqlBaseQuery = graphqlRequestBaseQuery({ client });
 
 const dynamicBaseQuery = async (args: any, api: BaseQueryApi, extraOptions: Partial<Pick<ClientError, "request" | "response">>) => {

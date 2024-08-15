@@ -1,12 +1,13 @@
 import { LoginFormComponent } from '@/components/pages/login/loginFormComponent'
-import Layout from '@/layouts/layout'
+import { Metadata } from 'next';
 import React from 'react'
 
 export default function IndexPage() {
   return (
-    <div>
       <LoginFormComponent />
-    </div>
-      
   )
 }
+
+export const metadata: Metadata = {
+  title: 'ChitChat - Sign In to Connect',
+};

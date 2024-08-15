@@ -14,26 +14,22 @@ import { poppins } from "@/layouts/fonts";
 import { Alert, Button, Divider } from "antd";
 import { COLOR } from "@/theme/color";
 import { GoogleIcon } from "@/components/commons/icon/SocialMedia";
+import { cacheUser, handleSignInUser } from "@/helper/auth_helper/sign_user";
 
 export const LoginFormComponent = () => {
   useRedirectIfAuthenticated()
   const [errorMessages, setErrorMessages] = useState<string | undefined>();
-  const [logIn, { data, isLoading }] = useLogInMutation();
-  const { register, handleSubmit, formState: { errors } } = useForm<login_form_types>({
-    resolver: yupResolver(login_form_schema),
-  });
+  const [logIn, { data , isLoading }] = useLogInMutation();
+  const { register, handleSubmit, formState: { errors } } = useForm<login_form_types>({ resolver: yupResolver(login_form_schema) });
 
-  useEffect(() => {
-    if (data?.loginUser?.accesstoken) {
-      localStorage.setItem(LOCALSTORAGE.TOKEN, data.loginUser.accesstoken);
-    }
-  }, [data]);
+
+  useEffect(() => { cacheUser({token: data?.loginUser.accesstoken, id: data?.loginUser.accesstoken}) }, [data])
 
   useEffect(() => {
     setErrorMessages(errors.email?.message || errors.password?.message);
   }, [errors]);
 
-  const handleLogIn = async ({ password, email}: login_form_types) => {
+  const handleLogIn = async ({ password, email }: login_form_types) => {
     try {
       await logIn({ password, email }).unwrap();
     } catch (error: any) {
@@ -41,54 +37,74 @@ export const LoginFormComponent = () => {
     }
   };
 
-  if (data) {
-    redirect("/");
-  }
-
-  const handleSignUpUser = () => {
-    window.location.href = 'http://localhost:8080/auth/google/login';
-  };
-
   return (
     <div className="p-4">
-      <Form submit={handleSubmit(handleLogIn)} className="space-y-2 sm:w-3/4 lg:w-1/3">
-        <Form.Title>Log in to your account</Form.Title>
-        <p className={`font-semibold ${poppins.className}`}>Don't Have an Account? <a href="/signin" className="text-cyan-500 cursor-pointer">Sign Up</a></p>
-        <Button
-          tabIndex={0}
-          className="flex flex-row justify-center space-x-1 items-center w-full rounded-md py-5 px-10 cursor-pointer"
-          onClick={() => {
-            console.log("emelang")
-            handleSignUpUser()
-          }}
-          >
-          <GoogleIcon boxSize={4} />
-          <p className={`font-semibold text-custom-grey ${poppins.className}`}>Google</p>
-        </Button>
+      <Form submit={handleSubmit(handleLogIn)} className="space-y-2">
+      <Form.Title>Log in to your account</Form.Title>
+      <p className={`font-semibold ${poppins.className}`}>
+        Don't Have an Account? 
+        <a href="/signin" className="text-cyan-500 cursor-pointer">Sign Up</a>
+    </p>
 
-        <Divider className = {poppins.className} style={{ color: COLOR.GREY, border: COLOR.GREY, fontSize: '0.75rem', fontWeight: 400, opacity: 0.7}}>Or with email and password</Divider>
-        {errorMessages && <Alert className={poppins.className} type="error" message={errorMessages} banner />}  
-        <div className="flex flex-col w-full">
-          <h4 className = {`font-semibold text-xs text-custom-1 ${poppins.className}`}> Email Address </h4>
-          <Form.Input
-          register={register}
-          name='email'
-          status={errors.email ? 'error' : ''}
-          type="email"/>
-        </div>
+    <Button
+      tabIndex={0}
+      className="flex flex-row justify-center space-x-1 items-center w-full rounded-md py-5 px-10 cursor-pointer"
+      onClick={handleSignInUser}
+    >
+      <GoogleIcon boxSize={4} />
+      <p className={`font-semibold text-custom-grey ${poppins.className}`}>Google</p>
+    </Button>
 
-        <div className="flex flex-col w-full">
-          <h4 className = {`font-semibold text-xs text-custom-1 ${poppins.className}`}> Password </h4>
-          <Form.Password
-          register={register}
-          name="password"
-          iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
-          />
-        </div>
+    <Divider
+      className={poppins.className}
+      style={{
+        color: COLOR.GREY,
+        border: COLOR.GREY,
+        fontSize: '0.75rem',
+        fontWeight: 400,
+        opacity: 0.7,
+      }}
+    >
+      Or with email and password
+    </Divider>
 
-        <Form.Button loading = {isLoading} className={`w-full sm:w-fit text-md py-5 px-10 font-semibold ${poppins.className}`}>Next</Form.Button>
-      </Form>
+    {errorMessages && (
+      <Alert className={poppins.className} type="error" message={errorMessages} banner />
+    )}
+
+    <div className="flex flex-col w-full">
+      <h4 className={`font-semibold text-xs text-custom-1 ${poppins.className}`}>
+        Email Address
+      </h4>
+      <Form.Input
+        register={register}
+        name="email"
+        status={errors.email ? 'error' : ''}
+        type="email"
+      />
     </div>
+
+    <div className="flex flex-col w-full">
+      <h4 className={`font-semibold text-xs text-custom-1 ${poppins.className}`}>
+        Password
+      </h4>
+      <Form.Password
+        register={register}
+        name="password"
+        iconRender={(visible) =>
+          visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+        }
+      />
+    </div>
+
+    <Form.Button
+      loading={isLoading}
+      className={`w-full sm:w-fit text-md py-5 px-10 font-semibold ${poppins.className}`}
+    >
+      Next
+    </Form.Button>
+  </Form>
+</div>
   );
 };
 

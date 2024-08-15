@@ -2,18 +2,18 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { LOCALSTORAGE } from '@/constants/localstorage';
+import { cacheUser } from '@/helper/auth_helper/sign_user';
 
 const Callback = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const token = new URLSearchParams(window.location.search).get('token');
+    const url_params = new URLSearchParams(window.location.search);
+    const [token, id] = [url_params.get('token') || undefined, url_params.get('user_id') || undefined]
+    console.log(token, id)
 
-    if (token) {
-      localStorage.setItem(LOCALSTORAGE.TOKEN, token);
-      router.push('/');
-    }
+    cacheUser({id, token})
+    window.location.href = '/';
   }, [router]);
 
   return <div>Redirecting...</div>;

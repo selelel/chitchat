@@ -4,30 +4,10 @@ import { Button } from 'antd'
 import React from 'react'
 import { GoogleIcon } from '../commons/icon/SocialMedia'
 import { poppins } from '@/layouts/fonts'
-import { LOCALSTORAGE } from '@/constants/localstorage'
+import { handleLogout } from '@/helper/auth_helper/sign_user'
 
 
 function Hero() {
-  const handleLogout = async () => {
-    try {
-      const response = await fetch('http://localhost:8080/auth/google/logout', {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem(LOCALSTORAGE.TOKEN)}`,
-        },
-      });
-  
-      if (!response.ok) {
-        throw new Error('Logout failed');
-      }
-
-      localStorage.removeItem(LOCALSTORAGE.TOKEN)
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
-    window.location.href = '/auth/login';
-  };
-
     return (
       <>
       <Button
