@@ -1,4 +1,4 @@
-import { LogInMutationDocument, LogOutQueryDocument, TestQueryDocument } from './authQuery';
+import { LogInMutationDocument, LogOutQueryDocument, RefreshTokenQueryDocument, TestQueryDocument } from './authQuery';
 import { baseApiWithGraphql } from '../graphql/graphqlBaseApi';
 import { LoginUserInput, Mutation, Query } from '../graphql/graphqlTypes';
 
@@ -22,8 +22,14 @@ export const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
       query: () => ({
         document: LogOutQueryDocument,
       }),
+    }),
+    RefreshToken : build.query<Query['refresh'], void>({
+      query: () => ({
+        document: RefreshTokenQueryDocument,
+      }),
     })
   }),
-});
+  
+})
 
-export const { useDamnQuery, useLogInMutation, useLogOutMutation } = injectedRtkApi;
+export const { useDamnQuery, useLogInMutation, useLogOutMutation, useRefreshTokenQuery} = injectedRtkApi;

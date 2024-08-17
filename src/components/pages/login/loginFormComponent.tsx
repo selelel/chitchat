@@ -5,9 +5,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import { useLogInMutation } from "@/modules/auth/authApi";
 import { login_form_schema, login_form_types } from "@/schemas/login.form.dto";
-import { LOCALSTORAGE } from "@/constants/localstorage";
-import { redirect } from "next/navigation";
-import { useRedirectIfAuthenticated } from "@/hooks/useRedirects";
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import Form from "@/components/commons/form";
 import { poppins } from "@/layouts/fonts";
@@ -15,20 +12,26 @@ import { Alert, Button, Divider } from "antd";
 import { COLOR } from "@/theme/color";
 import { GoogleIcon } from "@/components/commons/icon/SocialMedia";
 import { cacheUser, handleSignInUser } from "@/helper/auth_helper/sign_user";
+import axios from "axios";
 
 export const LoginFormComponent = () => {
-  useRedirectIfAuthenticated()
   const [errorMessages, setErrorMessages] = useState<string | undefined>();
   const [logIn, { data , isLoading }] = useLogInMutation();
   const { register, handleSubmit, formState: { errors } } = useForm<login_form_types>({ resolver: yupResolver(login_form_schema) });
 
-
-  useEffect(() => { cacheUser({token: data?.loginUser.accesstoken, id: data?.loginUser.accesstoken}) }, [data])
-
+  console.log(data?.loginUser)
+  
+  
+  useEffect(() => { 
+    if(data) {
+      cacheUser({token: data?.loginUser.accesstoken, id: data?.loginUser.user._id})
+    }
+  }, [data])
+  
   useEffect(() => {
     setErrorMessages(errors.email?.message || errors.password?.message);
   }, [errors]);
-
+  
   const handleLogIn = async ({ password, email }: login_form_types) => {
     try {
       await logIn({ password, email }).unwrap();
@@ -37,6 +40,31 @@ export const LoginFormComponent = () => {
     }
   };
 
+  const handleSetCookie = () => {
+    fetch('http://localhost:8080/auth/set_cookie', {
+      method: 'GET',
+      credentials: 'include',
+    })
+      .then(data => data)
+      .then(data => console.log(data))
+  }
+  
+  // useRedirectIfAuthenticated()
+  const handleRefreshToken = async () => {
+    const response = await fetch('http://localhost:8080/graphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: `query Refresh { refresh }`,
+      }),
+      credentials: 'include'
+    });
+
+    console.log(response)
+  };
+  
   return (
     <div className="p-4">
       <Form submit={handleSubmit(handleLogIn)} className="space-y-2">
@@ -104,6 +132,16 @@ export const LoginFormComponent = () => {
       Next
     </Form.Button>
   </Form>
+
+  <Button 
+  loading={isLoading}
+  onClick={handleRefreshToken}
+  className={`w-full sm:w-fit text-md py-5 px-10 font-semibold ${poppins.className}`}>Refresh</Button>
+
+<Button 
+  loading={isLoading}
+  onClick={handleSetCookie}
+  className={`w-full sm:w-fit text-md py-5 px-10 font-semibold ${poppins.className}`}>Set Cookie</Button>
 </div>
   );
 };

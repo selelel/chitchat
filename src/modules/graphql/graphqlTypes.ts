@@ -76,6 +76,7 @@ export enum Gender {
   Female = 'FEMALE',
   Male = 'MALE',
   Undefined = 'UNDEFINED',
+  Undefined = 'undefined'
 }
 
 export type GetConversation = {
@@ -112,6 +113,7 @@ export enum MbtiType {
   Istj = 'ISTJ',
   Istp = 'ISTP',
   Undefined = 'UNDEFINED',
+  Undefined = 'undefined'
 }
 
 export type Message = {
@@ -317,6 +319,7 @@ export type Query = {
   getUserById: User;
   logoutAllDevices: Scalars['Boolean']['output'];
   logoutDevice: Scalars['Boolean']['output'];
+  refresh: Scalars['String']['output'];
   testQuery: Array<User>;
 };
 
