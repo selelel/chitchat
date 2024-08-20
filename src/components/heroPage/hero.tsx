@@ -1,13 +1,32 @@
 'use client'
 
 import { Button } from 'antd'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { GoogleIcon } from '../commons/icon/SocialMedia'
 import { poppins } from '@/layouts/fonts'
-import { handleLogout } from '@/helper/auth_helper/sign_user'
+import { useLogInRedirect } from '@/helper/auth_helper/redirect'
+import { useLogOutMutation } from '@/modules/auth/authApi'
+import { useAppDispatch } from '@/lib/hooks'
+import { removeAccessToken } from '@/lib/features/app/appSlice'
+import { redirect } from 'next/navigation'
 
 
 function Hero() {
+  useLogInRedirect()
+  const [logOut, { data }] = useLogOutMutation()
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    if(data) {
+      dispatch(removeAccessToken())
+      redirect('/auth/login')
+    }
+  }, [dispatch, data])
+
+  const handleLogout = () => {
+    logOut()
+  }
+
     return (
       <>
       <Button

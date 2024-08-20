@@ -319,8 +319,13 @@ export type Query = {
   getUserById: User;
   logoutAllDevices: Scalars['Boolean']['output'];
   logoutDevice: Scalars['Boolean']['output'];
-  refresh: Scalars['String']['output'];
+  refresh: RefreshResponse;
   testQuery: Array<User>;
+};
+
+export type RefreshResponse = {
+  __typename?: 'RefreshResponse';
+  accesstoken: Scalars['String']['output'];
 };
 
 export type RequestObjectDto = {

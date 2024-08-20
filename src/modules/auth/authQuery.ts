@@ -27,10 +27,21 @@ export const LogInMutationDocument =
     }
 }
 `;
+
 export const LogOutQueryDocument = 
 `query LogoutAllDevices {
             logoutAllDevices
           }`
+
+
+export const RefreshTokenQueryDocument = 
+    `query Refresh {
+        refresh {
+            accesstoken
+        }
+    }`
+
+          
 
             
 

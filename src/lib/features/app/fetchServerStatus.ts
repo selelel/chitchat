@@ -1,8 +1,7 @@
 import { HOST } from "@/constants/host";
-import { ServerTypes } from "@/lib/types/appInitialStateType";
 
 export const fecthServerStatus = async () => {
-  const response = await fetch(`${HOST.LOCALHOST}/app/status`, {
+  const response = await fetch(`${HOST.SERVER_URI}/app/status`, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   });

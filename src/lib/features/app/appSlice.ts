@@ -3,8 +3,9 @@ import type { AppThunk } from "@/lib/store";import { fecthServerStatus } from ".
 import { ServerTypes } from "@/lib/types/appInitialStateType";
 
 const initialState: ServerTypes = {
-  server_status: { status: 'DOWN' }
-};
+  server_status: { status: 'DOWN' },
+  access_token: undefined
+}
 
 export const counterSlice = createAppSlice({
   name: "app",
@@ -21,16 +22,23 @@ export const counterSlice = createAppSlice({
         }
       }
     ),
+    getAccessToken : create.reducer((state, actions : { payload: ServerTypes['access_token']}) => {
+      state.access_token = actions.payload
+    }),
+    removeAccessToken : create.reducer((state) => {
+      state.access_token = undefined
+    }),
   }),
   selectors: {
     selectSeverStatus: (counter) => counter.server_status,
+    selectAccessToken : (counter) => counter.access_token,
   },
 });
 
-export const { isServerOnline } =
+export const { isServerOnline, getAccessToken, removeAccessToken} =
   counterSlice.actions;
 
-export const { selectSeverStatus } = counterSlice.selectors;
+export const { selectSeverStatus, selectAccessToken} = counterSlice.selectors;
 
 export const ServerStatus = (): AppThunk => async (dispatch, getState) => {
   const intervalId = setInterval(async () => {

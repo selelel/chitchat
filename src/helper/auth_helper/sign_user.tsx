@@ -1,27 +1,27 @@
 'use client'
 import { LOCALSTORAGE } from "@/constants/localstorage";
-import axios from "axios";
+import { removeAccessToken } from "@/lib/features/app/appSlice";
+import { useAppDispatch } from "@/lib/hooks";
+import { useLogOutMutation } from "@/modules/auth/authApi";
+import { redirect } from "next/navigation";
 import { useEffect } from "react";
+
 export const handleLogout = async () => {
-  try {
-    const token = localStorage.getItem(LOCALSTORAGE.TOKEN);
-    const response = await axios.get('http://localhost:8080/auth/google/logout', {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    }).finally(() => {
-      removeUserCache()
-    });
+  const [logOut, { data }] = useLogOutMutation()
+  const dispatch = useAppDispatch()
+  
+  useEffect(() => {
+    logOut()
+  }, [])
 
-    console.log(response.status)
-
-    if (response.status !== 200) {
-      throw new Error('Logout failed');
+  
+  useEffect(() => {
+    if(data) {
+      dispatch(removeAccessToken())
+      redirect('/auth/login')
     }
-  } catch (error) {
-    console.error('Logout error:', error);
-  }
-  window.location.href = '/auth/login';
+  }, [dispatch, data])
+
 };
 
 export const handleSignInUser = () => {
@@ -29,10 +29,10 @@ export const handleSignInUser = () => {
   };
 
 // This will cause something!
-export const cacheUser = ({ id, token } : { id?: string , token?: string }) => {
-    !!token && localStorage.setItem(LOCALSTORAGE.TOKEN, token)
-    !!id && localStorage.setItem(LOCALSTORAGE.USER_ID, id)
-}
+// export const cacheUser = ({ id, token } : { id?: string , token?: string }) => {
+//     !!token && localStorage.setItem(LOCALSTORAGE.TOKEN, token)
+//     !!id && localStorage.setItem(LOCALSTORAGE.USER_ID, id)
+// }
 
 export const removeUserCache = () => {
   localStorage.removeItem(LOCALSTORAGE.TOKEN)

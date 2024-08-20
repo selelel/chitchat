@@ -4,11 +4,6 @@ import { LoginUserInput, Mutation, Query } from '../graphql/graphqlTypes';
 
 export const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
   endpoints: (build) => ({
-    Damn: build.query({
-      query: () => ({
-        document: TestQueryDocument,
-      }),
-    }),
     LogIn: build.mutation<{loginUser: Mutation['loginUser']}, LoginUserInput>({
       query: (variables) => ({
         document: LogInMutationDocument,
@@ -23,7 +18,7 @@ export const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
         document: LogOutQueryDocument,
       }),
     }),
-    RefreshToken : build.query<Query['refresh'], void>({
+    RefreshToken : build.mutation<{refresh: Query['refresh']}, void>({
       query: () => ({
         document: RefreshTokenQueryDocument,
       }),
@@ -32,4 +27,4 @@ export const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
   
 })
 
-export const { useDamnQuery, useLogInMutation, useLogOutMutation, useRefreshTokenQuery} = injectedRtkApi;
+export const { useLogInMutation, useLogOutMutation, useRefreshTokenMutation} = injectedRtkApi;

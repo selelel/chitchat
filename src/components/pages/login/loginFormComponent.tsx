@@ -11,22 +11,17 @@ import { poppins } from "@/layouts/fonts";
 import { Alert, Button, Divider } from "antd";
 import { COLOR } from "@/theme/color";
 import { GoogleIcon } from "@/components/commons/icon/SocialMedia";
-import { cacheUser, handleSignInUser } from "@/helper/auth_helper/sign_user";
-import axios from "axios";
+import { handleSignInUser } from "@/helper/auth_helper/sign_user";
+import { useLogInUser } from "@/helper/auth_helper/token";
+import { useRedirectIfAuthenticated } from "@/helper/auth_helper/redirect";
 
 export const LoginFormComponent = () => {
-  const [errorMessages, setErrorMessages] = useState<string | undefined>();
-  const [logIn, { data , isLoading }] = useLogInMutation();
+  useRedirectIfAuthenticated()
   const { register, handleSubmit, formState: { errors } } = useForm<login_form_types>({ resolver: yupResolver(login_form_schema) });
+  const [logIn, { data , isLoading }] = useLogInMutation();
+  const [errorMessages, setErrorMessages] = useState<string | undefined>();
 
-  console.log(data?.loginUser)
-  
-  
-  useEffect(() => { 
-    if(data) {
-      cacheUser({token: data?.loginUser.accesstoken, id: data?.loginUser.user._id})
-    }
-  }, [data])
+  useLogInUser({data})
   
   useEffect(() => {
     setErrorMessages(errors.email?.message || errors.password?.message);
@@ -39,31 +34,6 @@ export const LoginFormComponent = () => {
       setErrorMessages(error.message || 'An unexpected error occurred.');
     }
   };
-
-  const handleSetCookie = () => {
-    fetch('http://localhost:8080/auth/set_cookie', {
-      method: 'GET',
-      credentials: 'include',
-    })
-      .then(data => data)
-      .then(data => console.log(data))
-  }
-  
-  // useRedirectIfAuthenticated()
-  const handleRefreshToken = async () => {
-    const response = await fetch('http://localhost:8080/graphql', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        query: `query Refresh { refresh }`,
-      }),
-      credentials: 'include'
-    });
-
-    console.log(response)
-  };
   
   return (
     <div className="p-4">
@@ -71,7 +41,7 @@ export const LoginFormComponent = () => {
       <Form.Title>Log in to your account</Form.Title>
       <p className={`font-semibold ${poppins.className}`}>
         Don't Have an Account? 
-        <a href="/signin" className="text-cyan-500 cursor-pointer">Sign Up</a>
+        <a href="/auth/signin" className="text-cyan-500 cursor-pointer"> Sign Up</a>
     </p>
 
     <Button
@@ -132,18 +102,6 @@ export const LoginFormComponent = () => {
       Next
     </Form.Button>
   </Form>
-
-  <Button 
-  loading={isLoading}
-  onClick={handleRefreshToken}
-  className={`w-full sm:w-fit text-md py-5 px-10 font-semibold ${poppins.className}`}>Refresh</Button>
-
-<Button 
-  loading={isLoading}
-  onClick={handleSetCookie}
-  className={`w-full sm:w-fit text-md py-5 px-10 font-semibold ${poppins.className}`}>Set Cookie</Button>
 </div>
   );
 };
-
-// create a function that when login is successfull it will automatically store all the user details in the localstorage.
