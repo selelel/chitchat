@@ -1,24 +1,33 @@
 import { createAppSlice } from "@/lib/createAppSlice";
-import type { AppThunk } from "@/lib/store";import { fecthServerStatus } from "./fetchServerStatus";
+import type { AppThunk } from "@/lib/store";
+import { fecthServerStatus } from "./fetchServerStatus";
 import { ServerTypes } from "@/lib/types/appInitialStateType";
+import { fetchRefreshToken } from "./fetchRequestToken";
 
 const initialState: ServerTypes = {
   server_status: { status: 'DOWN' },
   access_token: undefined
 }
 
-export const counterSlice = createAppSlice({
+export const appSlice = createAppSlice({
   name: "app",
   initialState,
   reducers: (create) => ({
     isServerOnline: create.asyncThunk(
       async () => {
         return await fecthServerStatus();
-        
       }, 
       {
         fulfilled: (state, actions) => {
           state.server_status = {status: actions.payload}
+        }
+      }
+    ),
+    refreshToken: create.asyncThunk(
+      async () => await fetchRefreshToken(), 
+      {
+        fulfilled: (state, actions) => {
+          state.access_token = actions.payload
         }
       }
     ),
@@ -35,10 +44,10 @@ export const counterSlice = createAppSlice({
   },
 });
 
-export const { isServerOnline, getAccessToken, removeAccessToken} =
-  counterSlice.actions;
+export const { isServerOnline, getAccessToken, removeAccessToken, refreshToken } =
+  appSlice.actions;
 
-export const { selectSeverStatus, selectAccessToken} = counterSlice.selectors;
+export const { selectSeverStatus, selectAccessToken } = appSlice.selectors;
 
 export const ServerStatus = (): AppThunk => async (dispatch, getState) => {
   const intervalId = setInterval(async () => {

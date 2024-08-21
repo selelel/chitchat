@@ -1,9 +1,9 @@
-import { BaseQueryApi, createApi } from '@reduxjs/toolkit/query/react';
+import { createApi, BaseQueryApi } from '@reduxjs/toolkit/query/react';
 import { graphqlRequestBaseQuery } from '@rtk-query/graphql-request-base-query';
-import { ClientError, GraphQLClient } from 'graphql-request';
+import { GraphQLClient, ClientError} from 'graphql-request';
 import { HOST } from '@/constants/host';
 import { RootState } from '@/lib/store';
-import { getAccessToken, selectAccessToken } from '@/lib/features/app/appSlice';
+import { selectAccessToken } from '@/lib/features/app/appSlice';
 
 const client = new GraphQLClient(HOST.GRAPHQL_URI, { credentials: 'include' });
 
@@ -28,4 +28,3 @@ export const baseApiWithGraphql = createApi({
   baseQuery: dynamicBaseQuery,
   endpoints: () => ({}),
 });
-

@@ -1,23 +1,29 @@
-'use client'
-
-import { getAccessToken } from "@/lib/features/app/appSlice";
+import { getAccessToken, refreshToken } from "@/lib/features/app/appSlice";
 import { useAppDispatch } from "@/lib/hooks";
-import { useRefreshTokenMutation } from "@/modules/auth/authApi";
 import { LoginResponse } from "@/modules/graphql/graphqlTypes";
-import { useEffect } from "react"
+import { ReactNode, useEffect, useRef } from "react"
 
-export function useInvokedRefresh() {
-    const [refreshToken, { data }] = useRefreshTokenMutation()
-    const dispatch = useAppDispatch()
+export const InvokedRefreshPerRender = ({ children }: { children: ReactNode }) => {
+  const dispatch = useAppDispatch();
+  const requestMade = useRef(false);
 
-    useEffect(() => {
-        refreshToken()
-    }, [])
+  useEffect(() => {
+    const fetchToken = async () => {
+      if (!requestMade.current) {
+        requestMade.current = true;
+        try {
+          await dispatch(refreshToken()).unwrap()
+        } catch (error) {
 
-    if(data) {
-      dispatch(getAccessToken(data?.refresh.accesstoken));
-    }
-}
+        }
+      }
+    };
+
+    fetchToken();
+  }, [dispatch]);
+
+  return <>{children}</>;
+};
 
 type useLoginUserT = { data :{ loginUser : LoginResponse} | undefined }
 export function useLogInUser({ data } : useLoginUserT ) {

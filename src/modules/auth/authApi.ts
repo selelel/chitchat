@@ -1,6 +1,7 @@
 import { LogInMutationDocument, LogOutQueryDocument, RefreshTokenQueryDocument, TestQueryDocument } from './authQuery';
 import { baseApiWithGraphql } from '../graphql/graphqlBaseApi';
 import { LoginUserInput, Mutation, Query } from '../graphql/graphqlTypes';
+import { Parse_Message } from '@/helper/error';
 
 export const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
   endpoints: (build) => ({
@@ -10,7 +11,7 @@ export const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
         variables: { input: variables },  
       }),
       transformErrorResponse: (error) => {
-        return {...error, message : JSON.stringify(error.message).replace('"', "").split(':')[0]}
+        return {...error, message : Parse_Message(error)}
       }
     }),
     LogOut: build.mutation<Query['logoutDevice'], void>({
@@ -18,13 +19,8 @@ export const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
         document: LogOutQueryDocument,
       }),
     }),
-    RefreshToken : build.mutation<{refresh: Query['refresh']}, void>({
-      query: () => ({
-        document: RefreshTokenQueryDocument,
-      }),
-    })
   }),
   
 })
 
-export const { useLogInMutation, useLogOutMutation, useRefreshTokenMutation} = injectedRtkApi;
+export const { useLogInMutation, useLogOutMutation } = injectedRtkApi;
