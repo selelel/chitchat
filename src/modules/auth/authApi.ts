@@ -17,7 +17,7 @@ export const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
     LogOut: build.mutation<Query['logoutDevice'], void>({
       query: () => ({
         document: LogOutQueryDocument,
-      }),
+      }), 
     }),
   }),
   

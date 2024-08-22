@@ -4,15 +4,14 @@ import { appSlice } from "./features/app/appSlice";
 import { baseApiWithGraphql } from "@/modules/graphql/graphqlBaseApi";
 import { authMiddleware } from "@/modules/auth/authMiddleware";
 
+
 const rootReducer = combineSlices(appSlice, baseApiWithGraphql);
 export type RootState = ReturnType<typeof rootReducer>;
 export const makeStore = () => {
   return configureStore({
     reducer: rootReducer,
-    middleware: (getDefaultMiddleware) => {
-      return getDefaultMiddleware().concat(authMiddleware).concat(baseApiWithGraphql.middleware)
-    },
-  });
+    middleware: (getDefaultMiddleware) =>getDefaultMiddleware().concat(baseApiWithGraphql.middleware),
+  }); 
 };
 
 
