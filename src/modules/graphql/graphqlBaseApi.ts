@@ -8,6 +8,7 @@ import { Parse_Message } from '@/helper/error';
 
 const client = new GraphQLClient(HOST.GRAPHQL_URI, { credentials: 'include' });
 
+// Header function for seamless autorization setting.
 const setAuthorizationHeader = (token: string | undefined) => {
   client.setHeaders({
     Authorization: token ? `Bearer ${token}` : '',
@@ -16,6 +17,8 @@ const setAuthorizationHeader = (token: string | undefined) => {
 
 const graphqlBaseQuery = graphqlRequestBaseQuery({ client });
 
+
+// this would be the middleware whenever the accesstoken is expired.
 const dynamicBaseQuery = async (
   args: any,
   api: BaseQueryApi,
@@ -30,6 +33,7 @@ const dynamicBaseQuery = async (
 
   if (result.error) {
     const parsedMessage = await Parse_Message(result.error);
+    console.log(parsedMessage)
 
     if (parsedMessage === 'jwt expired') {
       const dispatch = api.dispatch as AppDispatch;

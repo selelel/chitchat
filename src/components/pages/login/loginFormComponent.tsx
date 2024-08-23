@@ -36,7 +36,6 @@ export const LoginFormComponent = () => {
   };
   
   return (
-    <div className="p-4">
       <Form submit={handleSubmit(handleLogIn)} className="space-y-2">
       <Form.Title>Log in to your account</Form.Title>
       <p className={`font-semibold ${poppins.className}`}>
@@ -102,6 +101,5 @@ export const LoginFormComponent = () => {
       Next
     </Form.Button>
   </Form>
-</div>
   );
 };
