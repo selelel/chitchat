@@ -15,7 +15,7 @@ import { handleSignInUser } from "@/helper/auth_helper/sign_user";
 import { useLogInUser } from "@/helper/auth_helper/token";
 import { useRedirectIfAuthenticated } from "@/helper/auth_helper/redirect";
 
-export const LoginFormComponent = () => {
+export const LoginForm = () => {
   useRedirectIfAuthenticated()
   const { register, handleSubmit, formState: { errors } } = useForm<login_form_types>({ resolver: yupResolver(login_form_schema) });
   const [logIn, { data , isLoading }] = useLogInMutation();

@@ -10,6 +10,7 @@ export const flow_cicular = Flow_Circular({
     subsets: ["latin"],
     weight: "400"
 });
+
 export const dm_serif_display = DM_Serif_Display({
     subsets: ["latin"],
     weight: "400"

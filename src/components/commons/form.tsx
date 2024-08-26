@@ -1,10 +1,21 @@
 'use client';
 
-import { dm_serif_display, poppins } from '@/layouts/fonts';
 import { Button, ButtonProps, Input, InputProps } from 'antd';
 import { PasswordProps } from 'antd/es/input/Password';
+import { DM_Serif_Display, Poppins } from 'next/font/google';
 import { ReactNode } from 'react';
 import { FieldValues, Path, UseFormRegister } from 'react-hook-form';
+
+const dm_serif_display = DM_Serif_Display({
+  subsets: ["latin"],
+  weight: "400"
+});
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  variable: '--font-poppins',
+  weight: ["100", "400", "600"]
+});
 
 type RegisterFunction<T extends FieldValues> = UseFormRegister<T>;
 
@@ -29,7 +40,7 @@ interface FormProps {
 
 export default function Form({children, submit, ...props} : FormProps) {
   return (
-    <form className={`${props.className}`} onSubmit={submit}>
+    <form className={`${poppins.className} ${props.className}`} onSubmit={submit}>
         {children}
     </form>
   )
@@ -46,8 +57,8 @@ Form.Password = <T extends FieldValues>({ register, ...props }: PasswordFormProp
 }
 
 Form.Title = ({ children, className} : { children: string, className?: string}) => {
-    return <h4 className={`text-2xl  font-semibold ${dm_serif_display.className} ${className}`}>{ children }</h4>
+    return <h4 className={`text-xl font-normal ${className}`}>{ children }</h4>
 }
-  Form.Button = (spread: ButtonFormProps) => {
+Form.Button = (spread: ButtonFormProps) => {
     return <Button htmlType="submit"  className={`my-1 ${poppins.className} ${spread.className}`} {...spread}/>
 }

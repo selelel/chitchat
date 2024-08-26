@@ -1,6 +1,6 @@
-import { LogInMutationDocument, LogOutQueryDocument, RefreshTokenQueryDocument, TestQueryDocument } from './authQuery';
+import { CheckUserExistsByEmailMutationDocument, LogInMutationDocument, LogOutQueryDocument, RefreshTokenQueryDocument, SignInMutationDocument, TestQueryDocument } from './authQuery';
 import { baseApiWithGraphql } from '../graphql/graphqlBaseApi';
-import { LoginUserInput, Mutation, Query } from '../graphql/graphqlTypes';
+import { LoginUserInput, Mutation, Query, UserInput } from '../graphql/graphqlTypes';
 import { Parse_Message } from '@/helper/error';
 
 export const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
@@ -19,8 +19,28 @@ export const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
         document: LogOutQueryDocument,
       }), 
     }),
+    SignIn: build.mutation<{userInput: Mutation['registerUser']}, UserInput>({
+      query: (variables) => ({
+        document: SignInMutationDocument,
+        variables: { input: variables },  
+      }),
+      transformErrorResponse: (error) => {
+        // Address this!
+        return {...error, message : Parse_Message(error)}
+      }
+    }),
+    CheckUserExistsByEmail: build.mutation<{checkUserExistsByEmail: Mutation['checkUserExistsByEmail']}, String>({
+      query: (variables) => ({
+        document: CheckUserExistsByEmailMutationDocument,
+        variables: { input: variables },  
+      }),
+      transformErrorResponse: (error) => {
+        // Address this!
+        return {...error, message : Parse_Message(error)}
+      }
+    }),
   }),
   
 })
 
-export const { useLogInMutation, useLogOutMutation } = injectedRtkApi;
+export const { useLogInMutation, useLogOutMutation, useSignInMutation, useCheckUserExistsByEmailMutation} = injectedRtkApi;

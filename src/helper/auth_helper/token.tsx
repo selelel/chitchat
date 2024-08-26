@@ -35,3 +35,13 @@ export function useLogInUser({ data } : useLoginUserT ) {
         }
       }, [data, dispatch]);
     }
+type useSignInUserT = { data :{ loginUser : LoginResponse} | undefined }
+export function useSignInUser({ data } : useSignInUserT ) {
+    const dispatch = useAppDispatch()
+  
+      useEffect(() => {
+          if (data?.loginUser?.accesstoken) {
+            dispatch(getAccessToken(data.loginUser.accesstoken));
+          }
+        }, [data, dispatch]);
+      }

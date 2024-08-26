@@ -139,6 +139,7 @@ export type Mutation = {
   acceptFollowRequest: User;
   addCommentToPost: Comments;
   cancelFollowRequest: User;
+  checkUserExistsByEmail: Scalars['Boolean']['output'];
   createChatRoom: Chat;
   createNewPost: Post;
   createUser: User;
@@ -172,6 +173,11 @@ export type MutationAddCommentToPostArgs = {
 
 export type MutationCancelFollowRequestArgs = {
   targetUserId: Scalars['String']['input'];
+};
+
+
+export type MutationCheckUserExistsByEmailArgs = {
+  email: Scalars['String']['input'];
 };
 
 

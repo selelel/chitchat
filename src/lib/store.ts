@@ -12,7 +12,7 @@ export const makeStore = () => {
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>getDefaultMiddleware().concat(baseApiWithGraphql.middleware),
   }); 
-};
+};  
 
 
 export type AppStore = ReturnType<typeof makeStore>;

@@ -33,11 +33,10 @@ const dynamicBaseQuery = async (
 
   if (result.error) {
     const parsedMessage = await Parse_Message(result.error);
-    console.log(parsedMessage)
 
     if (parsedMessage === 'jwt expired') {
       const dispatch = api.dispatch as AppDispatch;
-      try {
+      try { 
         await dispatch(refreshToken()).unwrap();
 
         const newState = api.getState() as RootState;

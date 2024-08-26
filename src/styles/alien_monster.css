@@ -1,0 +1,15 @@
+.background-alien-monster {
+    /* Base color with transparency */
+    background-color: rgba(6, 95, 70, 0.5); /* Adjust opacity as needed */
+    
+    /* Emoji pattern */
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23fff"><text x="0" y="20" font-size="20">👾</text></svg>');
+    
+    /* Background size and repeat */
+    background-size: 50px 50px; /* Adjust size as needed */
+    background-repeat: repeat;
+    
+    /* Full screen and cover settings */
+    width: 100vw;
+    height: 100vh;
+  }

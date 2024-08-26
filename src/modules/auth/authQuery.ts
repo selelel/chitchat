@@ -41,8 +41,14 @@ export const RefreshTokenQueryDocument =
         }
     }`
 
-          
+export const SignInMutationDocument = 
+    `mutation RegisterUser($input: UserInput!) {
+        registerUser(userInput: $input) {
+            _id
+        }
+    }`
 
-            
-
-                        
+export const CheckUserExistsByEmailMutationDocument = 
+    `mutation CheckUserExistsByEmail($input: String!) {
+        checkUserExistsByEmail(email: $input)
+    }`
