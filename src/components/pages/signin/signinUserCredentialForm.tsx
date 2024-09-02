@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useCheckUserExistsByEmailMutation } from "@/modules/auth/authApi";
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import Form from "@/components/commons/form";
@@ -11,12 +11,14 @@ import { Alert, Button, Divider } from "antd";
 import { COLOR } from "@/theme/color";
 import { GoogleIcon } from "@/components/commons/icon/SocialMedia";
 import { useRedirectIfAuthenticated } from "@/helper/auth_helper/redirect";
-import { sign_form_types, signin_form_schema } from "@/schemas/signin.form.dto";
 import { handleSignInUser } from "@/helper/auth_helper/sign_user";
+import { UserSignInContext } from "./signinContext";
+import { user_credential_schema, user_credential_type } from "@/schemas/signin.form.dto";
 
-export const SignInForm = () => {
+export const SigninUserCredentialForm = () => { 
   useRedirectIfAuthenticated();
-  const { register, handleSubmit, formState: { errors } } = useForm<sign_form_types>({ resolver: yupResolver(signin_form_schema) });
+  const context = useContext(UserSignInContext);
+  const { register, handleSubmit, formState: { errors } } = useForm<user_credential_type>({ resolver: yupResolver(user_credential_schema) });
   const [checkIfEmailExists, { isLoading }] = useCheckUserExistsByEmailMutation();
   const [formErrorMessage, setFormErrorMessage] = useState<string | undefined>();
 
@@ -24,14 +26,13 @@ export const SignInForm = () => {
     setFormErrorMessage(errors.email?.message || errors.password?.message);
   }, [errors]);
 
-  const validateUserEmailAndPassword = async ({ password, email }: sign_form_types) => {
+  const validateUserEmailAndPassword = async (data: user_credential_type) => {
     try {
-      const result = await checkIfEmailExists(email).unwrap();
+      const result = await checkIfEmailExists(data.email).unwrap();
       if (result?.checkUserExistsByEmail) {
         setFormErrorMessage("User already has an account.");
       } else {
-        // Proceed with the sign-up process if no error
-        // handleSignUpUser({ email, password });
+        context?.setUserValues(data)
       }
     } catch (error: any) {
       setFormErrorMessage(error.message || 'An unexpected error occurred.');

@@ -365,7 +365,7 @@ export type User = {
 };
 
 export type UserInput = {
+  user: PersonalObjectInput;
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
-  user: PersonalObjectInput;
 };
