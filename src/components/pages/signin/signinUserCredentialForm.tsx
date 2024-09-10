@@ -3,17 +3,17 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useContext, useEffect, useState } from "react";
-import { useCheckUserExistsByEmailMutation } from "@/modules/auth/authApi";
+import { useCheckUserExistsByEmailMutation } from "@/lib/features/auth/authApi";
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import Form from "@/components/commons/form";
-import { poppins } from "@/layouts/fonts";
 import { Alert, Button, Divider } from "antd";
 import { COLOR } from "@/theme/color";
 import { GoogleIcon } from "@/components/commons/icon/SocialMedia";
 import { useRedirectIfAuthenticated } from "@/helper/auth_helper/redirect";
 import { handleSignInUser } from "@/helper/auth_helper/sign_user";
 import { UserSignInContext } from "./signinContext";
-import { user_credential_schema, user_credential_type } from "@/schemas/signin.form.dto";
+import { user_credential_schema, user_credential_type } from "@/lib/schemas/signin.form.dto";
+import { poppins } from "@/utils/fonts";
 
 export const SigninUserCredentialForm = () => { 
   useRedirectIfAuthenticated();
@@ -44,7 +44,7 @@ export const SigninUserCredentialForm = () => {
       <Form.Title>Create your account</Form.Title>
       <p className={`font-semibold ${poppins.className}`}>
         Already Have an Account? 
-        <a href="/auth/login" className="text-cyan-500 cursor-pointer"> Log In Now</a>
+        <a href="/login" className="text-cyan-500 cursor-pointer"> Log In Now</a>
       </p>
 
       <Button

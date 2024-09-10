@@ -2,7 +2,7 @@
 import { LOCALSTORAGE } from "@/constants/localstorage";
 import { removeAccessToken } from "@/lib/features/app/appSlice";
 import { useAppDispatch } from "@/lib/hooks";
-import { useLogOutMutation } from "@/modules/auth/authApi";
+import { useLogOutMutation } from "@/lib/features/auth/authApi";
 import { redirect } from "next/navigation";
 import { useEffect } from "react";
 

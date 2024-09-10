@@ -2,7 +2,7 @@
 import type { Metadata } from "next";
 import "../styles/globals.css";
 import Providers from "../providers";
-import { inter } from "@/layouts/fonts";
+import { inter } from "@/utils/fonts";
 
 export const metadata: Metadata = {
   title: "ChitChat",

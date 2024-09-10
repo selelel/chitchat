@@ -1,4 +1,4 @@
-import { user_credential_type } from '@/schemas/signin.form.dto';
+import { user_credential_type } from '@/lib/schemas/signin.form.dto';
 import { createContext, Dispatch, SetStateAction } from 'react';
 
 interface UserSignInContextType {

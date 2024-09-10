@@ -1,13 +1,13 @@
 'use client';
 
 import { SigninUserCredentialForm } from '@/components/pages/signin/signinUserCredentialForm';
-import { ChitChatLogo } from '@/layouts/logo';
 import { Metadata } from 'next';
 import { GhostPatternBackground } from '@/styles/emotion/ghost_bg';
 import { useState } from 'react';
 import { UserSignInContext } from '@/components/pages/signin/signinContext';
 import { SinginUserInfoForm } from '@/components/pages/signin/singinUserInfoForm';
-import { user_credential_type } from '@/schemas/signin.form.dto';
+import { user_credential_type } from '@/lib/schemas/signin.form.dto';
+import { ChitChatLogo } from '@/components/commons/commons';
 
 export default function IndexPage() {
   const [userInfoValues , setUserDataValues ] = useState<user_credential_type | null>(null);

@@ -1,8 +1,8 @@
-import Hero from "@/components/pages/home/hero";
+import HomePage from "@/components/pages/dashboard/homePage";
 import type { Metadata } from "next";
 
 export default function IndexPage() {
-  return <Hero/>;
+  return <HomePage/>;
 }
 
 export const metadata: Metadata = {

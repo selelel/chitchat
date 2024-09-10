@@ -3,13 +3,13 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useContext, useEffect, useState } from "react";
-import { useSignInMutation } from "@/modules/auth/authApi";
+import { useSignInMutation } from "@/lib/features/auth/authApi";
 import Form from "@/components/commons/form";
-import { user_info_schema, user_info_type } from "@/schemas/signin.form.dto";
+import { user_info_schema, user_info_type } from "@/lib/schemas/signin.form.dto";
 import { UserSignInContext } from "./signinContext";
-import { UserInput } from "@/modules/graphql/graphqlTypes";
-import { poppins } from "@/layouts/fonts";
+import { UserInput } from "@/lib/graphql/graphqlTypes";
 import { Alert, notification } from "antd";
+import { poppins } from "@/utils/fonts";
 
 export const SinginUserInfoForm = () => {
   const context = useContext(UserSignInContext);
@@ -87,7 +87,7 @@ export const SinginUserInfoForm = () => {
 
       <div className="flex w-full items-center">
         <h4 className="font-semibold text-xs text-custom-1">
-          Hide Name
+          Should I Hide Your Real Name on Public?
         </h4>
         <Form.Checkbox 
           register={register}

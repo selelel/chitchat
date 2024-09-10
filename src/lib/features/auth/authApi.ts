@@ -1,6 +1,6 @@
 import { CheckUserExistsByEmailMutationDocument, LogInMutationDocument, LogOutQueryDocument, RefreshTokenQueryDocument, SignInMutationDocument, TestQueryDocument } from './authQuery';
-import { baseApiWithGraphql } from '../graphql/graphqlBaseApi';
-import { LoginUserInput, Mutation, Query, UserInput } from '../graphql/graphqlTypes';
+import { baseApiWithGraphql } from '../../graphql/graphqlBaseApi';
+import { LoginUserInput, Mutation, Query, UserInput } from '../../graphql/graphqlTypes';
 import { Parse_Message } from '@/helper/error';
 
 export const injectedRtkApi = baseApiWithGraphql.injectEndpoints({

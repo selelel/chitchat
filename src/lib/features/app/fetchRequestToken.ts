@@ -1,6 +1,6 @@
 import { HOST } from "@/constants/host";
-import { RefreshTokenQueryDocument } from "@/modules/auth/authQuery";
-import { Query } from "@/modules/graphql/graphqlTypes";
+import { RefreshTokenQueryDocument } from "@/lib/features/auth/authQuery";
+import { Query } from "@/lib/graphql/graphqlTypes";
 import { GraphQLClient } from 'graphql-request';
 
 export const fetchRefreshToken = async () => {
