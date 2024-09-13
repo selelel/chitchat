@@ -14,6 +14,7 @@ import { handleSignInUser } from "@/helper/auth_helper/sign_user";
 import { useLogInUser } from "@/helper/auth_helper/token";
 import { useRedirectIfAuthenticated } from "@/helper/auth_helper/redirect";
 import { poppins } from "@/utils/fonts";
+import { pw_id } from "@/constants/pw_test_id";
 
 export const LoginForm = () => {
   useRedirectIfAuthenticated()
@@ -44,6 +45,7 @@ export const LoginForm = () => {
     </p>
 
     <Button
+      data-testid={pw_id.login.ggl_btn}
       tabIndex={0}
       className="flex flex-row justify-center space-x-1 items-center w-full rounded-md py-5 px-10 cursor-pointer"
       onClick={handleSignInUser}
@@ -74,6 +76,7 @@ export const LoginForm = () => {
         Email Address
       </h4>
       <Form.Input
+        data-testid={pw_id.login.eml_inp}
         register={register}
         name="email"
         status={errors.email ? 'error' : ''}
@@ -86,6 +89,7 @@ export const LoginForm = () => {
         Password
       </h4>
       <Form.Password
+        data-testid={pw_id.login.pass_inp}
         register={register}
         name="password"
         iconRender={(visible) =>
@@ -95,6 +99,7 @@ export const LoginForm = () => {
     </div>
 
     <Form.Button
+      data-testid={pw_id.login.sub_btn}
       loading={isLoading}
       className={`w-full sm:w-fit text-md py-5 px-10 font-semibold ${poppins.className}`}
     >
