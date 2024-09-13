@@ -1,7 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     reactStrictMode: true,
-    // pageExtensions: ["page.tsx", "page.ts", "page.js"],
+    env: {
+        CLIENT_URI: process.env.CLIENT_URI,
+        SERVER_URI: process.env.SERVER_URI
+    }
 };
 
 export default nextConfig;

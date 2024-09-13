@@ -1,22 +1,22 @@
 import type { Action, ThunkAction } from "@reduxjs/toolkit";
 import { combineSlices, configureStore } from "@reduxjs/toolkit";
-import { counterSlice } from "./features/app/appSlice";
-import { baseApiWithGraphql } from "@/modules/graphql/graphqlBaseApi";
+import { appSlice } from "./features/app/appSlice";
+import { baseApiWithGraphql } from "@/lib/graphql/graphqlBaseApi";
+import { authMiddleware } from "@/lib/features/auth/authMiddleware";
 
-const rootReducer = combineSlices(counterSlice, baseApiWithGraphql);
+
+const rootReducer = combineSlices(appSlice, baseApiWithGraphql);
 export type RootState = ReturnType<typeof rootReducer>;
 export const makeStore = () => {
   return configureStore({
     reducer: rootReducer,
-    middleware: (getDefaultMiddleware) => {
-      return getDefaultMiddleware().concat(baseApiWithGraphql.middleware);
-    },
-  });
-};
+    middleware: (getDefaultMiddleware) =>getDefaultMiddleware().concat(baseApiWithGraphql.middleware),
+  }); 
+};  
 
-// Infer the return type of `makeStore`
+
 export type AppStore = ReturnType<typeof makeStore>;
-// Infer the `AppDispatch` type from the store itself
+
 export type AppDispatch = AppStore["dispatch"];
 export type AppThunk<ThunkReturnType = void> = ThunkAction<
   ThunkReturnType,

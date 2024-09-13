@@ -76,6 +76,7 @@ export enum Gender {
   Female = 'FEMALE',
   Male = 'MALE',
   Undefined = 'UNDEFINED',
+  Undefined = 'undefined'
 }
 
 export type GetConversation = {
@@ -112,6 +113,7 @@ export enum MbtiType {
   Istj = 'ISTJ',
   Istp = 'ISTP',
   Undefined = 'UNDEFINED',
+  Undefined = 'undefined'
 }
 
 export type Message = {
@@ -137,6 +139,7 @@ export type Mutation = {
   acceptFollowRequest: User;
   addCommentToPost: Comments;
   cancelFollowRequest: User;
+  checkUserExistsByEmail: Scalars['Boolean']['output'];
   createChatRoom: Chat;
   createNewPost: Post;
   createUser: User;
@@ -170,6 +173,11 @@ export type MutationAddCommentToPostArgs = {
 
 export type MutationCancelFollowRequestArgs = {
   targetUserId: Scalars['String']['input'];
+};
+
+
+export type MutationCheckUserExistsByEmailArgs = {
+  email: Scalars['String']['input'];
 };
 
 
@@ -317,7 +325,13 @@ export type Query = {
   getUserById: User;
   logoutAllDevices: Scalars['Boolean']['output'];
   logoutDevice: Scalars['Boolean']['output'];
+  refresh: RefreshResponse;
   testQuery: Array<User>;
+};
+
+export type RefreshResponse = {
+  __typename?: 'RefreshResponse';
+  accesstoken: Scalars['String']['output'];
 };
 
 export type RequestObjectDto = {
@@ -351,7 +365,7 @@ export type User = {
 };
 
 export type UserInput = {
+  user: PersonalObjectInput;
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
-  user: PersonalObjectInput;
 };

@@ -4,7 +4,7 @@ const config: CodegenConfig = {
   schema: 'http://localhost:8080/graphql',
   // documents: './src/services/document.graphql',
   generates: {
-    './src/services/graphql_types.ts': {
+    './src/modules/graphql/graphqlTypes.ts': {
       plugins: [
         'typescript',
         // 'typescript-resolvers',

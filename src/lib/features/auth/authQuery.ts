@@ -27,11 +27,28 @@ export const LogInMutationDocument =
     }
 }
 `;
+
 export const LogOutQueryDocument = 
 `query LogoutAllDevices {
             logoutAllDevices
           }`
 
-            
 
-                        
+export const RefreshTokenQueryDocument = 
+    `query Refresh {
+        refresh {
+            accesstoken
+        }
+    }`
+
+export const SignInMutationDocument = 
+    `mutation RegisterUser($input: UserInput!) {
+        registerUser(userInput: $input) {
+            _id
+        }
+    }`
+
+export const CheckUserExistsByEmailMutationDocument = 
+    `mutation CheckUserExistsByEmail($input: String!) {
+        checkUserExistsByEmail(email: $input)
+    }`

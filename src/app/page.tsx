@@ -1,13 +1,10 @@
-import { LogIn } from "@/components/login";
-import SignIn from "@/components/signin";
-import { LOCALSTORAGE } from "@/constants/localstorage";
-import { METADATA } from "@/constants/metadata";
+import HomePage from "@/components/pages/dashboard/homePage";
 import type { Metadata } from "next";
 
 export default function IndexPage() {
-  return <LogIn /> && <SignIn/>;
+  return <HomePage/>;
 }
 
 export const metadata: Metadata = {
-  title: METADATA.CHITCHAT,
+  title: 'ChitChat',
 };
