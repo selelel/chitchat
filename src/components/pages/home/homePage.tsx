@@ -6,7 +6,7 @@ import { useAppDispatch } from '@/lib/hooks';
 import { removeAccessToken } from '@/lib/features/app/appSlice';
 import { redirect } from 'next/navigation';
 import Layout from '@/components/layout/layout';
-import { withRefreshToken } from '@/helper/auth_helper/token';
+import { withRefreshToken } from '@/utils/auth/token';
 
 function HomePage() {
   const [logOut, { data, isLoading }] = useLogOutMutation();

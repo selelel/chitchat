@@ -1,5 +1,4 @@
 "use client";
-
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useContext, useEffect, useState } from "react";
@@ -8,15 +7,13 @@ import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import Form from "@/components/commons/form";
 import { Alert, Button, Divider } from "antd";
 import { COLOR } from "@/theme/color";
-import { GoogleIcon } from "@/components/commons/icon/SocialMedia";
-import { useRedirectIfAuthenticated } from "@/helper/auth_helper/redirect";
-import { handleSignInUser } from "@/helper/auth_helper/sign_user";
 import { UserSignInContext } from "./signinContext";
 import { user_credential_schema, user_credential_type } from "@/lib/schemas/signin.form.dto";
 import { poppins } from "@/utils/fonts";
+import { handleSignInUser } from "@/utils/auth/sign_user";
+import { GoogleIcon } from "@/components/commons/icon";
 
-export const SigninUserCredentialForm = () => { 
-  useRedirectIfAuthenticated();
+export const SigninUserCredentialForm = () => {
   const context = useContext(UserSignInContext);
   const { register, handleSubmit, formState: { errors } } = useForm<user_credential_type>({ resolver: yupResolver(user_credential_schema) });
   const [checkIfEmailExists, { isLoading }] = useCheckUserExistsByEmailMutation();
