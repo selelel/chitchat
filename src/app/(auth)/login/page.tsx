@@ -2,7 +2,7 @@ import { LoginForm } from '@/components/pages/login/loginFormComponent';
 import { Metadata } from 'next';
 import React from 'react';
 import { AlienMonsterPatternBackground } from '../../../styles/emotion/alien_monster_bg';
-import { ChitChatLogo } from '@/components/commons/commons';
+import { ChitChatLogo } from '@/components/commons/icon';
 
 export default function IndexPage() {
   return (

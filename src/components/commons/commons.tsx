@@ -6,6 +6,6 @@ const dm_serif_display = DM_Serif_Display({
     weight: "400"
 });
 
-export const ChitChatLogo = ({className} : {className?: string}) => <h4 className={`text-2xl  font-normal text-custom-black ${dm_serif_display.className} ${className}`}>ChitChat</h4>
+export const ccl = ({className} : {className?: string}) => <h4 className={`whitespace-nowrap text-2xl break-n font-normal text-custom-black ${dm_serif_display.className} ${className}`}>ChitChat</h4>
 
 

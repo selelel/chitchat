@@ -1,5 +1,4 @@
 "use client";
-
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
@@ -9,15 +8,13 @@ import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import Form from "@/components/commons/form";
 import { Alert, Button, Divider } from "antd";
 import { COLOR } from "@/theme/color";
-import { GoogleIcon } from "@/components/commons/icon/SocialMedia";
-import { handleSignInUser } from "@/helper/auth_helper/sign_user";
-import { useLogInUser } from "@/helper/auth_helper/token";
-import { useRedirectIfAuthenticated } from "@/helper/auth_helper/redirect";
 import { poppins } from "@/utils/fonts";
 import { pw_id } from "@/constants/pw_test_id";
+import { handleSignInUser, useHandleLogout } from "@/utils/auth/sign_user";
+import { useLogInUser } from "@/utils/auth/token";
+import { GoogleIcon } from "@/components/commons/icon";
 
 export const LoginForm = () => {
-  useRedirectIfAuthenticated()
   const { register, handleSubmit, formState: { errors } } = useForm<login_form_types>({ resolver: yupResolver(login_form_schema) });
   const [logIn, { data , isLoading }] = useLogInMutation();
   const [errorMessages, setErrorMessages] = useState<string | undefined>();
@@ -40,7 +37,7 @@ export const LoginForm = () => {
       <Form submit={handleSubmit(handleLogIn)} className="space-y-2">
       <Form.Title>Log in to your account</Form.Title>
       <p className={`font-semibold ${poppins.className}`}>
-        Don't Have an Account? 
+        Don&apos;t Have an Account? 
         <a href="/signin" className="text-cyan-500 cursor-pointer"> Sign Up</a>
     </p>
 

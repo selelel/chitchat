@@ -37,38 +37,60 @@ interface CheckboxProps<T extends FieldValues> extends Omit<_CheckboxProps, 'typ
 interface ButtonFormProps extends ButtonProps {}
 
 interface FormProps {
-    children: ReactNode;
-    submit: (e:any) => any;
-    className?: string
+  children: ReactNode;
+  submit: (e: any) => any;
+  className?: string;
 }
 
-
-export default function Form({children, submit, ...props} : FormProps) {
+export default function Form({ children, submit, ...props }: FormProps) {
   return (
     <form className={`${poppins.className} ${props.className}`} onSubmit={submit}>
-        {children}
+      {children}
     </form>
-  )
+  );
 }
 
-Form.Input = <T extends FieldValues>({ register, ...props }: InputFormProps<T>) => {
-    const registerP = register(props.name)
-    return <label {...registerP}><Input className={`p-2 py-3 my-1 ${poppins.className} ${props.className}`}{...props}/></label>
-}
+const FormInput = <T extends FieldValues>({ register, ...props }: InputFormProps<T>) => {
+  const registerP = register(props.name);
+  return (
+    <label {...registerP}>
+      <Input className={`p-2 py-3 my-1 ${poppins.className} ${props.className}`} {...props} />
+    </label>
+  );
+};
+FormInput.displayName = 'FormInput';
+Form.Input = FormInput;
 
-Form.Password = <T extends FieldValues>({ register, ...props }: PasswordFormProps<T>) => {
-  const registerP = register(props.name)
-    return <label {...registerP}><Input.Password className={`p-2 py-3 my-1 ${poppins.className} ${props.className}`}{...props}/></label>
-}
+const FormPassword = <T extends FieldValues>({ register, ...props }: PasswordFormProps<T>) => {
+  const registerP = register(props.name);
+  return (
+    <label {...registerP}>
+      <Input.Password className={`p-2 py-3 my-1 ${poppins.className} ${props.className}`} {...props} />
+    </label>
+  );
+};
+FormPassword.displayName = 'FormPassword';
+Form.Password = FormPassword;
 
-Form.Checkbox = <T extends FieldValues>({ register, ...props }: CheckboxProps<T>) => {
-  const registerP = register(props.name)
-    return <label {...registerP}><Checkbox className={`p-2 py-3 my-1 ${poppins.className} ${props.className}`}{...props}/></label>
-}
+const FormCheckbox = <T extends FieldValues>({ register, ...props }: CheckboxProps<T>) => {
+  const registerP = register(props.name);
+  return (
+    <label {...registerP}>
+      <Checkbox className={`p-2 py-3 my-1 ${poppins.className} ${props.className}`} {...props} />
+    </label>
+  );
+};
+FormCheckbox.displayName = 'FormCheckbox';
+Form.Checkbox = FormCheckbox;
 
-Form.Title = ({ children, className} : { children: string, className?: string}) => {
-    return <h4 className={`text-xl font-normal ${className}`}>{ children }</h4>
-}
-Form.Button = (spread: ButtonFormProps) => {
-    return <Button htmlType="submit"  className={`my-1 ${poppins.className} ${spread.className}`} {...spread}/>
-}
+const FormTitle = ({ children, className }: { children: string; className?: string }) => {
+  return <h4 className={`text-xl font-normal ${className}`}>{children}</h4>;
+};
+FormTitle.displayName = 'FormTitle';
+Form.Title = FormTitle;
+
+const FormButton = (spread: ButtonFormProps) => {
+  return <Button htmlType="submit" className={`my-1 ${poppins.className} ${spread.className}`} {...spread} />;
+};
+FormButton.displayName = 'FormButton';
+Form.Button = FormButton;

@@ -1,6 +1,6 @@
 import { Icon, IconProps } from '@chakra-ui/react';
 
-export const ProfileIcon = (props: IconProps) => (
+const __ = (props: IconProps) => (
   <Icon
     width="24px"
     height="24px"
@@ -31,4 +31,4 @@ export const ProfileIcon = (props: IconProps) => (
   </Icon>
 );
 
-
+export default __
