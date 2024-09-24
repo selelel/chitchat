@@ -43,7 +43,7 @@ export const SinginUserInfoForm = () => {
       description: 'You will be redirected to the login page shortly. 😊',
       showProgress: true,
       duration: 3,
-      onClose: () => window.location.href= '/auth/login',
+      onClose: () => window.location.href= '/login',
     });
   };
 

@@ -28,6 +28,7 @@ export const LoginForm = () => {
   const handleLogIn = async ({ password, email }: login_form_types) => {
     try {
       await logIn({ password, email }).unwrap();
+      window.location.href = '/home'
     } catch (error: any) {
       setErrorMessages(error.message || 'An unexpected error occurred.');
     }
