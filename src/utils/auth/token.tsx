@@ -11,8 +11,7 @@ import { ReactNode, useEffect, useRef } from "react";
 // accesstoken value to the redux store. :)
 
 // Higher-order component to refresh token
-const withRefreshToken = (WrappedComponent: React.ComponentType<any>) => {
-  const WithRefreshToken = (props: any) => {
+const RefreshWrapper = ({ children }: {children: ReactNode}) => {
     const dispatch = useAppDispatch();
     const requestMade = useRef(false);
 
@@ -31,13 +30,11 @@ const withRefreshToken = (WrappedComponent: React.ComponentType<any>) => {
       fetchToken();
     }, [dispatch]);
 
-    return <WrappedComponent {...props} />;
-  };
-
-  WithRefreshToken.displayName = `withRefreshToken(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
-
-  return WithRefreshToken;
+    return children
 };
+
+RefreshWrapper.displayName = `RefreshWrapper`;
+
 
 // Custom hook to log in user
 const useLogInUser = ({ data }: { data: { loginUser: LoginResponse } | undefined }) => {
@@ -65,4 +62,4 @@ const useSignInUser = ({ data }: { data: { loginUser: LoginResponse } | undefine
 
 useSignInUser.displayName = "useSignInUser";
 
-export { withRefreshToken, useLogInUser, useSignInUser };
+export { RefreshWrapper, useLogInUser, useSignInUser };

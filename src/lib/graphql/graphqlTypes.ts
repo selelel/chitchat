@@ -75,7 +75,6 @@ export type Comments = {
 export enum Gender {
   Female = 'FEMALE',
   Male = 'MALE',
-  Undefined = 'UNDEFINED',
   Undefined = 'undefined'
 }
 
@@ -112,7 +111,6 @@ export enum MbtiType {
   Isfp = 'ISFP',
   Istj = 'ISTJ',
   Istp = 'ISTP',
-  Undefined = 'UNDEFINED',
   Undefined = 'undefined'
 }
 

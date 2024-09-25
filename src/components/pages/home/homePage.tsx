@@ -6,7 +6,6 @@ import { useAppDispatch } from '@/lib/hooks';
 import { removeAccessToken } from '@/lib/features/app/appSlice';
 import { redirect } from 'next/navigation';
 import Layout from '@/components/layout/layout';
-import { withRefreshToken } from '@/utils/auth/token';
 
 function HomePage() {
   const [logOut, { data, isLoading }] = useLogOutMutation();
@@ -36,4 +35,4 @@ function HomePage() {
   );
 }
 
-export default withRefreshToken(HomePage) ;
+export default HomePage;
