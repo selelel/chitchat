@@ -1,7 +1,7 @@
-import { HOST } from "@/constants/host";
+import { SERVER_URI } from "@/config/env";
 
 export const fecthServerStatus = async () => {
-  const response = await fetch(`${HOST.SERVER_URI}/app/status`, {
+  const response = await fetch(`${SERVER_URI}/app/status`, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   });

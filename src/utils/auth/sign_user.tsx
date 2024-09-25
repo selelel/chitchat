@@ -2,8 +2,9 @@ import { useAppDispatch } from "@/lib/hooks";
 import { useLogOutMutation } from "@/lib/features/auth/authApi";
 import { removeAccessToken } from "@/lib/features/app/appSlice";
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { LOCALSTORAGE } from "@/constants/localstorage";
+import { REDIRECT_URL } from "@/config/env";
 
 export const useHandleLogout = () => {
   const [logOut, { data }] = useLogOutMutation();
@@ -26,7 +27,7 @@ export const useHandleLogout = () => {
 };
 
 export const handleSignInUser = () => {
-  window.location.href = 'http://localhost:8080/auth/google/login';
+  window.location.href = REDIRECT_URL;
 };
 
 export const removeUserCache = () => {

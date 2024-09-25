@@ -1,14 +1,13 @@
 import { createApi, BaseQueryApi } from '@reduxjs/toolkit/query/react';
 import { graphqlRequestBaseQuery } from '@rtk-query/graphql-request-base-query';
 import { GraphQLClient, ClientError } from 'graphql-request';
-import { HOST } from '@/constants/host';
 import { AppDispatch, RootState } from '@/lib/store';
 import { refreshToken, selectAccessToken } from '@/lib/features/app/appSlice';
 import { Parse_Message } from '@/helper/error';
+import { GRAPHQL_URI } from '@/config/env';
 
-const client = new GraphQLClient(HOST.GRAPHQL_URI, { credentials: 'include' });
+const client = new GraphQLClient(GRAPHQL_URI, { credentials: 'include' });
 
-// Header function for seamless autorization setting.
 const setAuthorizationHeader = (token: string | undefined) => {
   client.setHeaders({
     Authorization: token ? `Bearer ${token}` : '',
