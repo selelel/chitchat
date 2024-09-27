@@ -7,6 +7,7 @@ import { removeAccessToken } from '@/lib/features/app/appSlice';
 import { redirect } from 'next/navigation';
 import Layout from '@/components/layout/layout';
 import { useCreateNewPostMutation } from '@/lib/features/post/postApi';
+import CreatePostComponent from '@/components/post/createPostComponent';
 
 function HomePage() {
   const [logOut, { data, isLoading }] = useLogOutMutation();
@@ -49,6 +50,7 @@ function HomePage() {
           <p className='font-semibold text-custom-grey'>i lag out mo!</p>
         </Button>
         <div>Hinay lang pagpost and message guys, limited yung database natin. frrrrr</div>
+        <CreatePostComponent />
         <Button
           tabIndex={0}
           className="flex flex-row justify-center space-x-1 items-center rounded-md py-5 px-10 cursor-pointer w-fit"
