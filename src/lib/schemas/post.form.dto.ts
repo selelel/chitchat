@@ -3,6 +3,7 @@ import * as yup from 'yup';
 export const post_form_schema = yup.object({
     descriptions: yup.string().default(''),
     audience: yup.string().default('public'),
+    file: yup.mixed()
 });
 
 export type post_form_types = yup.InferType<typeof post_form_schema>;

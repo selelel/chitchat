@@ -1,12 +1,14 @@
 'use client';
 
-import { Button, ButtonProps, Checkbox, CheckboxProps as _CheckboxProps, Input, InputProps, SelectProps } from 'antd';
+import { Button, ButtonProps, Checkbox, CheckboxProps as _CheckboxProps, Input, InputProps, SelectProps, UploadProps } from 'antd';
 import { TextAreaProps } from 'antd/es/input';
 import { PasswordProps } from 'antd/es/input/Password';
 import { Select as ASelect } from "antd";
 import { Poppins } from 'next/font/google';
 import { ReactNode } from 'react';
-import { FieldValues, Path, UseFormRegister, UseControllerProps, Controller } from 'react-hook-form';
+import { FieldValues, Path, UseFormRegister, UseControllerProps, Controller, RegisterOptions, UseFormRegisterReturn } from 'react-hook-form';
+import { Upload as _Upload} from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -33,6 +35,11 @@ interface TextAreaFormProps<T extends FieldValues> extends Omit<TextAreaProps , 
 }
 
 interface SelectFormProps<T extends FieldValues> extends Omit<SelectProps, 'type'> {
+  name: Path<T>;
+  control: ControlFunction<T>;
+}
+
+interface UploadFormProps<T extends FieldValues> extends Omit<UploadProps, 'type'> {
   name: Path<T>;
   control: ControlFunction<T>;
 }
@@ -132,4 +139,22 @@ const Select = <T extends FieldValues>({ control, ...props }: SelectFormProps<T>
 
 Select.displayName = 'Select';
 Form.Select = Select;
+
+const Upload = <T extends FieldValues>({control, ...props }: UploadFormProps<T>) => {
+  const {name, ...rest} = props
+  return (
+    <Controller
+      name={name}
+      {...control}
+      render={({field}) => (
+            <_Upload {...field} {...props}>
+              <Button icon={<UploadOutlined />}>Click to Upload</Button>
+            </_Upload>
+            )}
+          />
+  );
+};
+
+Upload.displayName = 'Upload';
+Form.Upload = Upload;
 
