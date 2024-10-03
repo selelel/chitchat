@@ -146,11 +146,15 @@ const Upload = <T extends FieldValues>({control, ...props }: UploadFormProps<T>)
     <Controller
       name={name}
       {...control}
-      render={({field}) => (
-            <_Upload {...field} {...props}>
-              <Button icon={<UploadOutlined />}>Click to Upload</Button>
-            </_Upload>
-            )}
+      render={({field}) => {
+        return (
+          <_Upload
+            {...field}
+            {...rest}
+          >
+            <Button icon={<UploadOutlined />}>Click to Upload</Button>
+          </_Upload>
+            )}}
           />
   );
 };

@@ -24,9 +24,10 @@ function CreatePostForm() {
   const { register, handleSubmit, control, formState: { errors }, setError} = useForm({ resolver: yupResolver(post_form_schema) });
   const [createNewPost, { data: createPostData, isLoading: isCreatingPost, error: createPostError }] = useCreateNewPostMutation();
   const token = useAppSelector(selectAccessToken);
+  const [loadImage, setLoadImage] = useState<boolean | null>(null)
 const handleCreatePost = async ({ audience, descriptions, file }: post_form_types) => {
     try {
-      const response = await createNewPost({
+      const post = await createNewPost({
         contentInput: {
           description: descriptions,
         },
@@ -35,12 +36,11 @@ const handleCreatePost = async ({ audience, descriptions, file }: post_form_type
         },
       });
 
-      if (response.data) {
-        console.log('Post created:', response.data?.createNewPost?._id);
-
-        if (file.fileList.length > 0) {
-          const appendImagePost = await append_image(file, response.data?.createNewPost?._id, token, env.BASE_API_URL)
-          console.log(appendImagePost)
+      if (post.data) {
+        if (file && file.fileList.length > 0) {
+          setLoadImage(true)
+          const appendImagePost = await append_image(file, post.data?.createNewPost?._id, token)
+          setLoadImage(false)
           setCreatedPost(appendImagePost)
         }
       }
@@ -85,6 +85,8 @@ const handleCreatePost = async ({ audience, descriptions, file }: post_form_type
       >
         <p className='font-semibold text-custom-grey'>Post</p>
       </Form.Button>
+
+      {loadImage === null ? <></> :loadImage === true ?  <>Loading...</>: <>Done.</>}
 
       {!!createdPost && (<div>
         <p>{createdPost.content.description}</p>
