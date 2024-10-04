@@ -4,7 +4,7 @@ import Form from '../commons/form';
 import { poppins } from '@/utils/fonts';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { post_form_schema, post_form_types } from '@/lib/schemas/post.form.dto';
-import { useCreateNewPostMutation } from '@/lib/features/post/postApi';
+import { useCreateNewPostMutation, useGetPostMutation } from '@/lib/features/post/postApi';
 import { Alert, Divider } from 'antd';
 import { env } from '@/config/env';
 import { selectAccessToken } from '@/lib/features/app/appSlice';
@@ -20,9 +20,9 @@ const audience = [
 ];
 
 function CreatePostForm() {
-  const [createdPost, setCreatedPost] = useState<any>(null)
   const { register, handleSubmit, control, formState: { errors }, setError} = useForm({ resolver: yupResolver(post_form_schema) });
   const [createNewPost, { data: createPostData, isLoading: isCreatingPost, error: createPostError }] = useCreateNewPostMutation();
+  const [getPost, {data: post, isLoading: loadingPost, error}] = useGetPostMutation()
   const token = useAppSelector(selectAccessToken);
   const [loadImage, setLoadImage] = useState<boolean | null>(null)
 const handleCreatePost = async ({ audience, descriptions, file }: post_form_types) => {
@@ -36,14 +36,15 @@ const handleCreatePost = async ({ audience, descriptions, file }: post_form_type
         },
       });
 
-      if (post.data) {
-        if (file && file.fileList.length > 0) {
-          setLoadImage(true)
-          const appendImagePost = await append_image(file, post.data?.createNewPost?._id, token)
-          setLoadImage(false)
-          setCreatedPost(appendImagePost)
-        }
+      if (!post.data) throw new Error("Post not posted")
+
+      if (file && file.fileList.length > 0) {
+        setLoadImage(true)
+        await append_image(file, post.data?.createNewPost?._id, token)
+        setLoadImage(false)
       }
+
+      getPost(post.data.createNewPost._id)
     } catch (err) {
       console.log(err)
     }
@@ -88,9 +89,9 @@ const handleCreatePost = async ({ audience, descriptions, file }: post_form_type
 
       {loadImage === null ? <></> :loadImage === true ?  <>Loading...</>: <>Done.</>}
 
-      {!!createdPost && (<div>
-        <p>{createdPost.content.description}</p>
-        {createdPost?.content.images.map((d: string | StaticImport) => <Image src={d} width={250} height={250} alt={String(d)}/>)}
+      {!!post && (<div>
+        <p>{post.getPost.content.description}</p>
+        {post.getPost.content.images && post.getPost.content.images.map((d: string | StaticImport) => <Image src={d} width={250} height={250} alt={String(d)}/>)}
 
       </div>)}
 

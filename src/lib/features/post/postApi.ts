@@ -2,7 +2,7 @@ import { Parse_Message } from "@/helper/error"
 import { baseApiWithGraphql } from "@/lib/graphql/graphqlBaseApi"
 import { Mutation, LoginUserInput, PostContentInput, PostOptionInput } from "@/lib/graphql/graphqlTypes"
 import { LogInMutationDocument } from "../auth/authQuery"
-import { CreateNewPostMutationDocument } from "./postQuery"
+import { CreateNewPostMutationDocument, GetPostQueryDocument } from "./postQuery"
 
 const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
     endpoints: (build) => ({
@@ -14,9 +14,18 @@ const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
         transformErrorResponse: (error) => {
           return { ...error, message: Parse_Message(error) };
         }
+      }),
+      getPost: build.mutation<{ getPost: Mutation['getPost'] }, string>({
+        query: (variables) => ({
+          document: GetPostQueryDocument,
+          variables: { postId: variables },
+        }),
+        transformErrorResponse: (error) => {
+          return { ...error, message: Parse_Message(error) };
+        }
       })
     })
   });
 
-export const { useCreateNewPostMutation } = injectedRtkApi;
-    
+export const { useCreateNewPostMutation, useGetPostMutation } = injectedRtkApi;
+       

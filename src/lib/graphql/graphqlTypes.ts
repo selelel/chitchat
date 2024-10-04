@@ -75,6 +75,7 @@ export type Comments = {
 export enum Gender {
   Female = 'FEMALE',
   Male = 'MALE',
+  Undefined = 'UNDEFINED',
   Undefined = 'undefined'
 }
 
@@ -111,6 +112,7 @@ export enum MbtiType {
   Isfp = 'ISFP',
   Istj = 'ISTJ',
   Istp = 'ISTP',
+  Undefined = 'UNDEFINED',
   Undefined = 'undefined'
 }
 
@@ -144,6 +146,7 @@ export type Mutation = {
   editPostComment: Comments;
   followUser: User;
   getChatConversation: Array<Message>;
+  getPost: Post;
   getRecommendedPosts: Array<Post>;
   getUserFollowingPosts: Array<Post>;
   getUserPrivateChatRoom: Chat;
@@ -208,6 +211,11 @@ export type MutationFollowUserArgs = {
 
 export type MutationGetChatConversationArgs = {
   conversationInput: GetConversation;
+};
+
+
+export type MutationGetPostArgs = {
+  postId: Scalars['String']['input'];
 };
 
 
@@ -363,7 +371,7 @@ export type User = {
 };
 
 export type UserInput = {
-  user: PersonalObjectInput;
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
+  user: PersonalObjectInput;
 };
