@@ -1,10 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     reactStrictMode: true,
-    env: {
-        CLIENT_URI: process.env.CLIENT_URI,
-        SERVER_URI: process.env.SERVER_URI
-    }
+    images: {
+        remotePatterns: [
+          {
+            protocol: 'https',
+            hostname: 'chitchat-store.s3.ap-southeast-2.amazonaws.com',
+            port: '',
+          },
+        ],
+      },
 };
 
 export default nextConfig;

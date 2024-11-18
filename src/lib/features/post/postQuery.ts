@@ -7,3 +7,19 @@ export const CreateNewPostMutationDocument =
             _id
         }
     }`
+
+export const GetPostQueryDocument =  `mutation GetPost($postId: String!) {
+                            getPost(postId: $postId) {
+                                _id
+                                author {
+                                    _id
+                                }
+                                content {
+                                    description
+                                    images
+                                    text
+                                }
+                                audience
+                            }
+                        }
+                    `
