@@ -6,7 +6,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { post_form_schema, post_form_types } from '@/lib/schemas/post.form.dto';
 import { useCreateNewPostMutation, useGetPostMutation } from '@/lib/features/post/postApi';
 import { Alert, Divider } from 'antd';
-import { env } from '@/config/env';
 import { selectAccessToken } from '@/lib/features/app/appSlice';
 import { useAppSelector } from '@/lib/hooks';
 import Image from 'next/image';
