@@ -1,22 +1,31 @@
-import { cookies } from "next/headers";
-import { type NextRequest, NextResponse } from "next/server";
+import pathsConfig from '@/config/pathConfig'
+import { cookies } from 'next/headers'
+import { type NextRequest, NextResponse } from 'next/server'
 
 export const authMiddleware = async (request: NextRequest) => {
-  const isAuthenticated = Boolean(request.cookies.get('refresh_token'));
+    const isAuthenticated = Boolean(request.cookies.get('refresh_token'))
 
-  const protectedRoutes = ['/home', '/chat', '/explore', '/notification', '/profile', '/menu'];
+    if (
+        !isAuthenticated &&
+        Object.values(pathsConfig.dashboard).some((route) =>
+            request.nextUrl.pathname.startsWith(route)
+        )
+    ) {
+        return NextResponse.redirect(pathsConfig.auth.signin)
+    }
 
-  if (!isAuthenticated && protectedRoutes.some(route => request.nextUrl.pathname.startsWith(route))) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
+    if (
+        isAuthenticated &&
+        !Object.values(pathsConfig.dashboard).some((route) =>
+            request.nextUrl.pathname.startsWith(route)
+        )
+    ) {
+        return NextResponse.redirect(pathsConfig.dashboard.home)
+    }
 
-  if (isAuthenticated && !protectedRoutes.some(route => request.nextUrl.pathname.startsWith(route))) {
-    return NextResponse.redirect(new URL("/home", request.url));
-  }
-
-  return NextResponse.next({
-    request: {
-      headers: request.headers,
-    },
-  });
-};
+    return NextResponse.next({
+        request: {
+            headers: request.headers,
+        },
+    })
+}
