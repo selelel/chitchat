@@ -1,5 +1,4 @@
 require('dotenv/config');
-import { headers } from 'next/headers';
 import * as Yup from 'yup';
 
 const createEnv = () => {
