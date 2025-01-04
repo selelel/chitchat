@@ -1,9 +1,13 @@
 'use client'
 import Layout from '@/components/layout/layout'
-import React from 'react'
+import ChatInput from './_component/chat-input'
 
 function ChatPage() {
-    return <Layout></Layout>
+    return (
+        <Layout>
+            <ChatInput />
+        </Layout>
+    )
 }
 
 export default ChatPage
