@@ -9,6 +9,7 @@ import { UserSignUpContext } from '../_context/signup-context'
 import { UserInput } from '@/lib/graphql/graphqlTypes'
 import { Alert, notification } from 'antd'
 import { poppins } from '@/utils/fonts'
+import pathsConfig from '@/config/pathConfig'
 
 export const SingUpUserInfoForm = () => {
     const context = useContext(UserSignUpContext)
@@ -55,7 +56,7 @@ export const SingUpUserInfoForm = () => {
             description: 'You will be redirected to the login page shortly. 😊',
             showProgress: true,
             duration: 3,
-            onClose: () => (window.location.href = '/login'),
+            onClose: () => (window.location.href = pathsConfig.auth.signin),
         })
     }
 
