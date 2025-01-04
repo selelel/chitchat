@@ -8,7 +8,7 @@ import {
     login_form_types,
 } from '@/lib/schemas/login.form.dto'
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons'
-import Form from '@/components/commons/form'
+import Form from '@/components/ui/(not-official)-form'
 import { Alert, Button, Divider } from 'antd'
 import { COLOR } from '@/theme/color'
 import { poppins } from '@/utils/fonts'

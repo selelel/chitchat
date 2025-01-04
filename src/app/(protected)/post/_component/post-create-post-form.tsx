@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import Form from '../../../../components/commons/form'
+import Form from '@/components/ui/(not-official)-form'
 import { poppins } from '@/utils/fonts'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { post_form_schema, post_form_types } from '@/lib/schemas/post.form.dto'
