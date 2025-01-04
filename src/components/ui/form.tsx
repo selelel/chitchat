@@ -1,228 +1,195 @@
 'use client'
 
+import * as React from 'react'
+import * as LabelPrimitive from '@radix-ui/react-label'
+import { Slot } from '@radix-ui/react-slot'
 import {
-    Button,
-    ButtonProps,
-    Checkbox,
-    CheckboxProps as _CheckboxProps,
-    Input,
-    InputProps,
-    SelectProps,
-    UploadProps,
-} from 'antd'
-import { TextAreaProps } from 'antd/es/input'
-import { PasswordProps } from 'antd/es/input/Password'
-import { Select as ASelect } from 'antd'
-import { Poppins } from 'next/font/google'
-import { ReactNode } from 'react'
-import {
-    FieldValues,
-    Path,
-    UseFormRegister,
-    UseControllerProps,
     Controller,
-    RegisterOptions,
-    UseFormRegisterReturn,
+    ControllerProps,
+    FieldPath,
+    FieldValues,
+    FormProvider,
+    useFormContext,
 } from 'react-hook-form'
-import { Upload as _Upload } from 'antd'
-import { UploadOutlined } from '@ant-design/icons'
+import { cn } from '@/utils/utils'
+import { Label } from '@radix-ui/react-label'
 
-const poppins = Poppins({
-    subsets: ['latin'],
-    variable: '--font-poppins',
-    weight: ['100', '400', '600'],
+const Form = FormProvider
+
+type FormFieldContextValue<
+    TFieldValues extends FieldValues = FieldValues,
+    TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> = {
+    name: TName
+}
+
+const FormFieldContext = React.createContext<FormFieldContextValue>(
+    {} as FormFieldContextValue
+)
+
+const FormField = <
+    TFieldValues extends FieldValues = FieldValues,
+    TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>({
+    ...props
+}: ControllerProps<TFieldValues, TName>) => {
+    return (
+        <FormFieldContext.Provider value={{ name: props.name }}>
+            <Controller {...props} />
+        </FormFieldContext.Provider>
+    )
+}
+
+const useFormField = () => {
+    const fieldContext = React.useContext(FormFieldContext)
+    const itemContext = React.useContext(FormItemContext)
+    const {
+        getFieldState,
+        formState,
+        getValues,
+        setValue: setValueModified,
+        ...spread
+    } = useFormContext()
+
+    if (!fieldContext) {
+        throw new Error('useFormField should be used within <FormField>')
+    }
+
+    const fieldState = getFieldState(fieldContext.name, formState)
+    const value = getValues(fieldContext.name)
+
+    const setValue = function (value: any) {
+        setValueModified(fieldContext.name, value)
+    }
+
+    const { id } = itemContext
+
+    return {
+        id,
+        name: fieldContext.name,
+        formItemId: `${id}-form-item`,
+        formDescriptionId: `${id}-form-item-description`,
+        formMessageId: `${id}-form-item-message`,
+        value,
+        setValue,
+        ...fieldState,
+        ...spread,
+    }
+}
+
+type FormItemContextValue = {
+    id: string
+}
+
+const FormItemContext = React.createContext<FormItemContextValue>(
+    {} as FormItemContextValue
+)
+
+const FormItem = React.forwardRef<
+    HTMLDivElement,
+    React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => {
+    const id = React.useId()
+
+    return (
+        <FormItemContext.Provider value={{ id }}>
+            <div ref={ref} className={cn('space-y-2', className)} {...props} />
+        </FormItemContext.Provider>
+    )
 })
+FormItem.displayName = 'FormItem'
 
-type RegisterFunction<T extends FieldValues> = UseFormRegister<T>
-type ControlFunction<T extends FieldValues> = Omit<
-    UseControllerProps<T>,
-    'name'
->
+const FormLabel = React.forwardRef<
+    React.ElementRef<typeof LabelPrimitive.Root>,
+    React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
+>(({ className, ...props }, ref) => {
+    const { error, formItemId } = useFormField()
 
-interface InputFormProps<T extends FieldValues> extends InputProps {
-    name: Path<T>
-    register: RegisterFunction<T>
-}
-
-interface PasswordFormProps<T extends FieldValues>
-    extends Omit<PasswordProps, 'type'> {
-    name: Path<T>
-    register: RegisterFunction<T>
-}
-
-interface TextAreaFormProps<T extends FieldValues>
-    extends Omit<TextAreaProps, 'type'> {
-    name: Path<T>
-    register: RegisterFunction<T>
-}
-
-interface SelectFormProps<T extends FieldValues>
-    extends Omit<SelectProps, 'type'> {
-    name: Path<T>
-    control: ControlFunction<T>
-}
-
-interface UploadFormProps<T extends FieldValues>
-    extends Omit<UploadProps, 'type'> {
-    name: Path<T>
-    control: ControlFunction<T>
-}
-
-interface CheckboxProps<T extends FieldValues>
-    extends Omit<_CheckboxProps, 'type'> {
-    name: Path<T>
-    register: RegisterFunction<T>
-}
-
-interface ButtonFormProps extends ButtonProps {}
-
-interface FormProps {
-    children: ReactNode
-    submit: (e: any) => any
-    className?: string
-}
-
-export default function Form({ children, submit, ...props }: FormProps) {
     return (
-        <form
-            className={`${poppins.className} ${props.className}`}
-            onSubmit={submit}
+        <Label
+            ref={ref}
+            className={cn(error && 'text-destructive', className)}
+            htmlFor={formItemId}
+            {...props}
+        />
+    )
+})
+FormLabel.displayName = 'FormLabel'
+
+const FormControl = React.forwardRef<
+    React.ElementRef<typeof Slot>,
+    React.ComponentPropsWithoutRef<typeof Slot>
+>(({ ...props }, ref) => {
+    const { error, formItemId, formDescriptionId, formMessageId } =
+        useFormField()
+
+    return (
+        <Slot
+            ref={ref}
+            id={formItemId}
+            aria-describedby={
+                !error
+                    ? `${formDescriptionId}`
+                    : `${formDescriptionId} ${formMessageId}`
+            }
+            aria-invalid={!!error}
+            {...props}
+        />
+    )
+})
+FormControl.displayName = 'FormControl'
+
+const FormDescription = React.forwardRef<
+    HTMLParagraphElement,
+    React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => {
+    const { formDescriptionId } = useFormField()
+
+    return (
+        <p
+            ref={ref}
+            id={formDescriptionId}
+            className={cn('text-[0.8rem] text-muted-foreground', className)}
+            {...props}
+        />
+    )
+})
+FormDescription.displayName = 'FormDescription'
+
+const FormMessage = React.forwardRef<
+    HTMLParagraphElement,
+    React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, children, ...props }, ref) => {
+    const { error, formMessageId } = useFormField()
+    const body = error ? String(error?.message) : children
+
+    if (!body) {
+        return null
+    }
+
+    return (
+        <p
+            ref={ref}
+            id={formMessageId}
+            className={cn(
+                'text-[0.8rem] font-medium text-destructive',
+                className
+            )}
+            {...props}
         >
-            {children}
-        </form>
+            {body}
+        </p>
     )
+})
+FormMessage.displayName = 'FormMessage'
+
+export {
+    useFormField,
+    Form,
+    FormItem,
+    FormLabel,
+    FormControl,
+    FormDescription,
+    FormMessage,
+    FormField,
 }
-
-const FormInput = <T extends FieldValues>({
-    register,
-    ...props
-}: InputFormProps<T>) => {
-    const registerP = register(props.name)
-    return (
-        <label {...registerP}>
-            <Input
-                className={`p-2 py-3 my-1 ${poppins.className} ${props.className}`}
-                {...props}
-            />
-        </label>
-    )
-}
-FormInput.displayName = 'FormInput'
-Form.Input = FormInput
-
-const FormPassword = <T extends FieldValues>({
-    register,
-    ...props
-}: PasswordFormProps<T>) => {
-    const registerP = register(props.name)
-    return (
-        <label {...registerP}>
-            <Input.Password
-                className={`p-2 py-3 my-1 ${poppins.className} ${props.className}`}
-                {...props}
-            />
-        </label>
-    )
-}
-FormPassword.displayName = 'FormPassword'
-Form.Password = FormPassword
-
-const FormCheckbox = <T extends FieldValues>({
-    register,
-    ...props
-}: CheckboxProps<T>) => {
-    const registerP = register(props.name)
-    return (
-        <label {...registerP}>
-            <Checkbox
-                className={`p-2 py-3 my-1 ${poppins.className} ${props.className}`}
-                {...props}
-            />
-        </label>
-    )
-}
-FormCheckbox.displayName = 'FormCheckbox'
-Form.Checkbox = FormCheckbox
-
-const FormTitle = ({
-    children,
-    className,
-}: {
-    children: string
-    className?: string
-}) => {
-    return <h4 className={`text-xl font-normal ${className}`}>{children}</h4>
-}
-FormTitle.displayName = 'FormTitle'
-Form.Title = FormTitle
-
-const FormButton = (spread: ButtonFormProps) => {
-    return (
-        <Button
-            htmlType="submit"
-            className={`my-1 ${poppins.className} ${spread.className}`}
-            {...spread}
-        />
-    )
-}
-FormButton.displayName = 'FormButton'
-Form.Button = FormButton
-
-const TextArea = <T extends FieldValues>({
-    register,
-    ...props
-}: TextAreaFormProps<T>) => {
-    const registerP = register(props.name)
-    return (
-        <label {...registerP}>
-            <Input.TextArea
-                className={`p-2 py-3 my-1 ${poppins.className} ${props.className}`}
-                {...props}
-            />
-        </label>
-    )
-}
-TextArea.displayName = 'TextArea'
-Form.TextArea = TextArea
-
-const Select = <T extends FieldValues>({
-    control,
-    ...props
-}: SelectFormProps<T>) => {
-    const { name, ...rest } = props
-    return (
-        <Controller
-            name={name}
-            {...control}
-            render={({ field }) => <ASelect {...field} {...rest} />}
-        />
-    )
-}
-
-Select.displayName = 'Select'
-Form.Select = Select
-
-const Upload = <T extends FieldValues>({
-    control,
-    ...props
-}: UploadFormProps<T>) => {
-    const { name, ...rest } = props
-    return (
-        <Controller
-            name={name}
-            {...control}
-            render={({ field }) => {
-                return (
-                    <_Upload {...field} {...rest}>
-                        <Button icon={<UploadOutlined />}>
-                            Click to Upload
-                        </Button>
-                    </_Upload>
-                )
-            }}
-        />
-    )
-}
-
-Upload.displayName = 'Upload'
-Form.Upload = Upload
