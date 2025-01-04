@@ -1,5 +1,4 @@
-export const TestQueryDocument = 
-`query TestQuery {
+export const TestQueryDocument = `query TestQuery {
     testQuery {
         _id
         email
@@ -10,10 +9,9 @@ export const TestQueryDocument =
             firstname
         }
     }
-}`;
+}`
 
-export const LogInMutationDocument = 
-`mutation LoginUser($input: LoginUserInput!) {
+export const LogInMutationDocument = `mutation LoginUser($input: LoginUserInput!) {
     loginUser(userInput: $input) {
         accesstoken
         user {
@@ -26,29 +24,24 @@ export const LogInMutationDocument =
         }
     }
 }
-`;
+`
 
-export const LogOutQueryDocument = 
-`query LogoutAllDevices {
+export const LogOutQueryDocument = `query LogoutAllDevices {
             logoutAllDevices
           }`
 
-
-export const RefreshTokenQueryDocument = 
-    `query Refresh {
+export const RefreshTokenQueryDocument = `query Refresh {
         refresh {
             accesstoken
         }
     }`
 
-export const SignInMutationDocument = 
-    `mutation RegisterUser($input: UserInput!) {
+export const SignInMutationDocument = `mutation RegisterUser($input: UserInput!) {
         registerUser(userInput: $input) {
             _id
         }
     }`
 
-export const CheckUserExistsByEmailMutationDocument = 
-    `mutation CheckUserExistsByEmail($input: String!) {
+export const CheckUserExistsByEmailMutationDocument = `mutation CheckUserExistsByEmail($input: String!) {
         checkUserExistsByEmail(email: $input)
     }`

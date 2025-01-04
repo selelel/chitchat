@@ -1,5 +1,4 @@
-export const CreateNewPostMutationDocument = 
-    `mutation createNewPost(
+export const CreateNewPostMutationDocument = `mutation createNewPost(
         $contentInput: PostContentInput!
         $optionInput: PostOptionInput!
     ) {
@@ -8,7 +7,7 @@ export const CreateNewPostMutationDocument =
         }
     }`
 
-export const GetPostQueryDocument =  `mutation GetPost($postId: String!) {
+export const GetPostQueryDocument = `mutation GetPost($postId: String!) {
                             getPost(postId: $postId) {
                                 _id
                                 author {

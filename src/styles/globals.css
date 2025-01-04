@@ -3,26 +3,26 @@
 @tailwind utilities;
 
 :root {
-  --foreground-color: #33363F;
-  --background-start-color: #d6dbdc;
-  --background-end-color: #ffffff;
+    --foreground-color: #33363f;
+    --background-start-color: #d6dbdc;
+    --background-end-color: #ffffff;
 }
 
 body {
-  color: var(--foreground-color);
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      var(--background-end-color)
-    )
-    var(--background-start-color);
+    color: var(--foreground-color);
+    background: linear-gradient(
+            to bottom,
+            transparent,
+            var(--background-end-color)
+        )
+        var(--background-start-color);
 }
 
 /* Optional: Dark mode handling */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-color: #ffffff;
-    --background-start-color: #000000;
-    --background-end-color: #000000;
-  }
+    :root {
+        --foreground-color: #ffffff;
+        --background-start-color: #000000;
+        --background-end-color: #000000;
+    }
 }

@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next'
 
 export default function IndexPage() {
-  return <>Hero Page</>;
+    return <>Hero Page</>
 }
 
 export const metadata: Metadata = {
-  title: 'ChitChat',
-};
+    title: 'ChitChat',
+}
