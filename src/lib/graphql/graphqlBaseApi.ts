@@ -26,7 +26,6 @@ const dynamicBaseQuery = async (
     const token = selectAccessToken(state)
 
     setAuthorizationHeader(token)
-
     let result = await graphqlBaseQuery(args, api, extraOptions)
 
     if (result.error) {

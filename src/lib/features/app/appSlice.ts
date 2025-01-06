@@ -25,6 +25,7 @@ export const appSlice = createAppSlice({
         ),
         refreshToken: create.asyncThunk(async () => await fetchRefreshToken(), {
             fulfilled: (state, actions) => {
+                console.log(actions.payload)
                 state.access_token = actions.payload
             },
         }),
