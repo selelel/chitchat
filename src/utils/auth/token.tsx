@@ -11,8 +11,9 @@ import { ReactNode, useEffect, useRef } from 'react'
 // accesstoken value to the redux store. :)
 
 // Higher-order component to refresh token
-const RefreshWrapper = async ({ children }: { children: ReactNode }) => {
+const RefreshWrapper = ({ children }: { children: ReactNode }) => {
     const dispatch = useAppDispatch()
+    const requestMade = useRef(false)
 
     useEffect(() => {
         const fetchToken = async () => {
