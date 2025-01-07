@@ -4,6 +4,7 @@ export const GetConversationMutationDocument = `mutation getConversation($getCon
             user {
                 username
             }
+            _id
         }
         content {
             text

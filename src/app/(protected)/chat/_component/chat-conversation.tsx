@@ -21,10 +21,10 @@ function ChatConversation({ chatId }: { chatId: string }) {
     }, [])
 
     return (
-        <div className="h-full max-h-full border rounded-3xl p-4 overflow-hidden">
+        <div className="h-full w-full flex items-end max-h-full border rounded-3xl p-4 overflow-hidden">
             {conversation ? (
                 <>
-                    <div>
+                    <div className="w-full flex flex-col-reverse">
                         {conversation.getChatConversation?.map(
                             (message: any, index: number) => (
                                 <SingleChatComponent
