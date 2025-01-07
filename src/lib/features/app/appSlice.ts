@@ -3,6 +3,7 @@ import type { AppThunk } from '@/lib/store'
 import { fecthServerStatus } from './fetchServerStatus'
 import { ServerTypes } from '@/lib/types/appInitialStateType'
 import { fetchRefreshToken } from './fetchRequestToken'
+import { changeLocalStorageUponRefresh } from './changeLocalStorageUponRefresh'
 
 const initialState: ServerTypes = {
     server_status: { status: 'DOWN' },
@@ -29,6 +30,15 @@ export const appSlice = createAppSlice({
                 state.access_token = actions.payload
             },
         }),
+        setNewUserLocalStorage: create.asyncThunk(
+            changeLocalStorageUponRefresh,
+            {
+                fulfilled: (state, actions) => {
+                    console.log(actions.payload)
+                    state.access_token = actions.payload
+                },
+            }
+        ),
         getAccessToken: create.reducer(
             (state, actions: { payload: ServerTypes['access_token'] }) => {
                 state.access_token = actions.payload
@@ -49,6 +59,7 @@ export const {
     getAccessToken,
     removeAccessToken,
     refreshToken,
+    setNewUserLocalStorage,
 } = appSlice.actions
 
 export const { selectSeverStatus, selectAccessToken } = appSlice.selectors

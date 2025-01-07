@@ -6,7 +6,7 @@ import { GetConversationMutationDocument } from './chatQuery'
 export const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
     endpoints: (build) => ({
         GetConversation: build.mutation<
-            Mutation['getChatConversation'],
+            { getChatConversation: Mutation['getChatConversation'] },
             { getConversationInput: GetConversation }
         >({
             query: (variables) => ({

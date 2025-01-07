@@ -17,10 +17,13 @@ const RefreshWrapper = ({ children }: { children: ReactNode }) => {
 
     useEffect(() => {
         const fetchToken = async () => {
-            try {
-                await dispatch(refreshToken()).unwrap()
-            } catch (error) {
-                console.error('Failed to refresh token', error)
+            if (!requestMade.current) {
+                requestMade.current = true
+                try {
+                    await dispatch(refreshToken()).unwrap()
+                } catch (error) {
+                    console.error('Failed to refresh token', error)
+                }
             }
         }
 
