@@ -4,6 +4,8 @@ import { fecthServerStatus } from './fetchServerStatus'
 import { ServerTypes } from '@/lib/types/appInitialStateType'
 import { fetchRefreshToken } from './fetchRequestToken'
 import { changeLocalStorageUponRefresh } from './changeLocalStorageUponRefresh'
+import { localStorageRemoveItem } from '@/utils/helper/localstorage'
+import { LOCALSTORAGE } from '@/constants/localstorage'
 
 const initialState: ServerTypes = {
     server_status: { status: 'DOWN' },
@@ -45,6 +47,8 @@ export const appSlice = createAppSlice({
             }
         ),
         removeAccessToken: create.reducer((state) => {
+            localStorageRemoveItem(LOCALSTORAGE['USER_ID'])
+            localStorageRemoveItem(LOCALSTORAGE['ACCESSTOKEN'])
             state.access_token = undefined
         }),
     }),

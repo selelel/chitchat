@@ -20,13 +20,12 @@ export const Main = styled.main`
     padding: var(--space-unit) var(--space-unit * 2); // 8px left/right, 16px top/bottom
     width: 100%;
     max-width: 100%;
-    margin: 0 auto; // Centering main content
     box-sizing: border-box;
 `
 
 // Container component
 export const Container = styled.div`
-    padding: var(--space-unit * 3) var(--space-unit * 2); // 24px top/bottom, 16px left/right
+    padding: var(--space-unit * 3) var(--space-unit * 2);
     width: 100%;
     max-width: 1200px; // Optional, can be adjusted for design needs
     margin: 0 auto;
