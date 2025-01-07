@@ -14,8 +14,6 @@ import { useAppSelector } from '@/lib/hooks'
 import Image from 'next/image'
 import { StaticImport } from 'next/dist/shared/lib/get-img-props'
 import { append_image } from '@/app/actions'
-import { useGetUserInfo1Mutation } from '@/lib/features/app/appApi'
-import { useGetUserInfoMutation } from '@/lib/features/auth/authApi'
 
 const audience = [
     { value: 'public', label: 'Public' },
@@ -31,8 +29,6 @@ function CreatePostForm() {
         formState: { errors },
         setError,
     } = useForm({ resolver: yupResolver(post_form_schema) })
-
-    const [getUser, { data, isLoading }] = useGetUserInfoMutation()
 
     const [
         createNewPost,
@@ -64,8 +60,6 @@ function CreatePostForm() {
                 },
             })
 
-            const get = await getUser()
-            console.log(data)
             if (!post.data) throw new Error('Post not posted')
 
             if (file && file.fileList.length > 0) {

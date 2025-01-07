@@ -31,14 +31,6 @@ export const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
                 return { ...error, message: Parse_Message(error) }
             },
         }),
-        GetUserInfo: build.mutation<User, void>({
-            query: () => ({
-                document: GetUserByIdQueryDocument,
-            }),
-            transformErrorResponse: (error) => {
-                return { ...error, message: Parse_Message(error) }
-            },
-        }),
         LogOut: build.mutation<Query['logoutDevice'], void>({
             query: () => ({
                 document: LogOutQueryDocument,
@@ -78,5 +70,4 @@ export const {
     useLogOutMutation,
     useSignInMutation,
     useCheckUserExistsByEmailMutation,
-    useGetUserInfoMutation,
 } = injectedRtkApi
