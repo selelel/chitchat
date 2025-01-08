@@ -11,9 +11,11 @@ import {
     LoginUserInput,
     Mutation,
     Query,
+    User,
     UserInput,
 } from '../../graphql/graphqlTypes'
 import { Parse_Message } from '@/helper/error'
+import { GetUserByIdQueryDocument } from '../app/appQuery'
 
 export const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
     endpoints: (build) => ({

@@ -29,6 +29,7 @@ function CreatePostForm() {
         formState: { errors },
         setError,
     } = useForm({ resolver: yupResolver(post_form_schema) })
+
     const [
         createNewPost,
         {
@@ -37,10 +38,13 @@ function CreatePostForm() {
             error: createPostError,
         },
     ] = useCreateNewPostMutation()
+
     const [getPost, { data: post, isLoading: loadingPost, error }] =
         useGetPostMutation()
+
     const token = useAppSelector(selectAccessToken)
     const [loadImage, setLoadImage] = useState<boolean | null>(null)
+
     const handleCreatePost = async ({
         audience,
         descriptions,

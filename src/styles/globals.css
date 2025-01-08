@@ -6,6 +6,8 @@
     --foreground-color: #33363f;
     --background-start-color: #d6dbdc;
     --background-end-color: #ffffff;
+
+    --space-unit: 8;
 }
 
 body {

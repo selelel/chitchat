@@ -1,0 +1,43 @@
+import React, { useEffect, useState } from 'react'
+import SingleChatComponent from './chat-single-message'
+import { useGetUserInfoQuery } from '@/lib/features/app/appApi'
+import { useGetConversationMutation } from '@/lib/features/chat/chatApi'
+
+function ChatConversation({ chatId }: { chatId: string }) {
+    const { data } = useGetUserInfoQuery()
+    const [getConversation, { data: conversation, isLoading, isError }] =
+        useGetConversationMutation()
+    console.log(data, conversation)
+
+    useEffect(() => {
+        getConversation({
+            getConversationInput: {
+                chatId,
+                pagination: { limit: 10, skip: 0 },
+            },
+        })
+    }, [])
+
+    return (
+        <div className="h-full w-full flex items-end max-h-full border rounded-3xl p-4 overflow-hidden">
+            {conversation ? (
+                <>
+                    <div className="w-full flex flex-col-reverse overflow-y-auto">
+                        {conversation.getChatConversation?.map(
+                            (message: any, index: number) => (
+                                <SingleChatComponent
+                                    key={index}
+                                    value={message}
+                                />
+                            )
+                        )}
+                    </div>
+                </>
+            ) : (
+                <p>No messages found</p>
+            )}
+        </div>
+    )
+}
+
+export default ChatConversation

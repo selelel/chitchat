@@ -5,6 +5,7 @@ import { AppDispatch, RootState } from '@/lib/store'
 import { refreshToken, selectAccessToken } from '@/lib/features/app/appSlice'
 import { Parse_Message } from '@/helper/error'
 import { GRAPHQL_URI } from '@/config/env'
+import { LOCALSTORAGE } from '@/constants/localstorage'
 
 const client = new GraphQLClient(GRAPHQL_URI, { credentials: 'include' })
 
@@ -25,8 +26,9 @@ const dynamicBaseQuery = async (
     const state = api.getState() as RootState
     const token = selectAccessToken(state)
 
-    setAuthorizationHeader(token)
-
+    setAuthorizationHeader(
+        token || window.localStorage.getItem(LOCALSTORAGE['ACCESSTOKEN'])!
+    )
     let result = await graphqlBaseQuery(args, api, extraOptions)
 
     if (result.error) {
