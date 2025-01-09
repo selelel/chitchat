@@ -19,16 +19,20 @@ const formSchema = z.object({
     message: z.string({ required_error: 'Please Send A Message' }),
 })
 
-function ChatInput() {
-    const form = useForm({
+interface ChatInputProps {
+    onSubmit: (values: z.infer<typeof formSchema>) => void
+}
+
+function ChatInput({ onSubmit }: ChatInputProps) {
+    const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             message: '',
         },
     })
 
-    const onSubmit = (values: any) => {
-        console.log(values)
+    const handleSubmit = (values: z.infer<typeof formSchema>) => {
+        onSubmit(values)
         form.reset()
     }
 
@@ -36,7 +40,7 @@ function ChatInput() {
         <div>
             <Form {...form}>
                 <form
-                    onSubmit={form.handleSubmit(onSubmit)}
+                    onSubmit={form.handleSubmit(handleSubmit)}
                     className="space-y-8 h-fit"
                 >
                     <FormField
