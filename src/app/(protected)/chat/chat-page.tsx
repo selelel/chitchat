@@ -7,7 +7,7 @@ import { io, Socket } from 'socket.io-client'
 import { useEffect, useRef, useState } from 'react'
 import { LOCALSTORAGE } from '@/constants/localstorage'
 import { localStorageGetItem } from '@/utils/helper/localstorage'
-import { CHAT_EVENT } from '@/constants/chat'
+import { CHAT_EVENT } from '@/constants/socket'
 import { Message } from '@/lib/graphql/graphqlTypes'
 
 function ChatPage() {
