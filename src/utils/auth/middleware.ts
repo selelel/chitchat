@@ -11,7 +11,9 @@ export const authMiddleware = async (request: NextRequest) => {
             request.nextUrl.pathname.startsWith(route)
         )
     ) {
-        return NextResponse.redirect(pathsConfig.auth.signin)
+        const url = request.nextUrl.clone()
+        url.pathname = pathsConfig.auth.signin
+        return NextResponse.rewrite(url)
     }
 
     if (
@@ -20,7 +22,9 @@ export const authMiddleware = async (request: NextRequest) => {
             request.nextUrl.pathname.startsWith(route)
         )
     ) {
-        return NextResponse.redirect(pathsConfig.dashboard.home)
+        const url = request.nextUrl.clone()
+        url.pathname = pathsConfig.dashboard.home
+        return NextResponse.rewrite(url)
     }
 
     return NextResponse.next({
