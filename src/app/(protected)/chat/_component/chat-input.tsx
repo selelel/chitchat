@@ -16,9 +16,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
 const formSchema = z.object({
-    message: z
-        .string({ required_error: 'Please Send A Message' })
-        .min(0, "Please don't send an empty message"),
+    message: z.string({ required_error: 'Please Send A Message' }),
 })
 
 interface ChatInputProps {
@@ -28,6 +26,9 @@ interface ChatInputProps {
 function ChatInput({ onSubmit }: ChatInputProps) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
+        defaultValues: {
+            message: '',
+        },
     })
 
     const handleSubmit = (values: z.infer<typeof formSchema>) => {
