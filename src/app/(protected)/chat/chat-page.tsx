@@ -40,7 +40,6 @@ function ChatPage() {
     }, [socket])
 
     const handleSendMessage = ({ message }: { message: string }) => {
-        console.log('message', message, socket)
         if (socket && socket.connected) {
             socket.emit(CHAT_EVENT['SENT_MESSAGES'], {
                 text: message,

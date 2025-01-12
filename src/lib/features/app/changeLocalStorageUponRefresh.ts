@@ -5,20 +5,20 @@ import { GraphQLClient } from 'graphql-request'
 import { GetUserByIdQueryDocument } from './appQuery'
 import pathsConfig from '@/config/pathConfig'
 import { client } from '@/utils/server/graphql-client'
+import { localStorageSetItem } from '@/utils/helper/localstorage'
 
 export const changeLocalStorageUponRefresh = async () => {
     try {
-        const { getChatConversation } = (await client.request(
-            GetUserByIdQueryDocument
-        )) as {
-            getChatConversation: User
+        const {
+            getUserById: { _id },
+        } = (await client.request(GetUserByIdQueryDocument)) as {
+            getUserById: User
         }
-
-        const user_id = getChatConversation._id
+        console.log(_id)
         //! SET HERE THE ACCESSTOKEN, PLEASE RESOLVE THIS OR COMEUP WITH A BETTER APPROACH
-        window.localStorage.setItem(LOCALSTORAGE['USER_ID'], user_id)
+        localStorageSetItem(LOCALSTORAGE['USER_ID'], _id)
 
-        return user_id
+        return _id
     } catch (error: unknown) {
         console.log(error, error instanceof Error)
         if (error instanceof Error) {
