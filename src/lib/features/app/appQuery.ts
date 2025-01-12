@@ -4,7 +4,9 @@ export const GetUserByIdQueryDocument = `query GetUserById {
         email
         tags
         status
-        isPrivate
+        chats {
+            _id
+        }
     }
 }
  `

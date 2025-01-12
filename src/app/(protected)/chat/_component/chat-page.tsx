@@ -1,9 +1,7 @@
 'use client'
-import Layout from '@/components/layout/layout'
-import ChatInput from './_component/chat-input'
-import ChatConversation from './_component/chat-conversation'
+import ChatInput from './chat-input'
+import ChatConversation from './chat-conversation'
 import { Container } from '@/components/commons/commons'
-import { io, Socket } from 'socket.io-client'
 import { useEffect, useRef, useState } from 'react'
 import { LOCALSTORAGE } from '@/constants/localstorage'
 import { localStorageGetItem } from '@/utils/helper/localstorage'
@@ -11,6 +9,7 @@ import { CHAT_EVENT } from '@/constants/socket'
 import { Message } from '@/lib/graphql/graphqlTypes'
 import useSocket from '@/utils/socket/socketHook'
 import { env } from '@/config/env'
+import ChatLayout from './chat-layout'
 
 function ChatPage() {
     const chatId = '66b0afe1ae5bab67d0637688'
@@ -50,12 +49,12 @@ function ChatPage() {
     }
 
     return (
-        <Layout>
+        <ChatLayout>
             <Container className="h-full flex flex-col gap-2 items-between">
                 <ChatConversation chatId={chatId} newChat={newChat} />
                 <ChatInput onSubmit={handleSendMessage} />
             </Container>
-        </Layout>
+        </ChatLayout>
     )
 }
 

@@ -12,3 +12,19 @@ export const GetConversationMutationDocument = `mutation getConversation($getCon
     }
 }
 `
+
+export const GetAllChatsQueryDocument = `query GetAllChats {
+    getAllChats {
+        _id
+        usersId {
+            _id
+            user {
+                firstname
+                username
+                lastname
+                hide_name
+            }
+        }
+    }
+}
+`

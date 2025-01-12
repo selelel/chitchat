@@ -11,8 +11,7 @@ function ChatConversation({
     chatId: string
     newChat: Message[]
 }) {
-    const { data } = useGetUserInfoQuery()
-    const [getConversation, { data: conversation, isLoading, isError }] =
+    const [getConversation, { data: conversation }] =
         useGetConversationMutation()
 
     useEffect(() => {

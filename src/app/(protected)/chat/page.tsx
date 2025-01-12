@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import ChatPage from './chat-page'
+import ChatPage from './_component/chat-page'
 
 export default function IndexPage() {
     return <ChatPage />
