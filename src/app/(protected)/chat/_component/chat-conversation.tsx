@@ -14,7 +14,6 @@ function ChatConversation({
     const { data } = useGetUserInfoQuery()
     const [getConversation, { data: conversation, isLoading, isError }] =
         useGetConversationMutation()
-    console.log(data, conversation, newChat)
 
     useEffect(() => {
         getConversation({

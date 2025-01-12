@@ -9,49 +9,40 @@ import { LOCALSTORAGE } from '@/constants/localstorage'
 import { localStorageGetItem } from '@/utils/helper/localstorage'
 import { CHAT_EVENT } from '@/constants/socket'
 import { Message } from '@/lib/graphql/graphqlTypes'
+import useSocket from '@/utils/socket/socketHook'
+import { env } from '@/config/env'
 
 function ChatPage() {
-    const socketRef = useRef<Socket | null>(null)
     const chatId = '66b0afe1ae5bab67d0637688'
+    const socket = useSocket(env.CHAT_SOCKET_URL, {
+        auth: {
+            authorization: `Bearer ${localStorageGetItem(LOCALSTORAGE['ACCESSTOKEN'])}`,
+        },
+        query: {
+            chatid: chatId,
+        },
+        transports: ['websocket'],
+    })
+
     const [newChat, setNewChat] = useState<Message[]>([])
 
     useEffect(() => {
-        socketRef.current = io('http://localhost:8585', {
-            auth: {
-                authorization: `Bearer ${localStorageGetItem(LOCALSTORAGE['ACCESSTOKEN'])}`,
-                chatid: chatId,
-            },
-            extraHeaders: {
-                authorization: `Bearer ${localStorageGetItem(LOCALSTORAGE['ACCESSTOKEN'])}`,
-                chatid: chatId,
-            },
-            transports: ['websocket'],
-        })
+        ;(() => {
+            if (!socket) return
+            socket.on('connect', () => {
+                console.log('Connected to chat:', socket.id)
+            })
 
-        socketRef.current.on('connect', () => {
-            console.log('Connected to chat:', socketRef.current?.id)
-        })
-
-        // Listen for message history
-        socketRef.current.on(
-            CHAT_EVENT['ON_LISTENING'],
-            (messages: Message) => {
+            socket.on(CHAT_EVENT['ON_LISTENING'], (messages: Message) => {
                 setNewChat((prev) => [messages, ...prev])
-            }
-        )
-
-        socketRef.current.on('connect_error', (error) => {
-            console.error('Connection error:', error)
-        })
-
-        return () => {
-            socketRef.current?.disconnect()
-        }
-    }, [])
+            })
+        })()
+    }, [socket])
 
     const handleSendMessage = ({ message }: { message: string }) => {
-        if (socketRef.current?.connected) {
-            socketRef.current.emit(CHAT_EVENT['SENT_MESSAGES'], {
+        console.log('message', message, socket)
+        if (socket && socket.connected) {
+            socket.emit(CHAT_EVENT['SENT_MESSAGES'], {
                 text: message,
             })
         } else {

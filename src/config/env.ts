@@ -4,10 +4,12 @@ import * as Yup from 'yup'
 const createEnv = () => {
     const envSchema = Yup.object({
         BASE_API_URL: Yup.string().default('http://localhost:8080'),
+        CHAT_SOCKET_URL: Yup.string().default('http://localhost:8585'),
     })
 
     const envVars = {
         BASE_API_URL: process.env.BASE_API_URL,
+        CHAT_SOCKET_URL: process.env.CHAT_SOCKET_URL,
     }
 
     try {
