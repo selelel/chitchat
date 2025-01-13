@@ -2,6 +2,8 @@ import React from 'react'
 import { Chat, User } from '@/lib/graphql/graphqlTypes'
 import { localStorageGetItem } from '@/utils/helper/localstorage'
 import { LOCALSTORAGE } from '@/constants/localstorage'
+// import placeholder_img from '/placeholder-profile.webp'
+import Image from 'next/image'
 
 interface ChatBlockProps {
     data: Chat & {
@@ -9,11 +11,29 @@ interface ChatBlockProps {
     }
 }
 
-function ChatBlock({ data }: ChatBlockProps) {
+function ChatItem({ data }: ChatBlockProps) {
     const name = data.usersId.filter(
         (data) => data._id !== localStorageGetItem(LOCALSTORAGE['USER_ID'])
     )[0]
-    return <div>{name.user.firstname}</div>
+    return (
+        <div className="flex border rounded-xl p-4 gap-2 items-center hover:bg-gray-100 active:[--tw-bg-opacity:0.5] cursor-pointer">
+            <Image
+                src={data.avatar || '/placeholder-profile.webp'}
+                alt="avatar"
+                className="w-12 h-12 rounded-full"
+                width="60"
+                height="60"
+            />
+            <div className="flex flex-col items-start">
+                <p className="font-semibold text-xs pointer-events-none">
+                    {name.user.firstname}
+                </p>
+                <p className="text-[12px] pointer-events-none">
+                    {name.user.username}
+                </p>
+            </div>
+        </div>
+    )
 }
 
-export default ChatBlock
+export default ChatItem

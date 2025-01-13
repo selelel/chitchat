@@ -1,4 +1,5 @@
 'use client'
+import pathConfig from '@/config/pathConfig'
 import styled from '@emotion/styled'
 import { DM_Serif_Display } from 'next/font/google'
 
@@ -8,11 +9,12 @@ const dm_serif_display = DM_Serif_Display({
 })
 
 export const ccl = ({ className }: { className?: string }) => (
-    <h4
+    <a
+        href={pathConfig.dashboard.home}
         className={`whitespace-nowrap text-2xl break-n font-normal text-custom-black ${dm_serif_display.className} ${className}`}
     >
         ChitChat
-    </h4>
+    </a>
 )
 
 // Main layout component
