@@ -10,7 +10,7 @@ function AllChat() {
     const getAllChats = data?.getAllChats || []
 
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 min-h-screen overflow-y-auto">
             <ChitChatLogo className="text-2xl pt-3" />
             <p className="text-xl font-bold">Messages</p>
             <div className="flex flex-col gap-2">

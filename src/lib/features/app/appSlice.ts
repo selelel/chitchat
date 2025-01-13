@@ -10,6 +10,7 @@ import { LOCALSTORAGE } from '@/constants/localstorage'
 const initialState: ServerTypes = {
     server_status: { status: 'DOWN' },
     access_token: undefined,
+    user_id: undefined,
 }
 
 export const appSlice = createAppSlice({
@@ -36,8 +37,7 @@ export const appSlice = createAppSlice({
             changeLocalStorageUponRefresh,
             {
                 fulfilled: (state, actions) => {
-                    console.log(actions.payload)
-                    state.access_token = actions.payload
+                    state.user_id = actions.payload
                 },
             }
         ),

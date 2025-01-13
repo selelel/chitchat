@@ -6,6 +6,7 @@ import { refreshToken, selectAccessToken } from '@/lib/features/app/appSlice'
 import { Parse_Message } from '@/helper/error'
 import { GRAPHQL_URI } from '@/config/env'
 import { LOCALSTORAGE } from '@/constants/localstorage'
+import { localStorageGetItem } from '@/utils/helper/localstorage'
 
 const client = new GraphQLClient(GRAPHQL_URI, { credentials: 'include' })
 
@@ -27,7 +28,7 @@ const dynamicBaseQuery = async (
     const token = selectAccessToken(state)
 
     setAuthorizationHeader(
-        token || window.localStorage.getItem(LOCALSTORAGE['ACCESSTOKEN'])!
+        token || localStorageGetItem(LOCALSTORAGE['ACCESSTOKEN'])!
     )
     let result = await graphqlBaseQuery(args, api, extraOptions)
 

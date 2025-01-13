@@ -3,6 +3,7 @@ import { Parse_Message } from '@/helper/error'
 import { GetUserByIdQueryDocument } from './appQuery'
 import { Query, User } from '@/lib/graphql/graphqlTypes'
 import { LOCALSTORAGE } from '@/constants/localstorage'
+import { localStorageSetItem } from '@/utils/helper/localstorage'
 
 export const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
     endpoints: (build) => ({
@@ -12,10 +13,7 @@ export const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
             }),
             transformResponse: ({ getUserById }: Query) => {
                 // ! setting here the localstorage changing user_id
-                window.localStorage.setItem(
-                    LOCALSTORAGE['USER_ID'],
-                    getUserById._id
-                )
+                localStorageSetItem(LOCALSTORAGE['USER_ID'], getUserById._id)
                 return getUserById
             },
             transformErrorResponse: (error) => {

@@ -2,13 +2,13 @@ import { GRAPHQL_URI } from '@/config/env'
 import { Query, User } from '@/lib/graphql/graphqlTypes'
 import { GraphQLClient } from 'graphql-request'
 import { GetUserByIdQueryDocument } from './appQuery'
+import { localStorageGetItem } from '@/utils/helper/localstorage'
+import { LOCALSTORAGE } from '@/constants/localstorage'
 
 export const fetchUserInfo = async (_: undefined, { getState }: any) => {
     const client = new GraphQLClient(GRAPHQL_URI, { credentials: 'include' })
-    const access_token = getState().app.accesstoken
-    console.log(access_token, getState())
     client.setHeaders({
-        Authorization: access_token ? `Bearer ${access_token}` : '',
+        Authorization: `Bearer ${localStorageGetItem(LOCALSTORAGE['ACCESSTOKEN'])}`,
     })
 
     try {

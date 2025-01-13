@@ -1,6 +1,5 @@
-import React, { CSSProperties, useEffect, useState } from 'react'
+import React, { CSSProperties, useEffect } from 'react'
 import SingleChatComponent from './chat-single-message'
-import { useGetUserInfoQuery } from '@/lib/features/app/appApi'
 import { useGetConversationMutation } from '@/lib/features/chat/chatApi'
 import { Message } from '@/lib/graphql/graphqlTypes'
 
@@ -21,7 +20,7 @@ function ChatConversation({
                 pagination: { limit: 30, skip: 0 },
             },
         })
-    }, [])
+    }, [chatId])
 
     return (
         <div className="h-full w-full flex flex-col-reverse items-end max-h-full border rounded-3xl p-4 overflow-y-auto no-scrollbar">
