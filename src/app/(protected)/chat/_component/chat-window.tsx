@@ -9,6 +9,8 @@ import useSocket from '@/utils/socket/socketHook'
 import { Message } from '@/lib/graphql/graphqlTypes'
 import { env } from '@/config/env'
 
+// TODO: instead of this approach try to create a dynamic page where in it will get the chat id in the url and then walahhh
+
 function ChatWindow({ chatId }: { chatId: string }) {
     const [newChatId, setNewChatId] = useState<string>(chatId)
     const socket = useSocket(env.CHAT_SOCKET_URL, {
