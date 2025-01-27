@@ -2,7 +2,6 @@ import type { Action, ThunkAction } from '@reduxjs/toolkit'
 import { combineSlices, configureStore } from '@reduxjs/toolkit'
 import { appSlice } from './features/app/appSlice'
 import { baseApiWithGraphql } from '@/lib/graphql/graphqlBaseApi'
-import { authMiddleware } from '@/lib/features/auth/authMiddleware'
 
 const rootReducer = combineSlices(appSlice, baseApiWithGraphql)
 export type RootState = ReturnType<typeof rootReducer>

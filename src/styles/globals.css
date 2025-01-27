@@ -6,6 +6,8 @@
     --foreground-color: #33363f;
     --background-start-color: #d6dbdc;
     --background-end-color: #ffffff;
+
+    --space-unit: 8;
 }
 
 body {
@@ -24,5 +26,17 @@ body {
         --foreground-color: #ffffff;
         --background-start-color: #000000;
         --background-end-color: #000000;
+    }
+}
+
+@layer utilities {
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .no-scrollbar {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
     }
 }

@@ -321,6 +321,7 @@ export type PostOptionInput = {
 
 export type Query = {
     __typename?: 'Query'
+    getAllChats: Array<Chat>
     getUserById: User
     logoutAllDevices: Scalars['Boolean']['output']
     logoutDevice: Scalars['Boolean']['output']

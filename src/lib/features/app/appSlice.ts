@@ -3,10 +3,14 @@ import type { AppThunk } from '@/lib/store'
 import { fecthServerStatus } from './fetchServerStatus'
 import { ServerTypes } from '@/lib/types/appInitialStateType'
 import { fetchRefreshToken } from './fetchRequestToken'
+import { changeLocalStorageUponRefresh } from './changeLocalStorageUponRefresh'
+import { localStorageRemoveItem } from '@/utils/helper/localstorage'
+import { LOCALSTORAGE } from '@/constants/localstorage'
 
 const initialState: ServerTypes = {
     server_status: { status: 'DOWN' },
     access_token: undefined,
+    user_id: undefined,
 }
 
 export const appSlice = createAppSlice({
@@ -25,15 +29,26 @@ export const appSlice = createAppSlice({
         ),
         refreshToken: create.asyncThunk(async () => await fetchRefreshToken(), {
             fulfilled: (state, actions) => {
+                console.log(actions.payload)
                 state.access_token = actions.payload
             },
         }),
+        setNewUserLocalStorage: create.asyncThunk(
+            changeLocalStorageUponRefresh,
+            {
+                fulfilled: (state, actions) => {
+                    state.user_id = actions.payload
+                },
+            }
+        ),
         getAccessToken: create.reducer(
             (state, actions: { payload: ServerTypes['access_token'] }) => {
                 state.access_token = actions.payload
             }
         ),
         removeAccessToken: create.reducer((state) => {
+            localStorageRemoveItem(LOCALSTORAGE['USER_ID'])
+            localStorageRemoveItem(LOCALSTORAGE['ACCESSTOKEN'])
             state.access_token = undefined
         }),
     }),
@@ -48,6 +63,7 @@ export const {
     getAccessToken,
     removeAccessToken,
     refreshToken,
+    setNewUserLocalStorage,
 } = appSlice.actions
 
 export const { selectSeverStatus, selectAccessToken } = appSlice.selectors

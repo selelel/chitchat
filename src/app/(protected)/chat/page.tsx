@@ -1,8 +1,13 @@
 import type { Metadata } from 'next'
-import ChatPage from './chat-page'
+import ChatPage from './_component/chat-page'
+import { ChatProvider } from './_context/chatContext'
 
 export default function IndexPage() {
-    return <ChatPage />
+    return (
+        <ChatProvider>
+            <ChatPage />
+        </ChatProvider>
+    )
 }
 
 export const metadata: Metadata = {

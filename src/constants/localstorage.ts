@@ -1,4 +1,4 @@
 export enum LOCALSTORAGE {
-    TOKEN = 'token',
+    ACCESSTOKEN = 'accesstoken',
     USER_ID = 'user_id',
 }
