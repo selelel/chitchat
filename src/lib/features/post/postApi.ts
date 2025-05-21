@@ -10,6 +10,7 @@ import { LogInMutationDocument } from '../auth/authQuery'
 import {
     CreateNewPostMutationDocument,
     GetPostQueryDocument,
+    GetRecommendedPostsQueryDocument,
 } from './postQuery'
 
 const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
@@ -25,6 +26,11 @@ const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
             transformErrorResponse: (error) => {
                 return { ...error, message: Parse_Message(error) }
             },
+            transformResponse: (data: {
+                createNewPost: Mutation['createNewPost']
+            }) => {
+                return data
+            },
         }),
         getPost: build.mutation<{ getPost: Mutation['getPost'] }, string>({
             query: (variables) => ({
@@ -35,7 +41,25 @@ const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
                 return { ...error, message: Parse_Message(error) }
             },
         }),
+        getRecommendedPosts: build.mutation<
+            { getRecommendedPosts: Mutation['getRecommendedPosts'] },
+            { skip: number; limit: number }
+        >({
+            query: (variables) => ({
+                document: GetRecommendedPostsQueryDocument,
+                variables: {
+                    pagination: variables,
+                },
+            }),
+            transformErrorResponse: (error) => {
+                return { ...error, message: Parse_Message(error) }
+            },
+        }),
     }),
 })
 
-export const { useCreateNewPostMutation, useGetPostMutation } = injectedRtkApi
+export const {
+    useCreateNewPostMutation,
+    useGetPostMutation,
+    useGetRecommendedPostsMutation,
+} = injectedRtkApi

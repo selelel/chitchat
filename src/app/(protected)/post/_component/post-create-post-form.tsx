@@ -39,7 +39,7 @@ function CreatePostForm() {
         },
     ] = useCreateNewPostMutation()
 
-    const [getPost, { data: post, isLoading: loadingPost, error }] =
+    const [getPost, { data: post23, isLoading: loadingPost, error }] =
         useGetPostMutation()
 
     const token = useAppSelector(selectAccessToken)
@@ -64,11 +64,13 @@ function CreatePostForm() {
 
             if (file && file.fileList.length > 0) {
                 setLoadImage(true)
+                console.log(post.data?.createNewPost?._id)
                 await append_image(file, post.data?.createNewPost?._id, token)
                 setLoadImage(false)
             }
 
             getPost(post.data.createNewPost._id)
+            console.log(post23)
         } catch (err) {
             console.log(err)
         }
@@ -125,11 +127,11 @@ function CreatePostForm() {
                 <>Done.</>
             )}
 
-            {!!post && (
+            {!!post23 && (
                 <div>
-                    <p>{post.getPost.content.description}</p>
-                    {post.getPost.content.images &&
-                        post.getPost.content.images.map(
+                    <p>{post23.getPost.content.description}</p>
+                    {post23.getPost.content.images &&
+                        post23.getPost.content.images.map(
                             (d: string | StaticImport) => (
                                 <Image
                                     src={d}

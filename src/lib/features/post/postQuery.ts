@@ -22,3 +22,26 @@ export const GetPostQueryDocument = `mutation GetPost($postId: String!) {
                             }
                         }
                     `
+
+export const GetRecommendedPostsQueryDocument = `
+    mutation getRecommendedPosts($pagination: Pagination!) {
+        getRecommendedPosts(pagination: $pagination) {
+            _id
+            shares
+            author {
+                user {
+                    username
+                }
+            }
+            content {
+                text,
+                description,
+                images
+            }
+            audience
+            createdAt
+            updatedAt
+        }
+    }
+
+`

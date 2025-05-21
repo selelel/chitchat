@@ -3,9 +3,9 @@ import { SignUpUserCredentialForm } from '@/app/(auth)/signup/_component/signup-
 import { GhostPatternBackground } from '@/styles/emotion/ghost_bg'
 import { useState } from 'react'
 import { UserSignUpContext } from '@/app/(auth)/signup/_context/signup-context'
-import { SingUpUserInfoForm } from '@/app/(auth)/signup/_component/singup-user-info-form'
 import { user_credential_type } from '@/lib/schemas/signin.form.dto'
 import { ChitChatLogo } from '@/components/commons/icon'
+import { SingUpUserInfoForm } from './signup-user-info-form'
 
 export default function SignUpPage() {
     const [userInfoValues, setUserDataValues] =

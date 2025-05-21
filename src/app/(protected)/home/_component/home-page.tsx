@@ -7,6 +7,7 @@ import { removeAccessToken } from '@/lib/features/app/appSlice'
 import { redirect } from 'next/navigation'
 import Layout from '@/components/layout/layout'
 import pathsConfig from '@/config/pathConfig'
+import RecommendedPosts from './recommended-posts'
 
 function HomePage() {
     const [logOut, { data, isLoading }] = useLogOutMutation()
@@ -30,6 +31,7 @@ function HomePage() {
                 <p className="font-semibold text-custom-grey">Log Out</p>
             </Button>
             <Divider />
+            <RecommendedPosts />
         </Layout>
     )
 }
