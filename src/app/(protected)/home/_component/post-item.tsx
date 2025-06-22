@@ -5,7 +5,12 @@ import { UserOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons'
 import { formatDistanceToNow } from 'date-fns'
 import { PostContentObject } from '@/lib/graphql/graphqlTypes'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
-import { X } from 'lucide-react'
+import { Heart, X } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import {
+    useLikePostMutation,
+    useUnlikePostMutation,
+} from '@/lib/features/post/postApi'
 
 const { Text, Paragraph } = Typography
 
@@ -17,6 +22,8 @@ interface PostItemProps {
     updatedAt: string
     shares: number
     username: string
+    likes: number
+    isLiked?: boolean
 }
 
 const PostItem: React.FC<PostItemProps> = ({
@@ -26,10 +33,38 @@ const PostItem: React.FC<PostItemProps> = ({
     createdAt,
     shares,
     username,
+    likes,
+    isLiked,
 }) => {
     const [previewImage, setPreviewImage] = useState<string>('')
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
+    const [likePost, { isLoading: isLikeLoading }] = useLikePostMutation()
+    const [unlikePost, { isLoading: isUnlikeLoading }] = useUnlikePostMutation()
+    const [localLikes, setLocalLikes] = useState(likes)
+    const [localIsLiked, setLocalIsLiked] = useState(isLiked || false)
+
+    const handleToggleLike = async () => {
+        try {
+            // Optimistically update the UI
+            setLocalLikes((prev) => (localIsLiked ? prev - 1 : prev + 1))
+            setLocalIsLiked((prev) => !prev)
+
+            // Make the API call
+            if (localIsLiked) {
+                const result = await unlikePost({ postId: _id }).unwrap()
+                console.log('Unlike result:', result)
+            } else {
+                const result = await likePost({ postId: _id }).unwrap()
+                console.log('Like result:', result)
+            }
+        } catch (error) {
+            // Revert the optimistic update if the mutation fails
+            setLocalLikes(likes)
+            setLocalIsLiked(isLiked || false)
+            console.error('Failed to toggle like:', error)
+        }
+    }
 
     const handleImageClick = (image: string, index: number) => {
         setPreviewImage(image)
@@ -220,7 +255,22 @@ const PostItem: React.FC<PostItemProps> = ({
 
                 {renderImageGallery()}
 
-                <Space>
+                <Space className="w-full justify-between">
+                    <button
+                        onClick={handleToggleLike}
+                        disabled={isLikeLoading || isUnlikeLoading}
+                        className="flex items-center space-x-2 hover:opacity-80 transition-opacity disabled:opacity-50"
+                    >
+                        <Heart
+                            className={cn(
+                                'h-5 w-5 transition-all duration-300',
+                                localIsLiked
+                                    ? 'fill-red-500 text-red-500 scale-110'
+                                    : 'text-gray-500'
+                            )}
+                        />
+                        <Text type="secondary">{localLikes} likes</Text>
+                    </button>
                     <Text type="secondary">{shares} shares</Text>
                 </Space>
             </Space>

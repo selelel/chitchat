@@ -12,7 +12,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from '@/components/ui/popover'
-import { LogOut, User } from 'lucide-react'
+import { Heart, LogOut, MessageSquare, User } from 'lucide-react'
 import Link from 'next/link'
 
 export default function ProfileButton() {
@@ -59,6 +59,21 @@ export default function ProfileButton() {
                         <User className="h-4 w-4" />
                         <span>View Profile</span>
                     </Link>
+                    <Link
+                        href="/profile/liked"
+                        className="flex items-center space-x-2 px-2 py-1.5 text-sm rounded-md hover:bg-gray-100"
+                    >
+                        <Heart className="h-4 w-4" />
+                        <span>Liked Posts</span>
+                    </Link>
+                    <Link
+                        href="/profile/comments"
+                        className="flex items-center space-x-2 px-2 py-1.5 text-sm rounded-md hover:bg-gray-100"
+                    >
+                        <MessageSquare className="h-4 w-4" />
+                        <span>My Comments</span>
+                    </Link>
+                    <div className="h-px bg-gray-200 my-1" />
                     <button
                         onClick={() => logOut()}
                         disabled={isLoading}

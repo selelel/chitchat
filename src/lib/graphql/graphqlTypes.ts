@@ -165,12 +165,14 @@ export type Mutation = {
     getRecommendedPosts: Array<Post>
     getUserFollowingPosts: Array<Post>
     getUserPrivateChatRoom: Chat
+    likePost: Scalars['Boolean']['output']
     loginUser: LoginResponse
     registerUser: User
     removePost: User
     removePostComment: Post
     removeUserFollower: User
     removeUserFollowing: User
+    unlikePost: Scalars['Boolean']['output']
     updatePost: Post
     updateUserPassword: Scalars['Boolean']['output']
 }
@@ -234,6 +236,10 @@ export type MutationGetUserPrivateChatRoomArgs = {
     targetUser: Scalars['String']['input']
 }
 
+export type MutationLikePostArgs = {
+    postId: Scalars['String']['input']
+}
+
 export type MutationLoginUserArgs = {
     userInput: LoginUserInput
 }
@@ -256,6 +262,10 @@ export type MutationRemoveUserFollowerArgs = {
 
 export type MutationRemoveUserFollowingArgs = {
     targetUserId: Scalars['String']['input']
+}
+
+export type MutationUnlikePostArgs = {
+    postId: Scalars['String']['input']
 }
 
 export type MutationUpdatePostArgs = {

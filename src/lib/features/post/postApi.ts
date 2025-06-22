@@ -11,6 +11,8 @@ import {
     CreateNewPostMutationDocument,
     GetPostQueryDocument,
     GetRecommendedPostsQueryDocument,
+    LikePostMutationDocument,
+    UnlikePostMutationDocument,
 } from './postQuery'
 
 const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
@@ -55,6 +57,26 @@ const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
                 return { ...error, message: Parse_Message(error) }
             },
         }),
+        likePost: build.mutation({
+            query: (variables) => ({
+                document: LikePostMutationDocument,
+                variables,
+            }),
+            transformResponse: (response) => {
+                console.log('Like response:', response)
+                return response
+            },
+        }),
+        unlikePost: build.mutation({
+            query: (variables) => ({
+                document: UnlikePostMutationDocument,
+                variables,
+            }),
+            transformResponse: (response) => {
+                console.log('Unlike response:', response)
+                return response
+            },
+        }),
     }),
 })
 
@@ -62,4 +84,6 @@ export const {
     useCreateNewPostMutation,
     useGetPostMutation,
     useGetRecommendedPostsMutation,
+    useLikePostMutation,
+    useUnlikePostMutation,
 } = injectedRtkApi
