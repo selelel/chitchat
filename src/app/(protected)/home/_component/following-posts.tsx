@@ -1,19 +1,23 @@
 import React, { useEffect } from 'react'
 import { Spin } from 'antd'
-import { useGetRecommendedPostsMutation } from '@/lib/features/post/postApi'
+import {
+    useGetFollowingPostsMutation,
+    useGetRecommendedPostsMutation,
+} from '@/lib/features/post/postApi'
 import PostItem from '@/app/(protected)/home/_component/post-item'
 import { Post } from '@/lib/graphql/graphqlTypes'
 import { localStorageGetItem } from '@/utils/helper/localstorage'
 import { LOCALSTORAGE } from '@/constants/localstorage'
 
-const RecommendedPosts: React.FC = () => {
+const FollowingPosts: React.FC = () => {
     const [
-        getRecommendedPosts,
-        { data: recommendedPosts, isLoading: isLoadingPosts },
-    ] = useGetRecommendedPostsMutation()
+        getFollowingPosts,
+        { data: followingPosts, isLoading: isLoadingPosts },
+    ] = useGetFollowingPostsMutation()
 
     useEffect(() => {
-        getRecommendedPosts({ skip: 0, limit: 10 })
+        getFollowingPosts({ skip: 0, limit: 10 })
+        console.log(followingPosts)
     }, [])
 
     if (isLoadingPosts) {
@@ -25,7 +29,8 @@ const RecommendedPosts: React.FC = () => {
     }
     return (
         <div className="max-w-2xl mx-auto">
-            {recommendedPosts?.getRecommendedPosts.map((post: Post) => {
+            {followingPosts?.getUserFollowingPosts.map((post: Post) => {
+                console.log(post.likes)
                 return (
                     <PostItem
                         key={post._id}
@@ -51,4 +56,4 @@ const RecommendedPosts: React.FC = () => {
     )
 }
 
-export default RecommendedPosts
+export default FollowingPosts

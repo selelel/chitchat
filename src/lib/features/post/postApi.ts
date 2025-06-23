@@ -5,12 +5,14 @@ import {
     LoginUserInput,
     PostContentInput,
     PostOptionInput,
+    Query,
 } from '@/lib/graphql/graphqlTypes'
 import { LogInMutationDocument } from '../auth/authQuery'
 import {
     CreateNewPostMutationDocument,
     GetPostQueryDocument,
     GetRecommendedPostsQueryDocument,
+    GetUserFollowingPostsQueryDocument,
     LikePostMutationDocument,
     UnlikePostMutationDocument,
 } from './postQuery'
@@ -34,13 +36,16 @@ const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
                 return data
             },
         }),
-        getPost: build.mutation<{ getPost: Mutation['getPost'] }, string>({
+        getPost: build.mutation<{ getPost: Query['getPost'] }, string>({
             query: (variables) => ({
                 document: GetPostQueryDocument,
                 variables: { postId: variables },
             }),
             transformErrorResponse: (error) => {
                 return { ...error, message: Parse_Message(error) }
+            },
+            transformResponse: (data: { getPost: Query['getPost'] }) => {
+                return data
             },
         }),
         getRecommendedPosts: build.mutation<
@@ -49,6 +54,20 @@ const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
         >({
             query: (variables) => ({
                 document: GetRecommendedPostsQueryDocument,
+                variables: {
+                    pagination: variables,
+                },
+            }),
+            transformErrorResponse: (error) => {
+                return { ...error, message: Parse_Message(error) }
+            },
+        }),
+        getFollowingPosts: build.mutation<
+            { getUserFollowingPosts: Mutation['getUserFollowingPosts'] },
+            { skip: number; limit: number }
+        >({
+            query: (variables) => ({
+                document: GetUserFollowingPostsQueryDocument,
                 variables: {
                     pagination: variables,
                 },
@@ -86,4 +105,5 @@ export const {
     useGetRecommendedPostsMutation,
     useLikePostMutation,
     useUnlikePostMutation,
+    useGetFollowingPostsMutation,
 } = injectedRtkApi

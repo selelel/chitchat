@@ -4,29 +4,78 @@ export const CreateNewPostMutationDocument = `mutation createNewPost(
     ) {
         createNewPost(postContent: $contentInput, postOption: $optionInput) {
             _id
+            shares
+            author {
+                user {
+                    username
+                }
+            }
+            content {
+                text
+                description
+                images
+            }
+            likes {
+                _id
+            }
+            audience
+            createdAt
+            updatedAt
         }
     }`
 
-export const GetPostQueryDocument = `mutation GetPost($postId: String!) {
-                            getPost(postId: $postId) {
-                                _id
-                                author {
-                                    _id
-                                }
-                                content {
-                                    description
-                                    images
-                                    text
-                                }
-                                    likes
-                                audience
-                            }
-                        }
-                    `
+export const GetPostQueryDocument = `query GetPost($postId: String!) {
+        getPost(postId: $postId) {
+            _id
+            shares
+            author {
+                user {
+                    username
+                }
+            }
+            content {
+                text
+                description
+                images
+            }
+            likes {
+                _id
+            }
+            audience
+            createdAt
+            updatedAt
+        }
+    }`
 
 export const GetRecommendedPostsQueryDocument = `
     mutation getRecommendedPosts($pagination: Pagination!) {
         getRecommendedPosts(pagination: $pagination) {
+            _id
+            shares
+            author {
+                user {
+                    username
+                }
+            }
+            content {
+                text,
+                description,
+                images
+            }
+            likes {
+                _id
+            }
+            audience
+            createdAt
+            updatedAt
+        }
+    }
+
+`
+
+export const GetUserFollowingPostsQueryDocument = `
+    mutation getUserFollowingPosts($pagination: Pagination!) {
+        getUserFollowingPosts(pagination: $pagination) {
             _id
             shares
             author {

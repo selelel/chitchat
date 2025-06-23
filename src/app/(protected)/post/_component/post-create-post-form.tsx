@@ -11,9 +11,8 @@ import {
 import { Alert, Divider } from 'antd'
 import { selectAccessToken } from '@/lib/features/app/appSlice'
 import { useAppSelector } from '@/lib/hooks'
-import Image from 'next/image'
-import { StaticImport } from 'next/dist/shared/lib/get-img-props'
 import { append_image } from '@/app/actions'
+import PostItem from '../../home/_component/post-item'
 
 const audience = [
     { value: 'public', label: 'Public' },
@@ -33,15 +32,16 @@ function CreatePostForm() {
     const [
         createNewPost,
         {
-            data: createPostData,
+            data: createdPost,
             isLoading: isCreatingPost,
             error: createPostError,
         },
     ] = useCreateNewPostMutation()
 
-    const [getPost, { data: post23, isLoading: loadingPost, error }] =
-        useGetPostMutation()
-
+    const [
+        getPost,
+        { data: createdPostWithImage, isLoading: loadingPost, error },
+    ] = useGetPostMutation()
     const token = useAppSelector(selectAccessToken)
     const [loadImage, setLoadImage] = useState<boolean | null>(null)
 
@@ -70,11 +70,13 @@ function CreatePostForm() {
             }
 
             getPost(post.data.createNewPost._id)
-            console.log(post23)
+            console.log(createdPostWithImage)
         } catch (err) {
             console.log(err)
         }
     }
+
+    console.log(createdPostWithImage)
 
     return (
         <Form submit={handleSubmit(handleCreatePost)} className="space-y-2">
@@ -119,29 +121,23 @@ function CreatePostForm() {
                 <p className="font-semibold text-custom-grey">Post</p>
             </Form.Button>
 
-            {loadImage === null ? (
-                <></>
-            ) : loadImage === true ? (
+            {loadingPost === true ? (
                 <>Loading...</>
             ) : (
-                <>Done.</>
-            )}
-
-            {!!post23 && (
-                <div>
-                    <p>{post23.getPost.content.description}</p>
-                    {post23.getPost.content.images &&
-                        post23.getPost.content.images.map(
-                            (d: string | StaticImport) => (
-                                <Image
-                                    src={d}
-                                    width={250}
-                                    height={250}
-                                    alt={String(d)}
-                                />
-                            )
-                        )}
-                </div>
+                <PostItem
+                    key={createdPostWithImage?.getPost._id!}
+                    _id={createdPostWithImage?.getPost._id!}
+                    content={createdPostWithImage?.getPost.content!}
+                    audience={
+                        createdPostWithImage?.getPost.audience! || 'public'
+                    }
+                    createdAt={new Date().toISOString()}
+                    updatedAt={new Date().toISOString()!}
+                    shares={createdPostWithImage?.getPost.shares ?? 0}
+                    username={
+                        createdPostWithImage?.getPost.author.user.username ?? ''
+                    }
+                />
             )}
         </Form>
     )

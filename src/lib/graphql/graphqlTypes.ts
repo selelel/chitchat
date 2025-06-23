@@ -161,7 +161,6 @@ export type Mutation = {
     editPostComment: Comments
     followUser: User
     getChatConversation: Array<Message>
-    getPost: Post
     getRecommendedPosts: Array<Post>
     getUserFollowingPosts: Array<Post>
     getUserPrivateChatRoom: Chat
@@ -218,10 +217,6 @@ export type MutationFollowUserArgs = {
 
 export type MutationGetChatConversationArgs = {
     conversationInput: GetConversation
-}
-
-export type MutationGetPostArgs = {
-    postId: Scalars['String']['input']
 }
 
 export type MutationGetRecommendedPostsArgs = {
@@ -332,11 +327,16 @@ export type PostOptionInput = {
 export type Query = {
     __typename?: 'Query'
     getAllChats: Array<Chat>
+    getPost: Post
     getUserById: User
     logoutAllDevices: Scalars['Boolean']['output']
     logoutDevice: Scalars['Boolean']['output']
     refresh: RefreshResponse
     testQuery: Array<User>
+}
+
+export type QueryGetPostArgs = {
+    postId: Scalars['String']['input']
 }
 
 export type RefreshResponse = {
