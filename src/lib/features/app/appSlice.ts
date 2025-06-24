@@ -1,16 +1,19 @@
 import { createAppSlice } from '@/lib/createAppSlice'
-import type { AppThunk } from '@/lib/store'
+import type { AppThunk, RootState } from '@/lib/store'
 import { fecthServerStatus } from './fetchServerStatus'
 import { ServerTypes } from '@/lib/types/appInitialStateType'
 import { fetchRefreshToken } from './fetchRequestToken'
 import { changeLocalStorageUponRefresh } from './changeLocalStorageUponRefresh'
 import { localStorageRemoveItem } from '@/utils/helper/localstorage'
 import { LOCALSTORAGE } from '@/constants/localstorage'
+import { fetchUserInfo } from './fecthUserInfo'
+import { User } from '@/lib/graphql/graphqlTypes'
 
 const initialState: ServerTypes = {
     server_status: { status: 'DOWN' },
     access_token: undefined,
     user_id: undefined,
+    user_info: null,
 }
 
 export const appSlice = createAppSlice({
@@ -29,8 +32,12 @@ export const appSlice = createAppSlice({
         ),
         refreshToken: create.asyncThunk(async () => await fetchRefreshToken(), {
             fulfilled: (state, actions) => {
-                console.log(actions.payload)
                 state.access_token = actions.payload
+            },
+        }),
+        getUserInfo: create.asyncThunk(async () => await fetchUserInfo(), {
+            fulfilled: (state, actions) => {
+                state.user_info = actions.payload
             },
         }),
         setNewUserLocalStorage: create.asyncThunk(
@@ -55,10 +62,12 @@ export const appSlice = createAppSlice({
     selectors: {
         selectSeverStatus: (counter) => counter.server_status,
         selectAccessToken: (counter) => counter.access_token,
+        selectUserInfo: (counter) => counter.user_info,
     },
 })
 
 export const {
+    getUserInfo,
     isServerOnline,
     getAccessToken,
     removeAccessToken,
@@ -66,7 +75,8 @@ export const {
     setNewUserLocalStorage,
 } = appSlice.actions
 
-export const { selectSeverStatus, selectAccessToken } = appSlice.selectors
+export const { selectSeverStatus, selectAccessToken, selectUserInfo } =
+    appSlice.selectors
 
 export const ServerStatus = (): AppThunk => async (dispatch, getState) => {
     const intervalId = setInterval(async () => {
@@ -83,4 +93,13 @@ export const ServerStatus = (): AppThunk => async (dispatch, getState) => {
     }, 10000)
 
     console.log('Checking server status...')
+}
+
+export const GetUserInfo = (): AppThunk => async (dispatch, getState) => {
+    const state = getState()
+    const user_info = selectSeverStatus(state)
+
+    await dispatch(getUserInfo())
+
+    console.log(user_info)
 }

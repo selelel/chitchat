@@ -329,6 +329,7 @@ export type Query = {
     getAllChats: Array<Chat>
     getPost: Post
     getUserById: User
+    getUserInfo: User
     logoutAllDevices: Scalars['Boolean']['output']
     logoutDevice: Scalars['Boolean']['output']
     refresh: RefreshResponse

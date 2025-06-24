@@ -1,10 +1,23 @@
-export const GetUserByIdQueryDocument = `query GetUserById {
-    getUserById {
+export const GetUserByIdQueryDocument = `query GetUserInfo {
+    getUserInfo {
         _id
         email
         tags
         status
-        chats {
+        isPrivate
+        user {
+            firstname
+            lastname
+            username
+            hide_name
+        }
+        followers {
+            _id
+        }
+        posts {
+            _id
+        }
+        following {
             _id
         }
     }

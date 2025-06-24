@@ -1,6 +1,9 @@
 'use client'
 
-import { setNewUserLocalStorage } from '@/lib/features/app/appSlice'
+import {
+    GetUserInfo,
+    setNewUserLocalStorage,
+} from '@/lib/features/app/appSlice'
 import { useAppDispatch } from '@/lib/hooks'
 import { ReactNode, useEffect, useRef } from 'react'
 
@@ -11,6 +14,10 @@ export const SetNewUserLocalStorageWrapper = ({
 }) => {
     const dispatch = useAppDispatch()
     const requestMade = useRef(false)
+
+    useEffect(() => {
+        dispatch(GetUserInfo())
+    }, [dispatch])
 
     useEffect(() => {
         const changeLocalStorageVariables = async () => {

@@ -36,6 +36,30 @@ export const RefreshTokenQueryDocument = `query Refresh {
         }
     }`
 
+export const GetUserInfoQueryDocument = `
+    query GetUserInfo {
+        getUserInfo {
+            _id
+            email
+            tags
+            status
+            isPrivate
+            user {
+                firstname
+                lastname
+                username
+                hide_name
+            }
+            followers {
+                _id
+            }
+            posts {
+                _id
+            }
+        }
+    }
+`
+
 export const SignInMutationDocument = `mutation RegisterUser($input: UserInput!) {
         registerUser(userInput: $input) {
             _id

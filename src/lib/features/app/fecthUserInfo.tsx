@@ -5,7 +5,7 @@ import { GetUserByIdQueryDocument } from './appQuery'
 import { localStorageGetItem } from '@/utils/helper/localstorage'
 import { LOCALSTORAGE } from '@/constants/localstorage'
 
-export const fetchUserInfo = async (_: undefined, { getState }: any) => {
+export const fetchUserInfo = async () => {
     const client = new GraphQLClient(GRAPHQL_URI, { credentials: 'include' })
     client.setHeaders({
         Authorization: `Bearer ${localStorageGetItem(LOCALSTORAGE['ACCESSTOKEN'])}`,
@@ -13,9 +13,9 @@ export const fetchUserInfo = async (_: undefined, { getState }: any) => {
 
     try {
         const response = (await client.request(GetUserByIdQueryDocument)) as {
-            data: Query['getUserById']
+            getUserInfo: Query['getUserInfo']
         }
-        return response.data as User
+        return response.getUserInfo as User
     } catch (error: unknown) {
         if (error instanceof Error) {
             if (error.message === 'INVALID_REQUEST') {
