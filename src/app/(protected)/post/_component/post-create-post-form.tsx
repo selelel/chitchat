@@ -13,6 +13,7 @@ import { selectAccessToken } from '@/lib/features/app/appSlice'
 import { useAppSelector } from '@/lib/hooks'
 import { append_image } from '@/app/actions'
 import PostItem from '../../home/_component/post-item'
+import { Query } from '@/lib/graphql/graphqlTypes'
 
 const audience = [
     { value: 'public', label: 'Public' },
@@ -21,6 +22,9 @@ const audience = [
 ]
 
 function CreatePostForm() {
+    const [createdPostPreviewData, setCreatedPostPreviewData] = useState<
+        Query['getPost'] | undefined
+    >(undefined)
     const {
         register,
         handleSubmit,
@@ -59,24 +63,32 @@ function CreatePostForm() {
                     audience: audience,
                 },
             })
+                .then((data_) => {
+                    setCreatedPostPreviewData(data_.data?.createNewPost)
+                    return data_
+                })
+                .finally(() => {
+                    console.log('Done')
+                })
 
             if (!post.data) throw new Error('Post not posted')
 
             if (file && file.fileList.length > 0) {
                 setLoadImage(true)
-                console.log(post.data?.createNewPost?._id)
                 await append_image(file, post.data?.createNewPost?._id, token)
                 setLoadImage(false)
             }
-
-            getPost(post.data.createNewPost._id)
-            console.log(createdPostWithImage)
+            await getPost(post.data.createNewPost._id)
+                .then((data_) => {
+                    return setCreatedPostPreviewData(data_.data?.getPost)
+                })
+                .finally(() => {
+                    console.log('Done')
+                })
         } catch (err) {
             console.log(err)
         }
     }
-
-    console.log(createdPostWithImage)
 
     return (
         <Form submit={handleSubmit(handleCreatePost)} className="space-y-2">
@@ -121,24 +133,24 @@ function CreatePostForm() {
                 <p className="font-semibold text-custom-grey">Post</p>
             </Form.Button>
 
-            {loadingPost === true ? (
-                <>Loading...</>
-            ) : (
-                <PostItem
-                    key={createdPostWithImage?.getPost._id!}
-                    _id={createdPostWithImage?.getPost._id!}
-                    content={createdPostWithImage?.getPost.content!}
-                    audience={
-                        createdPostWithImage?.getPost.audience! || 'public'
-                    }
-                    createdAt={new Date().toISOString()}
-                    updatedAt={new Date().toISOString()!}
-                    shares={createdPostWithImage?.getPost.shares ?? 0}
-                    username={
-                        createdPostWithImage?.getPost.author.user.username ?? ''
-                    }
-                />
-            )}
+            {!!createdPost &&
+                (loadingPost === true ? (
+                    <>Loading...</>
+                ) : (
+                    <PostItem
+                        isPreview
+                        key={createdPostPreviewData?._id!}
+                        _id={createdPostPreviewData?._id!}
+                        content={createdPostPreviewData?.content!}
+                        audience={createdPostPreviewData?.audience! || 'public'}
+                        createdAt={new Date().toISOString()}
+                        updatedAt={new Date().toISOString()!}
+                        shares={createdPostPreviewData?.shares ?? 0}
+                        username={
+                            createdPostPreviewData?.author.user.username ?? ''
+                        }
+                    />
+                ))}
         </Form>
     )
 }

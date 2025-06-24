@@ -24,6 +24,7 @@ interface PostItemProps {
     username: string
     likes?: number
     isLiked?: boolean
+    isPreview?: boolean
 }
 
 const PostItem: React.FC<PostItemProps> = ({
@@ -35,6 +36,7 @@ const PostItem: React.FC<PostItemProps> = ({
     username,
     likes,
     isLiked,
+    isPreview = false,
 }) => {
     const [previewImage, setPreviewImage] = useState<string>('')
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -254,7 +256,7 @@ const PostItem: React.FC<PostItemProps> = ({
                 )}
 
                 {renderImageGallery()}
-                {likes && (
+                {!isPreview && (
                     <Space className="w-full justify-between">
                         <button
                             onClick={handleToggleLike}
