@@ -38,7 +38,7 @@ const pathsConfig = PathsSchema.parse({
         chat: '/chat',
         explore: '/explore',
         menu: '/menu',
-        profile: '/profile',
+        profile: '/profile/me',
         notification: '/notification',
         search: '/search',
     },

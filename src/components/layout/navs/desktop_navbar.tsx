@@ -17,17 +17,17 @@ import ProfileButton from './profile-button'
 
 const categories = [
     { text: 'Home', icon: HomeIcon, href: pathsConfig.dashboard.home },
-    { text: 'Search', icon: SearchIcon, href: pathsConfig.dashboard.search },
+    // { text: 'Search', icon: SearchIcon, href: pathsConfig.dashboard.search },
     { text: 'Chat', icon: ChatIcon, href: pathsConfig.dashboard.chat },
-    { text: 'Explore', icon: ExploreIcon, href: pathsConfig.dashboard.explore },
-    {
-        text: 'Notifications',
-        icon: NotificationIcon,
-        href: pathsConfig.dashboard.notification,
-    },
+    // { text: 'Explore', icon: ExploreIcon, href: pathsConfig.dashboard.explore },
+    // {
+    //     text: 'Notifications',
+    //     icon: NotificationIcon,
+    //     href: pathsConfig.dashboard.notification,
+    // },
     { text: 'Post', icon: CameraIcon, href: pathsConfig.dashboard.post },
     { text: 'Profile', icon: ProfileIcon, href: pathsConfig.dashboard.profile },
-    { text: 'Menu', icon: MenuIcon, href: pathsConfig.dashboard.menu },
+    // { text: 'Menu', icon: MenuIcon, href: pathsConfig.dashboard.menu },
 ]
 
 export default function DesktopNavBar() {
@@ -48,12 +48,12 @@ export default function DesktopNavBar() {
                     />
                 ))}
             </nav>
-            <CategoryNav
+            {/* <CategoryNav
                 text="Menu"
                 icon={<MenuIcon boxSize={8} />}
                 href="/menu"
                 isActive={path.startsWith('/menu')}
-            />
+            /> */}
             <ProfileButton />
         </div>
     )

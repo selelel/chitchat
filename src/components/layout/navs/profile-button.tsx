@@ -1,5 +1,5 @@
 'use client'
-import { ProfileIcon } from '@/components/commons/icon'
+import { MenuIcon, ProfileIcon } from '@/components/commons/icon'
 import pathsConfig from '@/config/pathConfig'
 import { removeAccessToken } from '@/lib/features/app/appSlice'
 import { useLogOutMutation } from '@/lib/features/auth/authApi'
@@ -46,8 +46,8 @@ export default function ProfileButton() {
                         isActive: path.startsWith('/profile'),
                     })}
                 >
-                    <ProfileIcon boxSize={8} />
-                    <span>Profile</span>
+                    <MenuIcon boxSize={8} />
+                    <span>Menu</span>
                 </div>
             </PopoverTrigger>
             <PopoverContent className="w-48 p-2">
@@ -60,18 +60,18 @@ export default function ProfileButton() {
                         <span>View Profile</span>
                     </Link>
                     <Link
-                        href="/profile/liked"
+                        href="/profile/me?tab=liked"
                         className="flex items-center space-x-2 px-2 py-1.5 text-sm rounded-md hover:bg-gray-100"
                     >
                         <Heart className="h-4 w-4" />
                         <span>Liked Posts</span>
                     </Link>
                     <Link
-                        href="/profile/comments"
+                        href="/profile/me?tab=posts"
                         className="flex items-center space-x-2 px-2 py-1.5 text-sm rounded-md hover:bg-gray-100"
                     >
                         <MessageSquare className="h-4 w-4" />
-                        <span>My Comments</span>
+                        <span>My Post</span>
                     </Link>
                     <div className="h-px bg-gray-200 my-1" />
                     <button
