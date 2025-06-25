@@ -167,7 +167,7 @@ export type Mutation = {
     likePost: Scalars['Boolean']['output']
     loginUser: LoginResponse
     registerUser: User
-    removePost: User
+    removePost: Scalars['Boolean']['output']
     removePostComment: Post
     removeUserFollower: User
     removeUserFollowing: User
@@ -331,6 +331,7 @@ export type Query = {
     getPost: Post
     getUserById: User
     getUserInfo: User
+    getUserPosts: Array<Post>
     logoutAllDevices: Scalars['Boolean']['output']
     logoutDevice: Scalars['Boolean']['output']
     refresh: RefreshResponse

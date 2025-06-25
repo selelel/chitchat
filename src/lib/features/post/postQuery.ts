@@ -6,6 +6,7 @@ export const CreateNewPostMutationDocument = `mutation createNewPost(
             _id
             shares
             author {
+                _id
                 user {
                     username
                 }
@@ -29,6 +30,7 @@ export const GetPostQueryDocument = `query GetPost($postId: String!) {
             _id
             shares
             author {
+                _id
                 user {
                     username
                 }
@@ -53,6 +55,7 @@ export const GetRecommendedPostsQueryDocument = `
             _id
             shares
             author {
+                _id
                 user {
                     username
                 }
@@ -79,6 +82,7 @@ export const GetUserFollowingPostsQueryDocument = `
             _id
             shares
             author {
+                _id
                 user {
                     username
                 }
@@ -123,6 +127,7 @@ export const GetLikedPosts = `
                 _id
                 shares
                 author {
+                    _id
                     user {
                         username
                     }
@@ -148,6 +153,7 @@ export const GetUserPosts = `
                 _id
                 shares
                 author {
+                    _id
                     user {
                         username
                     }
@@ -165,4 +171,11 @@ export const GetUserPosts = `
                 updatedAt
             }
     }
+`
+
+export const DeletePost = `
+        mutation removePost($id: String!) {
+            removePost(postId: $id)
+        }
+
 `

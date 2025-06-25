@@ -1,16 +1,29 @@
 import React, { useState } from 'react'
 import { Card, Avatar, Space, Typography } from 'antd'
 import Image from 'next/image'
-import { UserOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons'
+import {
+    UserOutlined,
+    LeftOutlined,
+    RightOutlined,
+    MoreOutlined,
+} from '@ant-design/icons'
 import { formatDistanceToNow } from 'date-fns'
 import { PostContentObject } from '@/lib/graphql/graphqlTypes'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { Heart, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import {
+    useDeletePostMutation,
     useLikePostMutation,
     useUnlikePostMutation,
 } from '@/lib/features/post/postApi'
+import {
+    Popover,
+    PopoverTrigger,
+    PopoverContent,
+} from '@/components/ui/popover'
+import { localStorageGetItem } from '@/utils/helper/localstorage'
+import { LOCALSTORAGE } from '@/constants/localstorage'
 
 const { Text, Paragraph } = Typography
 
@@ -25,6 +38,7 @@ interface PostItemProps {
     likes?: number
     isLiked?: boolean
     isPreview?: boolean
+    authorId?: string
 }
 
 const PostItem: React.FC<PostItemProps> = ({
@@ -37,7 +51,12 @@ const PostItem: React.FC<PostItemProps> = ({
     likes,
     isLiked,
     isPreview = false,
+    authorId,
 }) => {
+    const [
+        deletePost,
+        { data: postDeleted, isLoading: _, error: errorDeletion },
+    ] = useDeletePostMutation()
     const [previewImage, setPreviewImage] = useState<string>('')
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
@@ -45,6 +64,8 @@ const PostItem: React.FC<PostItemProps> = ({
     const [unlikePost, { isLoading: isUnlikeLoading }] = useUnlikePostMutation()
     const [localLikes, setLocalLikes] = useState(likes)
     const [localIsLiked, setLocalIsLiked] = useState(isLiked || false)
+    const [showPost, setShowPost] = useState(true)
+    const [openMenuPopOver, setOpenMenuPopOver] = useState(false)
 
     const handleToggleLike = async () => {
         try {
@@ -65,6 +86,12 @@ const PostItem: React.FC<PostItemProps> = ({
             setLocalIsLiked(isLiked || false)
             console.error('Failed to toggle like:', error)
         }
+    }
+
+    const handleDeletePost = () => {
+        deletePost(_id)
+        setShowPost(false)
+        setOpenMenuPopOver(false)
     }
 
     const handleImageClick = (image: string, index: number) => {
@@ -233,19 +260,85 @@ const PostItem: React.FC<PostItemProps> = ({
     }
 
     return (
-        <Card className="!w-full mb-4 max-h-[800px] overflow-hidden">
+        <Card
+            className={cn(
+                '!w-full mb-4 max-h-[800px] overflow-hidden',
+                !showPost && 'hidden'
+            )}
+        >
             <Space direction="vertical" size="middle" className="w-full">
-                <Space>
-                    <Avatar icon={<UserOutlined />} />
-                    <Space direction="vertical" size={0}>
-                        <Text strong>{username}</Text>
-                        <Text type="secondary" className="text-xs">
-                            {formatDistanceToNow(new Date(createdAt), {
-                                addSuffix: true,
-                            })}{' '}
-                            • {audience.toLowerCase()}
-                        </Text>
+                <Space className="w-full justify-between">
+                    <Space>
+                        <Avatar icon={<UserOutlined />} />
+                        <Space direction="vertical" size={0}>
+                            <Text strong>{username}</Text>
+                            <Text type="secondary" className="text-xs">
+                                {formatDistanceToNow(new Date(createdAt), {
+                                    addSuffix: true,
+                                })}{' '}
+                                • {audience.toLowerCase()}
+                            </Text>
+                        </Space>
                     </Space>
+                    <div className="flex justify-end">
+                        <Popover
+                            open={openMenuPopOver}
+                            onOpenChange={setOpenMenuPopOver}
+                        >
+                            <PopoverTrigger asChild>
+                                <button className="p-2 hover:bg-gray-100 rounded-full">
+                                    <MoreOutlined className="text-xl" />
+                                </button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-40 p-0">
+                                {localStorageGetItem(
+                                    LOCALSTORAGE['USER_ID']
+                                ) === authorId ? (
+                                    <>
+                                        <button
+                                            className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                                            onClick={() => alert('Edit post')}
+                                        >
+                                            Edit
+                                        </button>
+                                        <button
+                                            className="w-full text-left px-4 py-2 hover:bg-red-100 text-red-600"
+                                            onClick={handleDeletePost}
+                                        >
+                                            Delete
+                                        </button>
+                                    </>
+                                ) : (
+                                    <>
+                                        <button
+                                            className="w-full text-left px-4 py-2 hover:bg-red-100 "
+                                            onClick={() =>
+                                                alert(
+                                                    'areyoureallyinterestedinthepostortheperson???????'
+                                                )
+                                            }
+                                        >
+                                            Interested In Content
+                                        </button>
+                                        <button
+                                            className="w-full text-left px-4 py-2 hover:bg-red-100 text-red-600"
+                                            onClick={() =>
+                                                alert('Ouch! Really!')
+                                            }
+                                        >
+                                            Not Interested
+                                        </button>
+                                        <button
+                                            className="w-full text-left px-4 py-2 hover:bg-red-100  text-red-600"
+                                            onClick={() => alert('Report')}
+                                        >
+                                            Report
+                                        </button>
+                                    </>
+                                )}
+                            </PopoverContent>
+                        </Popover>
+                    </div>
                 </Space>
 
                 {content.description && (

@@ -62,6 +62,7 @@ const UserPosts = () => {
                                 updatedAt={data.updatedAt}
                                 username={data.author.user.username}
                                 likes={data.likes.length}
+                                authorId={data.author._id}
                                 isLiked
                             />
                         )

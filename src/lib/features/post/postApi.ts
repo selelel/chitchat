@@ -11,6 +11,7 @@ import {
 import { LogInMutationDocument } from '../auth/authQuery'
 import {
     CreateNewPostMutationDocument,
+    DeletePost,
     GetLikedPosts,
     GetPostQueryDocument,
     GetRecommendedPostsQueryDocument,
@@ -79,6 +80,20 @@ const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
                 return { ...error, message: Parse_Message(error) }
             },
         }),
+        deletePost: build.mutation<
+            { removePost: Mutation['removePost'] },
+            string
+        >({
+            query: (variables) => ({
+                document: DeletePost,
+                variables: {
+                    id: variables,
+                },
+            }),
+            transformErrorResponse: (error) => {
+                return { ...error, message: Parse_Message(error) }
+            },
+        }),
         likePost: build.mutation({
             query: (variables) => ({
                 document: LikePostMutationDocument,
@@ -127,4 +142,5 @@ export const {
     useGetFollowingPostsMutation,
     useGetLikePostsQuery,
     useGetUserPostsQuery,
+    useDeletePostMutation,
 } = injectedRtkApi
