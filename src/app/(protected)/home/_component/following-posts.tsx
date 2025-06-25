@@ -16,7 +16,7 @@ const FollowingPosts: React.FC = () => {
     ] = useGetFollowingPostsMutation()
 
     useEffect(() => {
-        getFollowingPosts({ skip: 0, limit: 10 })
+        getFollowingPosts({ skip: 0, limit: 100 })
         console.log(followingPosts)
     }, [])
 

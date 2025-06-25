@@ -51,7 +51,6 @@ const PostItem: React.FC<PostItemProps> = ({
             // Optimistically update the UI
             setLocalLikes((prev) => (localIsLiked ? prev! - 1 : prev! + 1))
             setLocalIsLiked((prev) => !prev)
-            if (!likes) return
             // Make the API call
             if (localIsLiked) {
                 const result = await unlikePost({ postId: _id }).unwrap()

@@ -14,9 +14,6 @@ export const GetUserByIdQueryDocument = `query GetUserInfo {
         followers {
             _id
         }
-        posts {
-            _id
-        }
         following {
             _id
         }

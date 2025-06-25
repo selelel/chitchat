@@ -327,6 +327,7 @@ export type PostOptionInput = {
 export type Query = {
     __typename?: 'Query'
     getAllChats: Array<Chat>
+    getLikedPost: Array<Post>
     getPost: Post
     getUserById: User
     getUserInfo: User

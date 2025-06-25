@@ -116,3 +116,53 @@ export const IsLikedPostMutationDocument = `
         isLikedPost(postId: $postId)
     }
 `
+
+export const GetLikedPosts = `
+    query GetLikedPost {
+        getLikedPost {
+                _id
+                shares
+                author {
+                    user {
+                        username
+                    }
+                }
+                content {
+                    text,
+                    description,
+                    images
+                }
+                likes {
+                    _id
+                }
+                audience
+                createdAt
+                updatedAt
+            }
+    }
+`
+
+export const GetUserPosts = `
+        query GetUserPosts {
+        getUserPosts {
+                _id
+                shares
+                author {
+                    user {
+                        username
+                    }
+                }
+                content {
+                    text,
+                    description,
+                    images
+                }
+                likes {
+                    _id
+                }
+                audience
+                createdAt
+                updatedAt
+            }
+    }
+`

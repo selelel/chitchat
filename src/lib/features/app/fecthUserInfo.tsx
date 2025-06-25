@@ -2,7 +2,11 @@ import { GRAPHQL_URI } from '@/config/env'
 import { Query, User } from '@/lib/graphql/graphqlTypes'
 import { GraphQLClient } from 'graphql-request'
 import { GetUserByIdQueryDocument } from './appQuery'
-import { localStorageGetItem } from '@/utils/helper/localstorage'
+import {
+    localStorageGetItem,
+    localStorageRemoveItem,
+    localStorageSetItem,
+} from '@/utils/helper/localstorage'
 import { LOCALSTORAGE } from '@/constants/localstorage'
 
 export const fetchUserInfo = async () => {
@@ -15,6 +19,7 @@ export const fetchUserInfo = async () => {
         const response = (await client.request(GetUserByIdQueryDocument)) as {
             getUserInfo: Query['getUserInfo']
         }
+        localStorageSetItem(LOCALSTORAGE['USER_ID'], response.getUserInfo._id)
         return response.getUserInfo as User
     } catch (error: unknown) {
         if (error instanceof Error) {

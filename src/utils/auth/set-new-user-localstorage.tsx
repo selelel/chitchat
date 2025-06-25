@@ -16,10 +16,6 @@ export const SetNewUserLocalStorageWrapper = ({
     const requestMade = useRef(false)
 
     useEffect(() => {
-        dispatch(GetUserInfo())
-    }, [dispatch])
-
-    useEffect(() => {
         const changeLocalStorageVariables = async () => {
             if (!requestMade.current) {
                 try {
@@ -30,7 +26,18 @@ export const SetNewUserLocalStorageWrapper = ({
             }
         }
 
+        const getUserInfo = async () => {
+            if (!requestMade.current) {
+                try {
+                    dispatch(GetUserInfo())
+                } catch (error) {
+                    console.error('Failed to get user info', error)
+                }
+            }
+        }
+
         changeLocalStorageVariables()
+        getUserInfo()
     }, [dispatch])
 
     return children

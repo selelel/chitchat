@@ -14,7 +14,7 @@ export const changeLocalStorageUponRefresh = async () => {
         } = (await client.request(GetUserByIdQueryDocument)) as {
             getUserById: User
         }
-        console.log(_id)
+        console.log('Get user id ' + _id)
         //! SET HERE THE ACCESSTOKEN, PLEASE RESOLVE THIS OR COMEUP WITH A BETTER APPROACH
         localStorageSetItem(LOCALSTORAGE['USER_ID'], _id)
 

@@ -37,6 +37,7 @@ export const appSlice = createAppSlice({
         }),
         getUserInfo: create.asyncThunk(async () => await fetchUserInfo(), {
             fulfilled: (state, actions) => {
+                console.log(actions.payload)
                 state.user_info = actions.payload
             },
         }),

@@ -6,13 +6,16 @@ import {
     PostContentInput,
     PostOptionInput,
     Query,
+    Post,
 } from '@/lib/graphql/graphqlTypes'
 import { LogInMutationDocument } from '../auth/authQuery'
 import {
     CreateNewPostMutationDocument,
+    GetLikedPosts,
     GetPostQueryDocument,
     GetRecommendedPostsQueryDocument,
     GetUserFollowingPostsQueryDocument,
+    GetUserPosts,
     LikePostMutationDocument,
     UnlikePostMutationDocument,
 } from './postQuery'
@@ -86,6 +89,22 @@ const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
                 return response
             },
         }),
+        getUserPosts: build.query<Post[], void>({
+            query: () => ({
+                document: GetUserPosts,
+            }),
+            transformResponse: (response: { getUserPosts: Post[] }) => {
+                return response.getUserPosts
+            },
+        }),
+        getLikePosts: build.query<Post[], void>({
+            query: () => ({
+                document: GetLikedPosts,
+            }),
+            transformResponse: (response: { getLikedPost: Post[] }) => {
+                return response.getLikedPost
+            },
+        }),
         unlikePost: build.mutation({
             query: (variables) => ({
                 document: UnlikePostMutationDocument,
@@ -106,4 +125,6 @@ export const {
     useLikePostMutation,
     useUnlikePostMutation,
     useGetFollowingPostsMutation,
+    useGetLikePostsQuery,
+    useGetUserPostsQuery,
 } = injectedRtkApi

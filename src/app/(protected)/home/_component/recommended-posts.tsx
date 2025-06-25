@@ -13,7 +13,7 @@ const RecommendedPosts: React.FC = () => {
     ] = useGetRecommendedPostsMutation()
 
     useEffect(() => {
-        getRecommendedPosts({ skip: 0, limit: 10 })
+        getRecommendedPosts({ skip: 0, limit: 100 })
     }, [])
 
     if (isLoadingPosts) {
@@ -23,6 +23,7 @@ const RecommendedPosts: React.FC = () => {
             </div>
         )
     }
+
     return (
         <div className="max-w-2xl mx-auto">
             {recommendedPosts?.getRecommendedPosts.map((post: Post) => {
