@@ -12,6 +12,8 @@ import {
 } from '@/lib/features/post/postApi'
 import PostItem from '@/app/(protected)/home/_component/post-item'
 import { useSearchParams, useRouter } from 'next/navigation'
+import { localStorageGetItem } from '@/utils/helper/localstorage'
+import { LOCALSTORAGE } from '@/constants/localstorage'
 
 const UserProfileImage = ({ user }: { user: User | null }) => (
     <div className="flex flex-col items-center p-4">
@@ -55,6 +57,7 @@ const UserPosts = () => {
                     data?.map((data, idx) => {
                         return (
                             <PostItem
+                                key={idx}
                                 _id={data._id}
                                 content={data.content}
                                 audience={data.audience}
@@ -63,7 +66,15 @@ const UserPosts = () => {
                                 username={data.author.user.username}
                                 likes={data.likes.length}
                                 authorId={data.author._id}
-                                isLiked
+                                isLiked={
+                                    data.likes.some(
+                                        (like) =>
+                                            like._id ===
+                                            localStorageGetItem(
+                                                LOCALSTORAGE['USER_ID']
+                                            )
+                                    ) || false
+                                }
                             />
                         )
                     })
