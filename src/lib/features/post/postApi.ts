@@ -19,6 +19,7 @@ import {
     GetUserPosts,
     LikePostMutationDocument,
     UnlikePostMutationDocument,
+    UpdatePost,
 } from './postQuery'
 
 const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
@@ -94,6 +95,22 @@ const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
                 return { ...error, message: Parse_Message(error) }
             },
         }),
+        updatePost: build.mutation<
+            { updatePost: Mutation['updatePost'] },
+            {
+                id: string
+                updateContent: PostContentInput
+                option: PostOptionInput
+            }
+        >({
+            query: (variables) => ({
+                document: UpdatePost,
+                variables: variables,
+            }),
+            transformErrorResponse: (error) => {
+                return { ...error, message: Parse_Message(error) }
+            },
+        }),
         likePost: build.mutation({
             query: (variables) => ({
                 document: LikePostMutationDocument,
@@ -143,4 +160,5 @@ export const {
     useGetLikePostsQuery,
     useGetUserPostsQuery,
     useDeletePostMutation,
+    useUpdatePostMutation,
 } = injectedRtkApi

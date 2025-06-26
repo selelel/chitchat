@@ -10,7 +10,7 @@ import {
     useGetLikePostsQuery,
     useGetUserPostsQuery,
 } from '@/lib/features/post/postApi'
-import PostItem from '@/app/(protected)/home/_component/post-item'
+import PostItem from '@/app/(protected)/post/_component/post-item'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { localStorageGetItem } from '@/utils/helper/localstorage'
 import { LOCALSTORAGE } from '@/constants/localstorage'

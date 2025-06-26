@@ -12,7 +12,7 @@ import { Alert, Divider } from 'antd'
 import { selectAccessToken } from '@/lib/features/app/appSlice'
 import { useAppSelector } from '@/lib/hooks'
 import { append_image } from '@/app/actions'
-import PostItem from '../../home/_component/post-item'
+import PostItem from './post-item'
 import { Query } from '@/lib/graphql/graphqlTypes'
 
 const audience = [

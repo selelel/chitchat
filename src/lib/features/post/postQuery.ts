@@ -177,5 +177,14 @@ export const DeletePost = `
         mutation removePost($id: String!) {
             removePost(postId: $id)
         }
+`
 
+export const UpdatePost = `
+        mutation updatePost(
+            $id: String!
+            $updateContent: PostContentInput!
+            $option: PostOptionInput!
+        ) {
+            updatePost(postId: $id, updatedPost: $updateContent, postOption: $option)
+        }
 `

@@ -172,7 +172,7 @@ export type Mutation = {
     removeUserFollower: User
     removeUserFollowing: User
     unlikePost: Scalars['Boolean']['output']
-    updatePost: Post
+    updatePost: Scalars['Boolean']['output']
     updateUserPassword: Scalars['Boolean']['output']
 }
 

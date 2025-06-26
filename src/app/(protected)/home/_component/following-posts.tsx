@@ -4,7 +4,7 @@ import {
     useGetFollowingPostsMutation,
     useGetRecommendedPostsMutation,
 } from '@/lib/features/post/postApi'
-import PostItem from '@/app/(protected)/home/_component/post-item'
+import PostItem from '@/app/(protected)/post/_component/post-item'
 import { Post } from '@/lib/graphql/graphqlTypes'
 import { localStorageGetItem } from '@/utils/helper/localstorage'
 import { LOCALSTORAGE } from '@/constants/localstorage'
