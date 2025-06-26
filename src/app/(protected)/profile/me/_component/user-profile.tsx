@@ -52,7 +52,7 @@ const UserPosts = () => {
             {/* Placeholder for liked posts */}
             <div>
                 {data?.length === 0 ? (
-                    <div>No Liked Post</div>
+                    <div>No Made Post</div>
                 ) : (
                     data?.map((data, idx) => {
                         return (

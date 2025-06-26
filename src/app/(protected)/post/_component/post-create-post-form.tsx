@@ -14,6 +14,7 @@ import { useAppSelector } from '@/lib/hooks'
 import { append_image } from '@/app/actions'
 import PostItem from './post-item'
 import { Query } from '@/lib/graphql/graphqlTypes'
+import { Button } from '@/components/ui/button'
 
 const audience = [
     { value: 'public', label: 'Public' },
@@ -22,71 +23,63 @@ const audience = [
 ]
 
 function CreatePostForm() {
-    const [createdPostPreviewData, setCreatedPostPreviewData] = useState<
-        Query['getPost'] | undefined
-    >(undefined)
+    const [createdPostPreviewData, setCreatedPostPreviewData] =
+        useState<Query['getPost']>()
     const {
         register,
         handleSubmit,
         control,
         formState: { errors },
-        setError,
     } = useForm({ resolver: yupResolver(post_form_schema) })
 
     const [
         createNewPost,
-        {
-            data: createdPost,
-            isLoading: isCreatingPost,
-            error: createPostError,
-        },
+        { isLoading: isCreatingPost, error: createPostError },
     ] = useCreateNewPostMutation()
-
-    const [
-        getPost,
-        { data: createdPostWithImage, isLoading: loadingPost, error },
-    ] = useGetPostMutation()
+    const [getPost] = useGetPostMutation()
     const token = useAppSelector(selectAccessToken)
-    const [loadImage, setLoadImage] = useState<boolean | null>(null)
+
+    const [loadImage, setLoadImage] = useState<
+        'no-image' | 'image-uploading' | 'done-image-upload'
+    >('no-image')
 
     const handleCreatePost = async ({
         audience,
         descriptions,
         file,
     }: post_form_types) => {
+        if (file?.fileList?.length > 8) {
+            alert('Maximum 8 images allowed.')
+            return
+        }
+
         try {
-            const post = await createNewPost({
-                contentInput: {
-                    description: descriptions,
-                },
-                optionInput: {
-                    audience: audience,
-                },
+            const postResponse = await createNewPost({
+                contentInput: { description: descriptions },
+                optionInput: { audience },
             })
-                .then((data_) => {
-                    setCreatedPostPreviewData(data_.data?.createNewPost)
-                    return data_
-                })
-                .finally(() => {
-                    console.log('Done')
-                })
 
-            if (!post.data) throw new Error('Post not posted')
+            const createdPost = postResponse.data?.createNewPost
 
-            if (file && file.fileList.length > 0) {
-                setLoadImage(true)
-                await append_image(file, post.data?.createNewPost?._id, token)
-                setLoadImage(false)
+            if (!createdPost?._id) {
+                throw new Error('Post not created successfully.')
             }
-            await getPost(post.data.createNewPost._id)
-                .then((data_) => {
-                    return setCreatedPostPreviewData(data_.data?.getPost)
-                })
-                .finally(() => {
-                    console.log('Done')
-                })
+
+            setCreatedPostPreviewData(createdPost)
+
+            if (file?.fileList?.length > 0) {
+                setLoadImage('image-uploading')
+                await append_image(file, createdPost._id, token)
+                setLoadImage('done-image-upload')
+            } else {
+                setLoadImage('done-image-upload')
+            }
+
+            const postWithImages = await getPost(createdPost._id)
+            setCreatedPostPreviewData(postWithImages.data?.getPost)
         } catch (err) {
-            console.log(err)
+            console.error(err)
+            alert('An error occurred while creating the post.')
         }
     }
 
@@ -108,13 +101,13 @@ function CreatePostForm() {
                     name="audience"
                     control={{ control }}
                     options={audience}
-                    defaultValue={'public'}
+                    defaultValue="public"
                 />
             </div>
 
             <div className="flex flex-col w-full">
                 <Form.TextArea
-                    placeholder="What's on your head..."
+                    placeholder="What's on your mind..."
                     register={register}
                     rows={5}
                     name="descriptions"
@@ -123,34 +116,40 @@ function CreatePostForm() {
 
             <Divider />
 
-            <Form.Upload control={{ control }} name="file" />
+            <Form.Upload control={{ control }} name="file" multiple />
 
             <Form.Button
                 tabIndex={0}
                 className="flex flex-row justify-center space-x-1 items-center rounded-md py-5 px-10 cursor-pointer w-fit"
-                loading={isCreatingPost}
             >
                 <p className="font-semibold text-custom-grey">Post</p>
             </Form.Button>
 
-            {!!createdPost &&
-                (loadingPost === true ? (
-                    <>Loading...</>
-                ) : (
+            {(isCreatingPost || loadImage === 'image-uploading') && (
+                <div className="flex justify-center items-center py-5">
+                    <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                    <span className="ml-2 text-blue-500 font-semibold">
+                        Posting...
+                    </span>
+                </div>
+            )}
+
+            {loadImage === 'done-image-upload' &&
+                createdPostPreviewData?.content && (
                     <PostItem
                         isPreview
-                        key={createdPostPreviewData?._id!}
-                        _id={createdPostPreviewData?._id!}
-                        content={createdPostPreviewData?.content!}
-                        audience={createdPostPreviewData?.audience! || 'public'}
+                        key={createdPostPreviewData._id}
+                        _id={createdPostPreviewData._id}
+                        content={createdPostPreviewData.content}
+                        audience={createdPostPreviewData.audience || 'public'}
                         createdAt={new Date().toISOString()}
-                        updatedAt={new Date().toISOString()!}
-                        shares={createdPostPreviewData?.shares ?? 0}
+                        updatedAt={new Date().toISOString()}
+                        shares={createdPostPreviewData.shares ?? 0}
                         username={
-                            createdPostPreviewData?.author.user.username ?? ''
+                            createdPostPreviewData.author.user.username ?? ''
                         }
                     />
-                ))}
+                )}
         </Form>
     )
 }

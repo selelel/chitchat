@@ -26,6 +26,7 @@ import {
 import { localStorageGetItem } from '@/utils/helper/localstorage'
 import { LOCALSTORAGE } from '@/constants/localstorage'
 import PostEditModal from './post-update-modal'
+import { ReactPhotoCollage } from 'react-photo-collage'
 
 const { Text, Paragraph } = Typography
 
@@ -141,143 +142,6 @@ const PostItem: React.FC<PostItemProps> = ({
         if (e.key === 'Escape') setIsModalOpen(false)
     }
 
-    const renderImageGallery = () => {
-        if (!content.images || content.images.length === 0) return null
-
-        const images = content.images
-        const imageCount = images.length
-
-        if (imageCount === 1) {
-            return (
-                <div className="w-full">
-                    <Image
-                        src={images[0]}
-                        alt="Post image"
-                        className="w-full h-[500px] object-cover rounded-md cursor-pointer border border-black"
-                        onClick={(e) => {
-                            e.preventDefault()
-                            handleImageClick(images[0], 0)
-                        }}
-                        width={500}
-                        height={500}
-                    />
-                </div>
-            )
-        }
-
-        if (imageCount === 2) {
-            return (
-                <div className="grid grid-cols-2 gap-2">
-                    {images.map((image, index) => (
-                        <div key={index}>
-                            <Image
-                                src={image}
-                                alt={`Post image ${index + 1}`}
-                                className="w-full h-[500px] object-cover rounded-md cursor-pointer border border-black"
-                                onClick={(e) => {
-                                    e.preventDefault()
-                                    handleImageClick(image, index)
-                                }}
-                                width={500}
-                                height={500}
-                            />
-                        </div>
-                    ))}
-                </div>
-            )
-        }
-
-        if (imageCount === 3) {
-            return (
-                <div className="grid grid-cols-2 gap-2">
-                    <div className="row-span-2">
-                        <Image
-                            src={images[0]}
-                            alt="Post image 1"
-                            className="w-full h-[500px] object-cover rounded-md cursor-pointer border border-black"
-                            onClick={(e) => {
-                                e.preventDefault()
-                                handleImageClick(images[0], 0)
-                            }}
-                            width={500}
-                            height={500}
-                        />
-                    </div>
-                    <div className="grid grid-rows-2 gap-2">
-                        {images.slice(1).map((image, index) => (
-                            <Image
-                                key={index + 1}
-                                src={image}
-                                alt={`Post image ${index + 2}`}
-                                className="w-full !h-1 object-cover rounded-md cursor-pointer border border-black"
-                                onClick={(e) => {
-                                    e.preventDefault()
-                                    handleImageClick(image, index + 1)
-                                }}
-                                width={250}
-                                height={250}
-                            />
-                        ))}
-                    </div>
-                </div>
-            )
-        }
-
-        if (imageCount === 4) {
-            return (
-                <div className="grid grid-cols-2 grid-rows-2 gap-2">
-                    {images.map((image, index) => (
-                        <Image
-                            key={index + 1}
-                            src={image}
-                            alt={`Post image ${index + 2}`}
-                            className="w-full !h-[200px] object-cover rounded-md cursor-pointer border border-black"
-                            onClick={(e) => {
-                                e.preventDefault()
-                                handleImageClick(image, index)
-                            }}
-                            width={250}
-                            height={250}
-                        />
-                    ))}
-                </div>
-            )
-        }
-
-        return (
-            <div className="grid grid-cols-2 gap-2">
-                {images.slice(0, 4).map((image, index) => (
-                    <div key={index} className="relative">
-                        <Image
-                            src={image}
-                            alt={`Post image ${index + 1}`}
-                            className="w-full h-[500px] object-cover rounded-md cursor-pointer border border-black"
-                            onClick={(e) => {
-                                e.preventDefault()
-                                handleImageClick(image, index)
-                            }}
-                            width={500}
-                            height={500}
-                        />
-                        {index === 3 && images.length > 4 && (
-                            <div
-                                className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-md cursor-pointer"
-                                onClick={(e) => {
-                                    e.preventDefault()
-                                    handleImageClick(images[0], 0)
-                                }}
-                            >
-                                <Text className="text-white text-2xl font-bold">
-                                    +{images.length - 4}
-                                </Text>
-                            </div>
-                        )}
-                    </div>
-                ))}
-            </div>
-        )
-    }
-
     return (
         <>
             <PostEditModal
@@ -386,8 +250,47 @@ const PostItem: React.FC<PostItemProps> = ({
                                     content.description}
                             </Paragraph>
                         ))}
+                    {content.images?.length === 1 ? (
+                        <ReactPhotoCollage
+                            width="100%"
+                            height={['50vw']}
+                            layout={[1]}
+                            photos={content.images.map((data) => ({
+                                source: data,
+                            }))}
+                        />
+                    ) : content.images?.length === 2 ? (
+                        <ReactPhotoCollage
+                            width="100%"
+                            height={['50vw']}
+                            layout={[2]}
+                            photos={content.images.map((data) => ({
+                                source: data,
+                            }))}
+                        />
+                    ) : content.images?.length === 3 ? (
+                        <ReactPhotoCollage
+                            width="100%"
+                            height={['50vw']}
+                            layout={[1, 2]}
+                            photos={
+                                content.images?.map((data) => ({
+                                    source: data,
+                                })) ?? []
+                            }
+                        />
+                    ) : content.images?.length && content.images.length > 3 ? (
+                        <ReactPhotoCollage
+                            width="100%"
+                            height={['50vw']}
+                            layout={[1, 3]}
+                            photos={content.images.map((data) => ({
+                                source: data,
+                            }))}
+                            showNumOfRemainingPhotos
+                        />
+                    ) : null}
 
-                    {renderImageGallery()}
                     {!isPreview && (
                         <Space className="w-full justify-between">
                             <button
