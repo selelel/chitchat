@@ -154,7 +154,7 @@ const PostItem: React.FC<PostItemProps> = ({
             />
             <Card
                 className={cn(
-                    '!w-full mb-4 max-h-[800px] overflow-hidden',
+                    '!w-full mb-4 max-h-[1000px] overflow-hidden',
                     !showPost && 'hidden'
                 )}
             >
@@ -253,7 +253,7 @@ const PostItem: React.FC<PostItemProps> = ({
                     {content.images?.length === 1 ? (
                         <ReactPhotoCollage
                             width="100%"
-                            height={['50vw']}
+                            height={['35vw']}
                             layout={[1]}
                             photos={content.images.map((data) => ({
                                 source: data,
@@ -262,7 +262,7 @@ const PostItem: React.FC<PostItemProps> = ({
                     ) : content.images?.length === 2 ? (
                         <ReactPhotoCollage
                             width="100%"
-                            height={['50vw']}
+                            height={['35vw']}
                             layout={[2]}
                             photos={content.images.map((data) => ({
                                 source: data,
@@ -271,7 +271,7 @@ const PostItem: React.FC<PostItemProps> = ({
                     ) : content.images?.length === 3 ? (
                         <ReactPhotoCollage
                             width="100%"
-                            height={['50vw']}
+                            height={['20vw', '15vw']}
                             layout={[1, 2]}
                             photos={
                                 content.images?.map((data) => ({
@@ -282,7 +282,7 @@ const PostItem: React.FC<PostItemProps> = ({
                     ) : content.images?.length && content.images.length > 3 ? (
                         <ReactPhotoCollage
                             width="100%"
-                            height={['50vw']}
+                            height={['20vw', '15vw']}
                             layout={[1, 3]}
                             photos={content.images.map((data) => ({
                                 source: data,

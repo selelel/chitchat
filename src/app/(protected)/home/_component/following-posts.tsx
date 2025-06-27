@@ -28,7 +28,7 @@ const FollowingPosts: React.FC = () => {
         )
     }
     return (
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-4xl mx-auto">
             {followingPosts?.getUserFollowingPosts.map((post: Post) => {
                 console.log(post.likes)
                 return (

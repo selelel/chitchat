@@ -12,7 +12,7 @@ function HomePage() {
     return (
         <Layout>
             {/* Toggle UI */}
-            <div className="max-w-2xl mx-auto mb-6">
+            <div className="max-w-4xl mx-auto mb-6">
                 <div className="flex bg-gray-100 rounded-lg p-1">
                     <button
                         onClick={() => setActiveTab('recommended')}
