@@ -171,7 +171,9 @@ export type Mutation = {
     removePostComment: Post
     removeUserFollower: User
     removeUserFollowing: User
+    savePost: Scalars['Boolean']['output']
     unlikePost: Scalars['Boolean']['output']
+    unsavePost: Scalars['Boolean']['output']
     updatePost: Scalars['Boolean']['output']
     updateUserPassword: Scalars['Boolean']['output']
 }
@@ -259,7 +261,15 @@ export type MutationRemoveUserFollowingArgs = {
     targetUserId: Scalars['String']['input']
 }
 
+export type MutationSavePostArgs = {
+    postId: Scalars['String']['input']
+}
+
 export type MutationUnlikePostArgs = {
+    postId: Scalars['String']['input']
+}
+
+export type MutationUnsavePostArgs = {
     postId: Scalars['String']['input']
 }
 
@@ -301,7 +311,9 @@ export type Post = {
     comments: Array<Comments>
     content: PostContentObject
     createdAt: Scalars['DateTime']['output']
+    deleted: Scalars['Float']['output']
     likes: Array<User>
+    save: Array<User>
     shares: Scalars['Float']['output']
     tags: Array<User>
     updatedAt: Scalars['DateTime']['output']
@@ -329,6 +341,7 @@ export type Query = {
     getAllChats: Array<Chat>
     getLikedPost: Array<Post>
     getPost: Post
+    getSavePosts: Array<Post>
     getUserById: User
     getUserInfo: User
     getUserPosts: Array<Post>
@@ -338,8 +351,20 @@ export type Query = {
     testQuery: Array<User>
 }
 
+export type QueryGetLikedPostArgs = {
+    pagination: Pagination
+}
+
 export type QueryGetPostArgs = {
     postId: Scalars['String']['input']
+}
+
+export type QueryGetSavePostsArgs = {
+    pagination: Pagination
+}
+
+export type QueryGetUserPostsArgs = {
+    pagination: Pagination
 }
 
 export type RefreshResponse = {

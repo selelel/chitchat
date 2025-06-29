@@ -17,8 +17,11 @@ import {
     GetRecommendedPostsQueryDocument,
     GetUserFollowingPostsQueryDocument,
     GetUserPosts,
+    GetSavedPosts,
     LikePostMutationDocument,
+    SavePostMutationDocument,
     UnlikePostMutationDocument,
+    UnsavePostMutationDocument,
     UpdatePost,
 } from './postQuery'
 
@@ -116,26 +119,45 @@ const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
                 document: LikePostMutationDocument,
                 variables,
             }),
-            transformResponse: (response) => {
-                console.log('Like response:', response)
-                return response
-            },
         }),
-        getUserPosts: build.query<Post[], void>({
-            query: () => ({
+        savePost: build.mutation({
+            query: (variables) => ({
+                document: SavePostMutationDocument,
+                variables,
+            }),
+        }),
+        getUserPosts: build.mutation<
+            { getUserPosts: Query['getUserPosts'] },
+            { skip: number; limit: number }
+        >({
+            query: (variables) => ({
                 document: GetUserPosts,
+                variables: {
+                    pagination: variables,
+                },
             }),
-            transformResponse: (response: { getUserPosts: Post[] }) => {
-                return response.getUserPosts
-            },
         }),
-        getLikePosts: build.query<Post[], void>({
-            query: () => ({
+        getLikePosts: build.mutation<
+            { getLikedPost: Query['getLikedPost'] },
+            { skip: number; limit: number }
+        >({
+            query: (variables) => ({
                 document: GetLikedPosts,
+                variables: {
+                    pagination: variables,
+                },
             }),
-            transformResponse: (response: { getLikedPost: Post[] }) => {
-                return response.getLikedPost
-            },
+        }),
+        getSavedPosts: build.mutation<
+            { getSavePosts: Post[] },
+            { skip: number; limit: number }
+        >({
+            query: (variables) => ({
+                document: GetSavedPosts,
+                variables: {
+                    pagination: variables,
+                },
+            }),
         }),
         unlikePost: build.mutation({
             query: (variables) => ({
@@ -147,6 +169,12 @@ const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
                 return response
             },
         }),
+        unsavePost: build.mutation({
+            query: (variables) => ({
+                document: UnsavePostMutationDocument,
+                variables,
+            }),
+        }),
     }),
 })
 
@@ -157,8 +185,11 @@ export const {
     useLikePostMutation,
     useUnlikePostMutation,
     useGetFollowingPostsMutation,
-    useGetLikePostsQuery,
-    useGetUserPostsQuery,
+    useGetLikePostsMutation,
+    useGetUserPostsMutation,
+    useGetSavedPostsMutation,
     useDeletePostMutation,
     useUpdatePostMutation,
+    useSavePostMutation,
+    useUnsavePostMutation,
 } = injectedRtkApi

@@ -29,6 +29,12 @@ export const GetPostQueryDocument = `query GetPost($postId: String!) {
         getPost(postId: $postId) {
             _id
             shares
+            save {
+                    _id
+                    user {
+                        username
+                    }
+                }
             author {
                 _id
                 user {
@@ -54,6 +60,12 @@ export const GetRecommendedPostsQueryDocument = `
         getRecommendedPosts(pagination: $pagination) {
             _id
             shares
+            save {
+                    _id
+                    user {
+                        username
+                    }
+                }
             author {
                 _id
                 user {
@@ -87,6 +99,12 @@ export const GetUserFollowingPostsQueryDocument = `
                     username
                 }
             }
+            save {
+                    _id
+                    user {
+                        username
+                    }
+                }
             content {
                 text,
                 description,
@@ -109,9 +127,21 @@ export const LikePostMutationDocument = `
     }
 `
 
+export const SavePostMutationDocument = `
+    mutation savePost($postId: String!) {
+        savePost(postId: $postId)
+    }
+`
+
 export const UnlikePostMutationDocument = `
     mutation UnlikePost($postId: String!) {
         unlikePost(postId: $postId)
+    }
+`
+
+export const UnsavePostMutationDocument = `
+    mutation UnsavePost($postId: String!) {
+        unsavePost(postId: $postId)
     }
 `
 
@@ -122,10 +152,16 @@ export const IsLikedPostMutationDocument = `
 `
 
 export const GetLikedPosts = `
-    query GetLikedPost {
-        getLikedPost {
+    query GetLikedPost($pagination: Pagination!) {
+        getLikedPost(pagination: $pagination) {
                 _id
                 shares
+                save {
+                    _id
+                    user {
+                        username
+                    }
+                }
                 author {
                     _id
                     user {
@@ -148,10 +184,48 @@ export const GetLikedPosts = `
 `
 
 export const GetUserPosts = `
-        query GetUserPosts {
-        getUserPosts {
+    query GetUserPosts($pagination: Pagination!) {
+        getUserPosts(pagination: $pagination) {
                 _id
                 shares
+                save {
+                    _id
+                    user {
+                        username
+                    }
+                }
+                author {
+                    _id
+                    user {
+                        username
+                    }
+                }
+                content {
+                    text,
+                    description,
+                    images
+                }
+                likes {
+                    _id
+                }
+                audience
+                createdAt
+                updatedAt
+            }
+    }
+`
+
+export const GetSavedPosts = `
+    query GetSavePosts($pagination: Pagination!) {
+        getSavePosts(pagination: $pagination) {
+                _id
+                shares
+                save {
+                    _id
+                    user {
+                        username
+                    }
+                }
                 author {
                     _id
                     user {

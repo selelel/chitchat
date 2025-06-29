@@ -45,6 +45,13 @@ const RecommendedPosts: React.FC = () => {
                                     localStorageGetItem(LOCALSTORAGE['USER_ID'])
                             ) || false
                         }
+                        isSaved={
+                            post.save.some(
+                                (save) =>
+                                    save._id ===
+                                    localStorageGetItem(LOCALSTORAGE['USER_ID'])
+                            ) || false
+                        }
                         authorId={post._id}
                     />
                 )

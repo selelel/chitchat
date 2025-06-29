@@ -16,7 +16,9 @@ import {
     useDeletePostMutation,
     useGetPostMutation,
     useLikePostMutation,
+    useSavePostMutation,
     useUnlikePostMutation,
+    useUnsavePostMutation,
 } from '@/lib/features/post/postApi'
 import {
     Popover,
@@ -42,6 +44,7 @@ interface PostItemProps {
     isLiked?: boolean
     isPreview?: boolean
     authorId?: string
+    isSaved?: boolean
 }
 
 const PostItem: React.FC<PostItemProps> = ({
@@ -56,6 +59,7 @@ const PostItem: React.FC<PostItemProps> = ({
     isLiked,
     isPreview = false,
     authorId,
+    isSaved = false,
 }) => {
     const [
         deletePost,
@@ -71,9 +75,12 @@ const PostItem: React.FC<PostItemProps> = ({
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
     const [likePost, { isLoading: isLikeLoading }] = useLikePostMutation()
+    const [savePost, { isLoading: isSaving }] = useSavePostMutation()
     const [unlikePost, { isLoading: isUnlikeLoading }] = useUnlikePostMutation()
+    const [unsavePost, { isLoading: isUnsaveLoading }] = useUnsavePostMutation()
     const [localLikes, setLocalLikes] = useState(likes)
     const [localIsLiked, setLocalIsLiked] = useState(isLiked || false)
+    const [localIsSaved, setLocalIsSaved] = useState(isSaved)
     const [showPost, setShowPost] = useState(true)
     const [openMenuPopOver, setOpenMenuPopOver] = useState(false)
 
@@ -104,6 +111,23 @@ const PostItem: React.FC<PostItemProps> = ({
         }
     }, [openUpdatePost])
 
+    const handleSavePost = async () => {
+        try {
+            if (localIsSaved) {
+                await unsavePost({ postId: _id }).unwrap()
+                setLocalIsSaved(false)
+            } else {
+                await savePost({ postId: _id }).then((data) => {
+                    console.log(data)
+                    setLocalIsSaved(true)
+                    return data
+                })
+            }
+        } catch (error) {
+            console.error('Failed to toggle save:', error)
+        }
+    }
+
     const handleUpdatePost = () => {
         setOpenUpdatePost(true)
     }
@@ -112,12 +136,6 @@ const PostItem: React.FC<PostItemProps> = ({
         deletePost(_id)
         setShowPost(false)
         setOpenMenuPopOver(false)
-    }
-
-    const handleImageClick = (image: string, index: number) => {
-        setPreviewImage(image)
-        setCurrentImageIndex(index)
-        setIsModalOpen(true)
     }
 
     const handleNext = () => {
@@ -193,6 +211,13 @@ const PostItem: React.FC<PostItemProps> = ({
                                     </button>
                                 </PopoverTrigger>
                                 <PopoverContent className="w-40 p-0">
+                                    <button
+                                        className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                                        onClick={handleSavePost}
+                                        disabled={isSaving || isUnsaveLoading}
+                                    >
+                                        {localIsSaved ? 'Unsave' : 'Save'}
+                                    </button>
                                     {localStorageGetItem(
                                         LOCALSTORAGE['USER_ID']
                                     ) === authorId ? (
