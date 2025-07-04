@@ -4,19 +4,13 @@ import PostItem from '@/app/(protected)/post/_component/post-item'
 import { localStorageGetItem } from '@/utils/helper/localstorage'
 import { LOCALSTORAGE } from '@/constants/localstorage'
 
-const UserPostsDynamic = ({
-    id = '682be313a8b16f7157a7ffed',
-}: {
-    id: string
-}) => {
+const UserPostsDynamic = ({ id }: { id: string }) => {
     const [getUserPosts, { data, isLoading, isError }] =
         useGetUserPostsMutation()
 
     useEffect(() => {
         getUserPosts({ id, pagination: { skip: 0, limit: 100 } })
     }, [])
-
-    console.log(data?.getUserPosts)
 
     return (
         <div className="p-4">

@@ -6,7 +6,7 @@ import { localStorageGetItem } from '@/utils/helper/localstorage'
 
 const UserProfileInfo = ({ user }: { user: User | null }) => {
     const isOwnProfile =
-        localStorageGetItem(LOCALSTORAGE['USER_ID']) === user?._id
+        localStorageGetItem(LOCALSTORAGE['USER_ID']) === user?._id || true
     return (
         <div className="flex flex-col items-center p-4">
             <img
