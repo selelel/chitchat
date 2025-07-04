@@ -1,7 +1,7 @@
 'use client'
 import Layout from '@/components/layout/layout'
 import React from 'react'
-import UserProfile from './_component/user-profile'
+import UserProfile from '../_component/user-profile'
 
 function IndexPage() {
     return (

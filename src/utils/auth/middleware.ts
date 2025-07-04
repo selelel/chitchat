@@ -18,8 +18,12 @@ export const authMiddleware = async (request: NextRequest) => {
 
     if (
         isAuthenticated &&
-        !Object.values(pathsConfig.dashboard).some((route) =>
-            request.nextUrl.pathname.startsWith(route)
+        !(
+            Object.values(pathsConfig.dashboard).some((route) =>
+                request.nextUrl.pathname.startsWith(route)
+            ) ||
+            request.nextUrl.pathname === '/profile' ||
+            request.nextUrl.pathname.startsWith('/profile/')
         )
     ) {
         const url = request.nextUrl.clone()

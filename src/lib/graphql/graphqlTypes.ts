@@ -340,10 +340,11 @@ export type Query = {
     __typename?: 'Query'
     getAllChats: Array<Chat>
     getLikedPost: Array<Post>
-    getPost: Post
+    getPost?: Maybe<Post>
     getSavePosts: Array<Post>
     getUserById: User
     getUserInfo: User
+    getUserInfoByUsername: User
     getUserPosts: Array<Post>
     logoutAllDevices: Scalars['Boolean']['output']
     logoutDevice: Scalars['Boolean']['output']
@@ -356,14 +357,19 @@ export type QueryGetLikedPostArgs = {
 }
 
 export type QueryGetPostArgs = {
-    postId: Scalars['String']['input']
+    id?: InputMaybe<Scalars['String']['input']>
 }
 
 export type QueryGetSavePostsArgs = {
     pagination: Pagination
 }
 
+export type QueryGetUserInfoByUsernameArgs = {
+    username: Scalars['String']['input']
+}
+
 export type QueryGetUserPostsArgs = {
+    id?: InputMaybe<Scalars['String']['input']>
     pagination: Pagination
 }
 
@@ -406,4 +412,5 @@ export type UserInput = {
     email: Scalars['String']['input']
     password: Scalars['String']['input']
     user: PersonalObjectInput
+    username: Scalars['String']['input']
 }

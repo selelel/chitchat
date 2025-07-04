@@ -4,6 +4,7 @@ import { GetUserByIdQueryDocument } from './appQuery'
 import { Query, User } from '@/lib/graphql/graphqlTypes'
 import { LOCALSTORAGE } from '@/constants/localstorage'
 import { localStorageSetItem } from '@/utils/helper/localstorage'
+import { GetUserInfoByUsername } from './appQuery'
 
 export const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
     endpoints: (build) => ({
@@ -21,7 +22,21 @@ export const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
                 return { ...error, message: Parse_Message(error) }
             },
         }),
+        getUserInfoByUsername: build.mutation<
+            { getUserInfoByUsername: Query['getUserInfoByUsername'] },
+            { username: string }
+        >({
+            query: ({ username }) => ({
+                document: GetUserInfoByUsername,
+                variables: { username },
+            }),
+            transformErrorResponse: (error) => {
+                console.log(error.message)
+                return { ...error, message: Parse_Message(error) }
+            },
+        }),
     }),
 })
 
-export const { useGetUserInfoQuery } = injectedRtkApi
+export const { useGetUserInfoQuery, useGetUserInfoByUsernameMutation } =
+    injectedRtkApi

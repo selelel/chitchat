@@ -184,8 +184,8 @@ export const GetLikedPosts = `
 `
 
 export const GetUserPosts = `
-    query GetUserPosts($pagination: Pagination!) {
-        getUserPosts(pagination: $pagination) {
+    query GetUserPosts($id: String, $pagination: Pagination!) {
+    getUserPosts(pagination: $pagination, id: $id) {
                 _id
                 shares
                 save {

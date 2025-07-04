@@ -267,9 +267,8 @@ const PostItem: React.FC<PostItemProps> = ({
                             </Popover>
                         </div>
                     </Space>
-
                     {content.description ||
-                        (getPostData?.getPost.content.description && (
+                        (getPostData?.getPost?.content.description && (
                             <Paragraph className="mb-0">
                                 {getPostData?.getPost.content.description ||
                                     content.description}

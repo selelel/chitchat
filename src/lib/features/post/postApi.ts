@@ -128,13 +128,14 @@ const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
         }),
         getUserPosts: build.mutation<
             { getUserPosts: Query['getUserPosts'] },
-            { skip: number; limit: number }
+            {
+                id?: string
+                pagination: { skip: number; limit: number }
+            }
         >({
             query: (variables) => ({
                 document: GetUserPosts,
-                variables: {
-                    pagination: variables,
-                },
+                variables,
             }),
         }),
         getLikePosts: build.mutation<
