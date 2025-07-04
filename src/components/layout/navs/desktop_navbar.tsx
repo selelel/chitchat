@@ -5,15 +5,11 @@ import {
     CameraIcon,
     ChatIcon,
     ChitChatLogo,
-    NotificationIcon,
-    ExploreIcon,
     HomeIcon,
-    MenuIcon,
     ProfileIcon,
-    SearchIcon,
 } from '@/components/commons/icon'
 import pathsConfig from '@/config/pathConfig'
-import ProfileButton from './profile-button'
+import MenuButton from './main-button'
 
 const categories = [
     { text: 'Home', icon: HomeIcon, href: pathsConfig.dashboard.home },
@@ -54,7 +50,7 @@ export default function DesktopNavBar() {
                 href="/menu"
                 isActive={path.startsWith('/menu')}
             /> */}
-            <ProfileButton />
+            <MenuButton />
         </div>
     )
 }

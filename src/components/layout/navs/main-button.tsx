@@ -12,10 +12,10 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from '@/components/ui/popover'
-import { Heart, LogOut, MessageSquare, User } from 'lucide-react'
+import { Heart, LogOut, MessageSquare, User, Bookmark } from 'lucide-react'
 import Link from 'next/link'
 
-export default function ProfileButton() {
+export default function MenuButton() {
     const [logOut, { data, isLoading }] = useLogOutMutation()
     const dispatch = useAppDispatch()
 
@@ -65,6 +65,13 @@ export default function ProfileButton() {
                     >
                         <Heart className="h-4 w-4" />
                         <span>Liked Posts</span>
+                    </Link>
+                    <Link
+                        href="/profile/me?tab=saved"
+                        className="flex items-center space-x-2 px-2 py-1.5 text-sm rounded-md hover:bg-gray-100"
+                    >
+                        <Bookmark className="h-4 w-4" />
+                        <span>Saved Posts</span>
                     </Link>
                     <Link
                         href="/profile/me?tab=posts"
