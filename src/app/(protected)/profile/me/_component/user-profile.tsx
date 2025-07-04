@@ -15,6 +15,7 @@ import PostItem from '@/app/(protected)/post/_component/post-item'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { localStorageGetItem } from '@/utils/helper/localstorage'
 import { LOCALSTORAGE } from '@/constants/localstorage'
+import FriendsModal from './friends-link-modal'
 
 const UserProfileImage = ({ user }: { user: User | null }) => (
     <div className="flex flex-col items-center p-4">
@@ -33,14 +34,14 @@ const UserProfileImage = ({ user }: { user: User | null }) => (
                 .toLowerCase()}
         </p>
         <div className="flex mt-4 space-x-4">
-            <div className="text-center">
-                <span className="font-bold">{user?.following.length}</span>
-                <span className="text-gray-500"> Following</span>
-            </div>
-            <div className="text-center">
-                <span className="font-bold">{user?.followers.length}</span>
-                <span className="text-gray-500"> Followers</span>
-            </div>
+            <FriendsModal
+                text={'Following'}
+                friends={user?.following || null}
+            />
+            <FriendsModal
+                text={'Followers'}
+                friends={user?.followers || null}
+            />
         </div>
     </div>
 )

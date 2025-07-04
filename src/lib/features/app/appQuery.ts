@@ -13,9 +13,21 @@ export const GetUserByIdQueryDocument = `query GetUserInfo {
         }
         followers {
             _id
+            user {
+                firstname
+                lastname
+                username
+                hide_name
+            }
         }
         following {
             _id
+            user {
+                firstname
+                lastname
+                username
+                hide_name
+            }
         }
     }
 }
