@@ -1,6 +1,7 @@
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { User } from '@/lib/graphql/graphqlTypes'
 import React from 'react'
+import Link from 'next/link'
 
 function FriendsModal({
     text,
@@ -25,30 +26,32 @@ function FriendsModal({
                     {Array.isArray(friends) && friends.length > 0 ? (
                         <ul className="w-full max-w-xs divide-y divide-gray-200">
                             {friends.map((friend, idx) => (
-                                <li
-                                    key={friend._id || idx}
-                                    className="flex items-center space-x-3 py-3 px-2 hover:bg-gray-50 transition rounded"
-                                >
-                                    <img
-                                        src={'/placeholder-profile.webp'}
-                                        alt={friend.user.username}
-                                        className="w-10 h-10 rounded-full object-cover border"
-                                    />
-                                    <div className="flex-1">
-                                        <div className="font-medium">
-                                            {friend.user.firstname &&
-                                            friend.user.lastname
-                                                ? `${friend.user.firstname} ${friend.user.lastname}`
-                                                : friend.user.username}
+                                <li key={friend._id || idx}>
+                                    <Link
+                                        href={`/profile/${friend.user.username}`}
+                                        className="flex items-center space-x-3 py-3 px-2 hover:bg-gray-50 transition rounded cursor-pointer"
+                                    >
+                                        <img
+                                            src={'/placeholder-profile.webp'}
+                                            alt={friend.user.username}
+                                            className="w-10 h-10 rounded-full object-cover border"
+                                        />
+                                        <div className="flex-1">
+                                            <div className="font-medium">
+                                                {friend.user.firstname &&
+                                                friend.user.lastname
+                                                    ? `${friend.user.firstname} ${friend.user.lastname}`
+                                                    : friend.user.username}
+                                            </div>
+                                            <div className="text-xs text-gray-500">
+                                                @{friend.user.username}
+                                            </div>
                                         </div>
-                                        <div className="text-xs text-gray-500">
-                                            @{friend.user.username}
-                                        </div>
-                                    </div>
-                                    {/* Example: online status indicator */}
-                                    {/* {friend.user.isOnline && (
-                                    <span className="inline-block w-2 h-2 bg-green-500 rounded-full" title="Online"></span>
-                                )} */}
+                                        {/* Example: online status indicator */}
+                                        {/* {friend.user.isOnline && (
+                                            <span className="inline-block w-2 h-2 bg-green-500 rounded-full" title="Online"></span>
+                                        )} */}
+                                    </Link>
                                 </li>
                             ))}
                         </ul>

@@ -29,6 +29,7 @@ import { localStorageGetItem } from '@/utils/helper/localstorage'
 import { LOCALSTORAGE } from '@/constants/localstorage'
 import PostEditModal from './post-update-modal'
 import { ReactPhotoCollage } from 'react-photo-collage'
+import Link from 'next/link'
 
 const { Text, Paragraph } = Typography
 
@@ -181,7 +182,9 @@ const PostItem: React.FC<PostItemProps> = ({
                         <Space>
                             <Avatar icon={<UserOutlined />} />
                             <Space direction="vertical" size={0}>
-                                <Text strong>{username}</Text>
+                                <Link href={`/profile/${username}`}>
+                                    <Text strong>{username}</Text>
+                                </Link>
                                 <Text type="secondary" className="text-xs">
                                     {formatDistanceToNow(new Date(createdAt), {
                                         addSuffix: true,
