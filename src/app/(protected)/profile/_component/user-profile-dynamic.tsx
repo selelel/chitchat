@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useGetUserInfoByUsernameMutation } from '@/lib/features/app/appApi'
 import UserPostsDynamic from './user-posts-dynamic'
-import UserProfileInfo from './user-profile-info'
+import UserProfileInfo, { UserProfileInfoDynamic } from './user-profile-info'
 import { LOCALSTORAGE } from '@/constants/localstorage'
 import { localStorageGetItem } from '@/utils/helper/localstorage'
 import { redirect } from 'next/navigation'
@@ -22,7 +22,10 @@ const UserProfileDynamic: React.FC<{ username: string }> = ({ username }) => {
     } else {
         return (
             <>
-                <UserProfileInfo user={data?.getUserInfoByUsername!} />
+                <UserProfileInfoDynamic
+                    user={data?.getUserInfoByUsername!}
+                    isLoading={isLoading}
+                />
                 <div>
                     {isLoading ? (
                         <div className="flex flex-col items-center justify-center py-12 text-gray-400">
