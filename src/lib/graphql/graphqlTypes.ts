@@ -151,15 +151,16 @@ export type MessageContentObject = {
 
 export type Mutation = {
     __typename?: 'Mutation'
-    acceptFollowRequest: User
+    acceptFollowRequest: Scalars['Boolean']['output']
     addCommentToPost: Comments
-    cancelFollowRequest: User
+    cancelFollowRequest: Scalars['Boolean']['output']
     checkUserExistsByEmail: Scalars['Boolean']['output']
     createChatRoom: Chat
     createNewPost: Post
     createUser: User
+    declineFollowRequest: Scalars['Boolean']['output']
     editPostComment: Comments
-    followUser: User
+    followUser: Scalars['Boolean']['output']
     getChatConversation: Array<Message>
     getRecommendedPosts: Array<Post>
     getUserFollowingPosts: Array<Post>
@@ -169,8 +170,8 @@ export type Mutation = {
     registerUser: User
     removePost: Scalars['Boolean']['output']
     removePostComment: Post
-    removeUserFollower: User
-    removeUserFollowing: User
+    removeUserFollower: Scalars['Boolean']['output']
+    removeUserFollowing: Scalars['Boolean']['output']
     savePost: Scalars['Boolean']['output']
     unlikePost: Scalars['Boolean']['output']
     unsavePost: Scalars['Boolean']['output']
@@ -206,6 +207,10 @@ export type MutationCreateNewPostArgs = {
 
 export type MutationCreateUserArgs = {
     createUserInput: UserInput
+}
+
+export type MutationDeclineFollowRequestArgs = {
+    targetUserId: Scalars['String']['input']
 }
 
 export type MutationEditPostCommentArgs = {
@@ -353,6 +358,7 @@ export type Query = {
 }
 
 export type QueryGetLikedPostArgs = {
+    id?: InputMaybe<Scalars['String']['input']>
     pagination: Pagination
 }
 
@@ -361,6 +367,7 @@ export type QueryGetPostArgs = {
 }
 
 export type QueryGetSavePostsArgs = {
+    id?: InputMaybe<Scalars['String']['input']>
     pagination: Pagination
 }
 

@@ -65,3 +65,24 @@ export const GetUserInfoByUsername = `query GetUserInfoByUsername($username: Str
 }
 
  `
+
+export const FollowUserMutation = `mutation FollowUser($input: String!) {
+    followUser(targetUserId: $input)
+}
+ `
+
+export const AcceptFollowRequestMutation = `mutation AcceptFollowRequest($input: String!)  {
+    acceptFollowRequest(targetUserId: $input)
+}`
+
+export const DeclineFollowRequestMutation = `mutation DeclineFollowRequest($input: String!)  {
+    declineFollowRequest(targetUserId: $input)
+}`
+
+export const RemoveUserFollowingMutation = `mutation RemoveUserFollowing($input: String!)  {
+    removeUserFollowing(targetUserId: $input)
+}`
+
+export const RemoveUserFollowerMutation = `mutation RemoveUserFollower($input: String!)  {
+    RemoveUserFollower(targetUserId: $input)
+}`
