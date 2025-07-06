@@ -2,6 +2,7 @@ import { baseApiWithGraphql } from '../../graphql/graphqlBaseApi'
 import { Parse_Message } from '@/helper/error'
 import {
     AcceptFollowRequestMutation,
+    CancelFollowRequestMutation,
     DeclineFollowRequestMutation,
     FollowUserMutation,
     GetManyUserByIdMutation,
@@ -71,10 +72,10 @@ export const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
         }),
         cancelFollowRequest: build.mutation<
             { cancelFollowRequest: Mutation['cancelFollowRequest'] },
-            { input: string }
+            string
         >({
-            query: ({ input }) => ({
-                document: DeclineFollowRequestMutation,
+            query: (input) => ({
+                document: CancelFollowRequestMutation,
                 variables: { input },
             }),
             transformErrorResponse: (error) => {

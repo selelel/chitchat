@@ -87,6 +87,11 @@ export const DeclineFollowRequestMutation = `mutation DeclineFollowRequest($inpu
     declineFollowRequest(targetUserId: $input)
 }`
 
+export const CancelFollowRequestMutation = `mutation CancelFollowRequest($input: String!) {
+    cancelFollowRequest(targetUserId: $input)
+}
+`
+
 export const RemoveUserFollowingMutation = `mutation RemoveUserFollowing($input: String!)  {
     removeUserFollowing(targetUserId: $input)
 }`
