@@ -2,27 +2,33 @@ import { User } from '@/lib/graphql/graphqlTypes'
 import Link from 'next/link'
 import React from 'react'
 import { Button } from '../ui/button'
-import { useAcceptFollowRequestMutation } from '@/lib/features/app/appApi'
+import {
+    useAcceptFollowRequestMutation,
+    useDeclineFollowRequestMutation,
+} from '@/lib/features/app/appApi'
 import { cn } from '@/lib/utils'
 
 function UserRequest({ user }: { user: User }) {
-    const [acceptRequest, { data: acceptedUser, isLoading }] =
+    const [acceptRequest, { data: acceptedUser, isLoading: isLoadingAccepts }] =
         useAcceptFollowRequestMutation()
+    const [
+        declineRequest,
+        { data: declinedUser, isLoading: isLoadingDecline },
+    ] = useDeclineFollowRequestMutation()
 
-    const handleAccept = (userId: string) => {
+    const handleAccept = () => {
         // TODO: Add accept friend request mutation
         acceptRequest(user._id)
-        console.log('Accept friend request for:', userId)
     }
 
-    const handleDecline = (userId: string) => {
+    const handleDecline = () => {
         // TODO: Add decline friend request mutation
-        console.log('Decline friend request for:', userId)
+        declineRequest(user._id)
     }
 
     return (
         <li
-            className={'w-full flex justify-between items-center py-3 px-2'}
+            className={`w-full flex justify-between items-center py-3 px-2 ${declinedUser || acceptedUser ? 'opacity-70' : 'opacity-100'}`}
             key={user._id}
         >
             <Link
@@ -47,12 +53,17 @@ function UserRequest({ user }: { user: User }) {
             </Link>
             <div className="flex gap-2 ml-4">
                 <Button
-                    className={cn(acceptedUser && 'bg-black/70')}
-                    onClick={() => handleAccept(user._id)}
+                    className={cn(acceptedUser && 'bg-black/50')}
+                    onClick={handleAccept}
                 >
                     Accept
                 </Button>
-                <Button onClick={() => handleDecline(user._id)}>Decline</Button>
+                <Button
+                    className={cn(declinedUser && 'bg-black/50')}
+                    onClick={handleDecline}
+                >
+                    Decline
+                </Button>
             </div>
         </li>
     )

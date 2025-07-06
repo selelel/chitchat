@@ -84,9 +84,9 @@ export const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
         }),
         declineFollowRequest: build.mutation<
             { declineFollowRequest: Mutation['declineFollowRequest'] },
-            { input: string }
+            string
         >({
-            query: ({ input }) => ({
+            query: (input) => ({
                 document: DeclineFollowRequestMutation,
                 variables: { input },
             }),

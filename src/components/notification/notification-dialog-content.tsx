@@ -7,20 +7,19 @@ import {
 import { User } from '@/lib/graphql/graphqlTypes'
 import UserRequest from './user-request'
 
-function NotificationDialogContent() {
+function NotificationDialogContent({ open }: { open: boolean }) {
     const { data: userInfo } = useGetUserInfoQuery()
     const [getFollowReqUsersData, { data, isLoading }] =
         useGetManyUserInfoMutation()
 
     useEffect(() => {
-        console.log(userInfo)
         if (!!userInfo && userInfo?.requests.toFollowers.length > 0) {
             const ids = userInfo?.requests.toFollowers.map(
                 (data) => data._id
             ) as string[]
             getFollowReqUsersData(ids)
         }
-    }, [userInfo, getFollowReqUsersData])
+    }, [userInfo, getFollowReqUsersData, open])
 
     console.log(userInfo)
 
