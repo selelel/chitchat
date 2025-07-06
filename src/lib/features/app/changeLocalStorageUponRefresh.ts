@@ -1,7 +1,5 @@
-import { GRAPHQL_URI } from '@/config/env'
 import { LOCALSTORAGE } from '@/constants/localstorage'
 import { User } from '@/lib/graphql/graphqlTypes'
-import { GraphQLClient } from 'graphql-request'
 import { GetUserByIdQueryDocument } from './appQuery'
 import pathsConfig from '@/config/pathConfig'
 import { client } from '@/utils/server/graphql-client'
@@ -14,7 +12,6 @@ export const changeLocalStorageUponRefresh = async () => {
         } = (await client.request(GetUserByIdQueryDocument)) as {
             getUserById: User
         }
-        console.log('Get user id ' + _id)
         //! SET HERE THE ACCESSTOKEN, PLEASE RESOLVE THIS OR COMEUP WITH A BETTER APPROACH
         localStorageSetItem(LOCALSTORAGE['USER_ID'], _id)
 

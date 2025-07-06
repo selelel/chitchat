@@ -26,6 +26,11 @@ const dynamicBaseQuery = async (
 ) => {
     const state = api.getState() as RootState
     const token = selectAccessToken(state)
+    const dispatch = api.dispatch as AppDispatch
+
+    if (!token || !localStorageGetItem(LOCALSTORAGE['ACCESSTOKEN'])!) {
+        await dispatch(refreshToken())
+    }
 
     setAuthorizationHeader(
         token || localStorageGetItem(LOCALSTORAGE['ACCESSTOKEN'])!
@@ -36,7 +41,6 @@ const dynamicBaseQuery = async (
         const parsedMessage = await Parse_Message(result.error)
 
         if (parsedMessage === 'jwt expired') {
-            const dispatch = api.dispatch as AppDispatch
             try {
                 await dispatch(refreshToken()).unwrap()
 

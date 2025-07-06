@@ -7,13 +7,13 @@ import { changeLocalStorageUponRefresh } from './changeLocalStorageUponRefresh'
 import { localStorageRemoveItem } from '@/utils/helper/localstorage'
 import { LOCALSTORAGE } from '@/constants/localstorage'
 import { fetchUserInfo } from './fecthUserInfo'
-import { User } from '@/lib/graphql/graphqlTypes'
 
 const initialState: ServerTypes = {
     server_status: { status: 'DOWN' },
     access_token: undefined,
     user_id: undefined,
     user_info: null,
+    isUserInfoLoading: false,
 }
 
 export const appSlice = createAppSlice({
@@ -36,9 +36,16 @@ export const appSlice = createAppSlice({
             },
         }),
         getUserInfo: create.asyncThunk(async () => await fetchUserInfo(), {
+            pending: (state) => {
+                state.isUserInfoLoading = true
+            },
             fulfilled: (state, actions) => {
                 console.log(actions.payload)
                 state.user_info = actions.payload
+                state.isUserInfoLoading = false
+            },
+            rejected: (state) => {
+                state.isUserInfoLoading = false
             },
         }),
         setNewUserLocalStorage: create.asyncThunk(
@@ -64,6 +71,7 @@ export const appSlice = createAppSlice({
         selectSeverStatus: (counter) => counter.server_status,
         selectAccessToken: (counter) => counter.access_token,
         selectUserInfo: (counter) => counter.user_info,
+        selectUserInfoLoading: (counter) => counter.isUserInfoLoading,
     },
 })
 
@@ -76,8 +84,12 @@ export const {
     setNewUserLocalStorage,
 } = appSlice.actions
 
-export const { selectSeverStatus, selectAccessToken, selectUserInfo } =
-    appSlice.selectors
+export const {
+    selectSeverStatus,
+    selectAccessToken,
+    selectUserInfo,
+    selectUserInfoLoading,
+} = appSlice.selectors
 
 export const ServerStatus = (): AppThunk => async (dispatch, getState) => {
     const intervalId = setInterval(async () => {

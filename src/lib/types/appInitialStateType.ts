@@ -5,4 +5,5 @@ export type ServerTypes = {
     access_token?: string
     user_id?: string
     user_info: User | null
+    isUserInfoLoading: boolean
 }

@@ -2,10 +2,16 @@ import { User } from '@/lib/graphql/graphqlTypes'
 import Link from 'next/link'
 import React from 'react'
 import { Button } from '../ui/button'
+import { useAcceptFollowRequestMutation } from '@/lib/features/app/appApi'
+import { cn } from '@/lib/utils'
 
 function UserRequest({ user }: { user: User }) {
+    const [acceptRequest, { data: acceptedUser, isLoading }] =
+        useAcceptFollowRequestMutation()
+
     const handleAccept = (userId: string) => {
         // TODO: Add accept friend request mutation
+        acceptRequest(user._id)
         console.log('Accept friend request for:', userId)
     }
 
@@ -16,7 +22,7 @@ function UserRequest({ user }: { user: User }) {
 
     return (
         <li
-            className="w-full flex justify-between items-center py-3 px-2"
+            className={'w-full flex justify-between items-center py-3 px-2'}
             key={user._id}
         >
             <Link
@@ -40,7 +46,12 @@ function UserRequest({ user }: { user: User }) {
                 </div>
             </Link>
             <div className="flex gap-2 ml-4">
-                <Button onClick={() => handleAccept(user._id)}>Accept</Button>
+                <Button
+                    className={cn(acceptedUser && 'bg-black/70')}
+                    onClick={() => handleAccept(user._id)}
+                >
+                    Accept
+                </Button>
                 <Button onClick={() => handleDecline(user._id)}>Decline</Button>
             </div>
         </li>

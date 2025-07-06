@@ -20,10 +20,10 @@ export const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
             query: () => ({
                 document: GetUserByIdQueryDocument,
             }),
-            transformResponse: ({ getUserById }: Query) => {
+            transformResponse: ({ getUserInfo }: Query) => {
                 // ! setting here the localstorage changing user_id
-                localStorageSetItem(LOCALSTORAGE['USER_ID'], getUserById._id)
-                return getUserById
+                localStorageSetItem(LOCALSTORAGE['USER_ID'], getUserInfo._id)
+                return getUserInfo
             },
             transformErrorResponse: (error) => {
                 console.log(error.message)
@@ -58,9 +58,9 @@ export const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
         }),
         acceptFollowRequest: build.mutation<
             { acceptFollowRequest: Mutation['acceptFollowRequest'] },
-            { input: string }
+            string
         >({
-            query: ({ input }) => ({
+            query: (input) => ({
                 document: AcceptFollowRequestMutation,
                 variables: { input },
             }),

@@ -7,13 +7,13 @@ import { SetNewUserLocalStorageWrapper } from '@/utils/auth/set-new-user-localst
 export default function Providers({ children }: { children: React.ReactNode }) {
     return (
         <StoreProvider>
-            <ChakraProvider>
-                <RefreshWrapper>
+            <RefreshWrapper>
+                <ChakraProvider>
                     <SetNewUserLocalStorageWrapper>
                         {children}
                     </SetNewUserLocalStorageWrapper>
-                </RefreshWrapper>
-            </ChakraProvider>
+                </ChakraProvider>
+            </RefreshWrapper>
         </StoreProvider>
     )
 }
