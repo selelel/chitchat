@@ -162,6 +162,7 @@ export type Mutation = {
     editPostComment: Comments
     followUser: Scalars['Boolean']['output']
     getChatConversation: Array<Message>
+    getManyUserInfo: Array<User>
     getRecommendedPosts: Array<Post>
     getUserFollowingPosts: Array<Post>
     getUserPrivateChatRoom: Chat
@@ -224,6 +225,10 @@ export type MutationFollowUserArgs = {
 
 export type MutationGetChatConversationArgs = {
     conversationInput: GetConversation
+}
+
+export type MutationGetManyUserInfoArgs = {
+    id: Array<Scalars['String']['input']>
 }
 
 export type MutationGetRecommendedPostsArgs = {

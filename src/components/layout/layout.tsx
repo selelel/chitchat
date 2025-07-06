@@ -6,6 +6,8 @@ import NavBar from './navBar'
 import { Main } from '../commons/commons'
 import { useAppDispatch } from '@/lib/hooks'
 import { ServerStatus } from '@/lib/features/app/appSlice'
+import { Bell, BellDot } from 'lucide-react'
+import NotificationButton from '../notification/notification-button'
 
 interface LayoutProps {
     children?: ReactNode
@@ -23,7 +25,12 @@ export default function Layout({ children }: LayoutProps) {
             <header className="col-span-2 row-span-6 border-r border-r-gray-300 h-full">
                 <NavBar />
             </header>
-            <Main className="col-span-5 h-screen">{children}</Main>
+            <Main className="col-span-5 space-y-4 h-screen max-w-4xl">
+                <div className="flex justify-end">
+                    <NotificationButton />
+                </div>
+                {children}
+            </Main>
             <section className="h-full col-span-3">
                 <Footer />
             </section>

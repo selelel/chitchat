@@ -4,6 +4,7 @@ import {
     AcceptFollowRequestMutation,
     DeclineFollowRequestMutation,
     FollowUserMutation,
+    GetManyUserByIdMutation,
     GetUserByIdQueryDocument,
     RemoveUserFollowerMutation,
     RemoveUserFollowingMutation,
@@ -120,6 +121,19 @@ export const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
                 return { ...error, message: Parse_Message(error) }
             },
         }),
+        getManyUserInfo: build.mutation<
+            { getManyUserInfo: Mutation['getManyUserInfo'] },
+            string[]
+        >({
+            query: (variables) => ({
+                document: GetManyUserByIdMutation,
+                variables: { ids: variables },
+            }),
+            transformErrorResponse: (error) => {
+                console.log(error.message)
+                return { ...error, message: Parse_Message(error) }
+            },
+        }),
     }),
 })
 
@@ -132,4 +146,5 @@ export const {
     useFolowUserMutation,
     useRemoveUserFollowerMutation,
     useRemoveUserFollowingMutation,
+    useGetManyUserInfoMutation,
 } = injectedRtkApi

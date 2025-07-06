@@ -94,3 +94,20 @@ export const RemoveUserFollowingMutation = `mutation RemoveUserFollowing($input:
 export const RemoveUserFollowerMutation = `mutation RemoveUserFollower($input: String!)  {
     RemoveUserFollower(targetUserId: $input)
 }`
+
+export const GetManyUserByIdMutation = `mutation GetManyUserInfo($ids: [String!]!) {
+    getManyUserInfo(id: $ids) {
+        _id
+        email
+        tags
+        status
+        isPrivate
+        user {
+            firstname
+            lastname
+            username
+            hide_name
+        }
+    }
+}
+`
