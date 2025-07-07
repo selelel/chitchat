@@ -349,6 +349,7 @@ export type PostOptionInput = {
 export type Query = {
     __typename?: 'Query'
     getAllChats: Array<Chat>
+    getFriendSuggestion: Array<User>
     getLikedPost: Array<Post>
     getPost?: Maybe<Post>
     getSavePosts: Array<Post>
@@ -360,6 +361,10 @@ export type Query = {
     logoutDevice: Scalars['Boolean']['output']
     refresh: RefreshResponse
     testQuery: Array<User>
+}
+
+export type QueryGetFriendSuggestionArgs = {
+    pagination: Pagination
 }
 
 export type QueryGetLikedPostArgs = {

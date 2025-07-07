@@ -1,4 +1,5 @@
 import React from 'react'
+import FriendSuggestion from '../commons/friend-suggestion'
 
 export default function Footer() {
     return (
@@ -10,6 +11,9 @@ export default function Footer() {
                 <p>Consent -</p>
                 <p>Agreements</p>
             </div>
+
+            <FriendSuggestion />
+
             <p>
                 © 2024 ChitChat by <strong>{`<seleleI/>`}</strong>
             </p>

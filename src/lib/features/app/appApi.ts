@@ -5,6 +5,7 @@ import {
     CancelFollowRequestMutation,
     DeclineFollowRequestMutation,
     FollowUserMutation,
+    GetFriendSuggestionQuery,
     GetManyUserByIdMutation,
     GetUserByIdQueryDocument,
     RemoveUserFollowerMutation,
@@ -135,6 +136,19 @@ export const injectedRtkApi = baseApiWithGraphql.injectEndpoints({
                 return { ...error, message: Parse_Message(error) }
             },
         }),
+        getFriendSuggestion: build.mutation<
+            { getFriendSuggestion: Query['getFriendSuggestion'] },
+            { skip: number; limit: number }
+        >({
+            query: (variables) => ({
+                document: GetFriendSuggestionQuery,
+                variables: { paginate: variables },
+            }),
+            transformErrorResponse: (error) => {
+                console.log(error.message)
+                return { ...error, message: Parse_Message(error) }
+            },
+        }),
     }),
 })
 
@@ -148,4 +162,5 @@ export const {
     useRemoveUserFollowerMutation,
     useRemoveUserFollowingMutation,
     useGetManyUserInfoMutation,
+    useGetFriendSuggestionMutation,
 } = injectedRtkApi

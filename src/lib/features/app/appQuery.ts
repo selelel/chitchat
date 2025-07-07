@@ -116,3 +116,21 @@ export const GetManyUserByIdMutation = `mutation GetManyUserInfo($ids: [String!]
     }
 }
 `
+
+export const GetFriendSuggestionQuery = `query GetFriendSuggestion($paginate: Pagination!) {
+    getFriendSuggestion(pagination: $paginate) {
+        _id
+        email
+        tags
+        status
+        isPrivate
+        user {
+            firstname
+            lastname
+            username
+            hide_name
+        }
+    }
+}
+
+`
