@@ -10,20 +10,23 @@ import {
     useFormField,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import React from 'react'
-import { useForm } from 'react-hook-form'
+import React, { useEffect, useState } from 'react'
+import { Message, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { CHAT_EVENT } from '@/constants/socket'
+import { LOCALSTORAGE } from '@/constants/localstorage'
+import { localStorageGetItem } from '@/utils/helper/localstorage'
+import useSocket from '@/utils/socket/socketHook'
+import { env } from '@/config/env'
+import { useChatContext } from '../_context/chatContext'
+import { Socket } from 'socket.io-client'
 
 const formSchema = z.object({
     message: z.string({ required_error: 'Please Send A Message' }),
 })
 
-interface ChatInputProps {
-    onSubmit: (values: z.infer<typeof formSchema>) => void
-}
-
-function ChatInput({ onSubmit }: ChatInputProps) {
+function ChatInput({ socket }: { socket: Socket }) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -31,16 +34,22 @@ function ChatInput({ onSubmit }: ChatInputProps) {
         },
     })
 
-    const handleSubmit = (values: z.infer<typeof formSchema>) => {
-        onSubmit(values)
-        form.reset()
+    const handleSendMessage = (values: z.infer<typeof formSchema>) => {
+        if (socket && socket.connected) {
+            socket.emit(CHAT_EVENT['SENT_MESSAGES'], {
+                text: values.message,
+            })
+            form.reset()
+        } else {
+            console.error('Socket not connected')
+        }
     }
 
     return (
         <div>
             <Form {...form}>
                 <form
-                    onSubmit={form.handleSubmit(handleSubmit)}
+                    onSubmit={form.handleSubmit(handleSendMessage)}
                     className="space-y-8 h-fit"
                 >
                     <FormField

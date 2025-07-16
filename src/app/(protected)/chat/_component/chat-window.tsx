@@ -8,61 +8,57 @@ import { localStorageGetItem } from '@/utils/helper/localstorage'
 import useSocket from '@/utils/socket/socketHook'
 import { Message } from '@/lib/graphql/graphqlTypes'
 import { env } from '@/config/env'
+import { useChatContext } from '../_context/chatContext'
+import { io, Socket } from 'socket.io-client'
 
 // TODO: instead of this approach try to create a dynamic page where in it will get the chat id in the url and then walahhh
 
 function ChatWindow({ chatId }: { chatId: string }) {
-    const [newChatId, setNewChatId] = useState<string>(chatId)
-    const socket = useSocket(env.CHAT_SOCKET_URL, {
-        auth: {
-            authorization: `Bearer ${localStorageGetItem(LOCALSTORAGE['ACCESSTOKEN'])}`,
-        },
-        query: {
-            chatid: newChatId,
-        },
-        transports: ['websocket'],
-    })
-
-    const [newChat, setNewChat] = useState<Message[]>([])
-
-    useEffect(() => {
-        setNewChatId(chatId)
-        setNewChat([])
-    }, [chatId])
+    const { selectedChat } = useChatContext()
+    const [socket, setSocket] = useState<Socket>(
+        io(env.CHAT_SOCKET_URL, {
+            auth: {
+                authorization: `Bearer ${localStorageGetItem(LOCALSTORAGE['ACCESSTOKEN'])}`,
+            },
+            query: {
+                chatid: selectedChat,
+            },
+            transports: ['websocket'],
+        })
+    )
 
     useEffect(() => {
-        ;(() => {
-            if (!socket) return
-            socket.on('connect', () => {
-                console.log('Connected to chat:', socket.id)
+        setSocket(
+            io(env.CHAT_SOCKET_URL, {
+                auth: {
+                    authorization: `Bearer ${localStorageGetItem(LOCALSTORAGE['ACCESSTOKEN'])}`,
+                },
+                query: {
+                    chatid: selectedChat,
+                },
+                transports: ['websocket'],
             })
+        )
+    }, [selectedChat])
 
-            socket.on(CHAT_EVENT['ON_LISTENING'], (messages: Message) => {
-                setNewChat((prev) => [messages, ...prev])
-            })
-        })()
+    useEffect(() => {
+        socket.on('connect', () => {
+            console.log('Socket is Connected')
+        })
+
+        socket.on('connect_error', (error) => {
+            console.error('Connection error:', error)
+        })
 
         return () => {
-            if (socket) {
-                socket.off(CHAT_EVENT['ON_LISTENING'])
-                socket.off('connect')
-            }
+            socket.disconnect()
         }
     }, [socket])
 
-    const handleSendMessage = ({ message }: { message: string }) => {
-        if (socket && socket.connected) {
-            socket.emit(CHAT_EVENT['SENT_MESSAGES'], {
-                text: message,
-            })
-        } else {
-            console.error('Socket not connected')
-        }
-    }
     return (
         <Container className="h-full flex flex-col gap-2 items-between">
-            <ChatConversation chatId={chatId} newChat={newChat} />
-            <ChatInput onSubmit={handleSendMessage} />
+            <ChatConversation socket={socket} />
+            <ChatInput socket={socket} />
         </Container>
     )
 }
